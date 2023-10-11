@@ -1,0 +1,116 @@
+@import "../../../assets/scss/abstracts";
+
+.selectBox {
+    display: flex;
+    justify-content: space-between;
+    // border-radius: 3px;
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.20);
+    padding: 12px 20px;
+    cursor: pointer;
+    width: 364px;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    align-items: center;
+
+    border-radius: 25px;
+    border: 1px solid rgba(0, 0, 0, 0.20);
+    // background: #FFF;
+    // line-height: 48px;
+
+    // .placeholder {
+    //     font-size: .9em
+    // }
+    .dropdownArrow {
+        transition: transform 350ms ease-in-out;
+    }
+
+    &.isOpen {
+
+        border: 1px solid rgba(0, 0, 0, 0.5);
+
+        .dropdownArrow {
+            transform: rotate(180deg);
+        }
+    }
+
+    .popup {
+        position: absolute;
+        top: 102%;
+        width: 100%;
+        left: 0;
+        box-shadow: 2px 4px 12px 1px #00000026;
+        border-radius: 10px;
+        padding: 10px;
+        z-index: 10001;
+        background-color: $white;
+        max-height: 400px;
+        overflow: auto;
+
+        &::-webkit-scrollbar-track {
+            border-radius: 2px;
+            background-color: rgba(242, 153, 74, 0.30);
+            border: none;
+        }
+
+        &::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            width: 5px;
+            height: 5px;
+            border-radius: 8px;
+            background-color: #F2994A;
+        }
+
+        .searchInputContainer {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+            background: $light-grey;
+            border-radius: 4px;
+            padding: 3px;
+            position: sticky;
+            top: 0;
+
+            input {
+                flex: 1;
+                border-radius: 4px;
+                background: $light-grey;
+                border: none;
+                outline: none;
+            }
+        }
+
+        .multiSelectField {
+            // padding-top: 5px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+
+            .checkbox {
+                width: 20px;
+                height: 20px;
+                accent-color: #F2994A;
+                color: white;
+                border: #F2994A
+            }
+
+            .radioButton {
+                height: 20px;
+                width: 20px;
+                border-radius: 50%;
+                // background-color: red;
+                // justify-self: center;
+                border: 1px solid blue;
+
+                &.active {
+                    border: 5px solid blue;
+                }
+            }
+        }
+    }
+}

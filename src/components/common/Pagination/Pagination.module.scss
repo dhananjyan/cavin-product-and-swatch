@@ -1,0 +1,31 @@
+@import "../../../assets/scss//abstracts";
+
+.paginationSection {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .pagination {
+        display: flex;
+        list-style: none;
+        gap: 4px;
+        padding: 0;
+
+        li {
+            aspect-ratio: 1/1;
+            // padding: 5px;
+            width: 35px;
+            border-radius: 5px;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            background: #FFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            a {
+                text-decoration: none;
+            }
+        }
+    }
+}

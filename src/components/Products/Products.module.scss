@@ -1,0 +1,49 @@
+@import "../../assets/scss/abstracts";
+
+.productSection {
+    padding: 40px 30px;
+    position: relative;
+    height: 100%;
+    overflow: auto;
+
+    .popup {
+        background-color: $white;
+        width: 85%;
+        height: 100%;
+        z-index: 100;
+    }
+
+    .table {
+        margin-top: 20px;
+        border: 1px solid rgba(0, 0, 0, 0.10);
+
+        tbody {
+            tr {
+                td {
+                    border-top: 1px solid rgba(0, 0, 0, 0.10);
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+
+                }
+            }
+
+            tr:nth-child(even) {
+                border: 1px solid rgba(0, 0, 0, 0.10);
+
+                td {
+                    background: #FAFAFA;
+                }
+
+            }
+        }
+
+
+        thead th {
+            background-color: $blue-light;
+        }
+
+        th,
+        td {
+            padding: 15px 1.5rem !important
+        }
+    }
+}

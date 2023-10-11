@@ -1,0 +1,102 @@
+@import "./fonts.scss";
+@import "./variables.scss";
+@import "./mixins.scss";
+
+$myColors: (
+  "blue1":$blue,
+  "blue-light":$blue-light,
+  "red":$red,
+  "light-grey":$light-grey,
+  "black":$black,
+  "white":$white,
+  "white1":$white1,
+);
+
+body {
+
+  letter-spacing: .6px;
+}
+
+@each $name, $colors in $myColors {
+  $index: index($myColors, $colors);
+
+  .text-#{$name} {
+    color: $colors !important;
+  }
+
+  .bg-#{$name} {
+    background-color: $colors;
+  }
+
+  .bc-#{$name} {
+    border-color: $colors !important;
+  }
+}
+
+.container {
+  padding: 0 40px !important;
+}
+
+.btn {
+  @include btn;
+}
+
+.btnPrimary {
+  @include btn-primary;
+}
+
+.btnSecondary {
+  @include btn-secondary;
+}
+
+
+.title1 {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: $black;
+  font-family: Montserrat;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 32px;
+  /* 114.286% */
+}
+
+.title2 {
+  color: $black;
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%;
+  /* 30px */
+}
+
+.text {
+  color: $black;
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  /* 24px */
+  /* 30px */
+}
+
+.linkTextPrimary {
+  color: $blue;
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+
+  cursor: pointer;
+  /* 150% */
+}
+
+.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}

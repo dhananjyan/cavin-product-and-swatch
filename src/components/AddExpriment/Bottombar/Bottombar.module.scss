@@ -1,0 +1,15 @@
+@import "../../../assets/scss/abstracts";
+
+.bottomBar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 13px 0;
+    background-color: $blue-light;
+    gap: 40px;
+
+    button {
+        @include btn;
+        gap: 5px;
+    }
+}

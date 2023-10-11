@@ -1,0 +1,54 @@
+@import "../../../assets/scss/abstracts";
+
+.stepOne {
+    .textTitle {
+        color: #000;
+        font-family: Roboto;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 150%;
+        /* 30px */
+    }
+
+    .titleDesc {
+        color: #000;
+        font-family: Roboto;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 150%;
+        padding-bottom: 20px;
+    }
+
+
+
+    .threeFields {
+        display: flex;
+        gap: 14px;
+        padding-bottom: 30px;
+        align-items: end;
+
+        label {
+            color: #000;
+            font-family: Roboto;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px;
+        }
+
+        input {
+            width: 364px;
+            padding: 12px 10px;
+        }
+
+        .removeBtn {
+            margin-bottom: 15px;
+            color: #E53935;
+            display: flex;
+            gap: 10px;
+        }
+
+    }
+}
