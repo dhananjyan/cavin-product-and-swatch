@@ -1,10 +1,10 @@
 import s from "./AddExpriment.module.scss";
-import Bottombar from "./Bottombar/Bottombar";
-import Topbar from "./Topbar/Topbar";
+import Bottombar from "../UpdateExpriment/Bottombar/Bottombar";
+import Topbar from "../UpdateExpriment/Topbar/Topbar";
 
 import { useForm, useFieldArray } from "react-hook-form";
 
-import ChooseProductStep from "./ChooseProductStep/ChooseProductStep";
+import ChooseProductStep from "../UpdateExpriment/ChooseProductStep/ChooseProductStep";
 
 import leftArrowIcon from "../../assets/svg/leftArrow.svg";
 import { ReactSVG } from "react-svg";

@@ -1,0 +1,56 @@
+@import "../../../../assets/scss/abstracts";
+
+.cropSection {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 1fr auto;
+    height: 100%;
+
+    .cropContainer {
+        background: #081524;
+    }
+
+    .settingSection {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        flex-direction: column;
+        background-color: $blue-dark;
+        color: $white;
+        text-align: center;
+
+        .buttonStyle {
+
+            width: 223px;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            text-align: left;
+
+            .square {
+                width: 26px;
+                height: 21px;
+                border: 1px solid #FFF;
+            }
+
+            .rectangle {
+                width: 40px;
+                height: 21px;
+                border: 1px solid #FFF;
+            }
+
+            .rectangle1 {
+                width: 40px;
+                height: 16px;
+                border: 1px solid #FFF;
+            }
+
+            .rectangle2 {
+                width: 31px;
+                height: 16px;
+                border: 1px solid #FFF;
+            }
+
+        }
+
+    }
+}

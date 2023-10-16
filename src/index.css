@@ -1,0 +1,45 @@
+.ReactCrop {
+    max-height: 500px;
+}
+
+.ReactCrop__crop-selection:not(.ReactCrop--no-animate .ReactCrop__crop-selection) {
+    border: 1px solid #3771C3;
+    background-image: none;
+
+}
+
+.ReactCrop__drag-handle::after {
+    background-color: #3771C3;
+    border: 10px solid #3771C3;
+    border-radius: 50px;
+}
+
+.ReactCrop .ord-ne::after {
+    top: -4px;
+    right: -4px;
+}
+
+.ReactCrop .ord-se::after {
+    bottom: -4px;
+    right: -4px;
+}
+
+.ReactCrop .ord-sw::after {
+    bottom: -4px;
+    left: -4px;
+}
+
+.ReactCrop .ord-nw::after {
+    top: -4px;
+    left: -4px;
+}
+
+.ReactCrop .ord-n::after,
+.ReactCrop .ord-e::after,
+.ReactCrop .ord-w::after,
+.ReactCrop .ord-s::after {
+    /* display: none; */
+    background-color: rgba(0, 0, 0, 0) !important;
+    border: 0 !important;
+
+}

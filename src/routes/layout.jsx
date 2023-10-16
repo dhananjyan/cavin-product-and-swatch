@@ -8,21 +8,23 @@ import AddExpriment from "../components/AddExpriment/AddExpriment";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useRef } from "react";
+import ImageCrop from "../components/UpdateExpriment/AddSwatch/ImageCrop/ImageCrop";
 
 export default function Layout() {
     const mainRef = useRef();
     const isModalOpen = useSelector(state => state.expriment.isModalOpen);
+    const isImageModalOpen = useSelector(state => state.updateExpriment.isImageModalOpen);
     useEffect(() => {
         if (isModalOpen) mainRef.current.scrollTo({ top: 0 });
-    }, [isModalOpen])
+    }, [isModalOpen, isImageModalOpen])
 
     return (
         <div className={cx(s.layout)}>
             <Header />
             <div className={s.main} ref={mainRef}>
-                {isModalOpen ? <Popup className={s.popupContainer}>
+                {(isModalOpen || isImageModalOpen) ? <Popup className={s.popupContainer}>
                     <div className={s.popup}>
-                        <AddExpriment />
+                        {isModalOpen ? <AddExpriment /> : <ImageCrop />}
                     </div>
                 </Popup> : ""}
                 <Outlet />

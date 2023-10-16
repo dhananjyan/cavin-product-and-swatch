@@ -3,6 +3,7 @@ import Expriment from "./expriment";
 import HomePage from "./home";
 import Layout from "./layout";
 import NewExpriment from "./newExpriment";
+import UpdateExpriment from "./updateExpriment";
 
 const routes = [
     {
@@ -19,13 +20,13 @@ const routes = [
                 element: <div>Contact</div>
             },
             {
-                path: "/expriment",
-                element: <Expriment />
+                path: "/expriment/new",
+                element: <UpdateExpriment />
             },
             {
-                path: "/expriment/new",
-                element: <NewExpriment />
-            }
+                path: "/expriment/update/:id",
+                element: <UpdateExpriment />
+            },
         ]
     },
 

@@ -10,15 +10,35 @@ $myColors: (
   "black":$black,
   "white":$white,
   "white1":$white1,
+  "darkBlue": $blue-dark
 );
 
 body {
-
-  letter-spacing: .6px;
+  // letter-spacing: .6px;
 }
 
-@each $name, $colors in $myColors {
-  $index: index($myColors, $colors);
+$fws: (
+  "200": 200,
+  "300": 300,
+  "400": 400,
+  "500": 500,
+  "600": 600,
+  "700": 700,
+  "800": 800,
+);
+
+@each $name,
+$weight in $fws {
+  $index: index($fws, $weight );
+
+  .fw#{$name} {
+    font-weight: $weight !important;
+  }
+}
+
+@each $name,
+$colors in $myColors {
+  $index: index($myColors, $colors );
 
   .text-#{$name} {
     color: $colors !important;
@@ -49,6 +69,20 @@ body {
   @include btn-secondary;
 }
 
+.btnDark {
+  @include btn;
+  border-radius: 20px;
+  // border: 1px solid #FFF;
+  background: #d9d9d931;
+
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%;
+  /* 24px */
+}
+
 
 .title1 {
   display: flex;
@@ -63,6 +97,16 @@ body {
   /* 114.286% */
 }
 
+.title12 {
+  color: #000;
+  font-family: Montserrat;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%;
+  /* 36px */
+}
+
 .title2 {
   color: $black;
   font-family: Montserrat;
@@ -71,6 +115,44 @@ body {
   font-weight: 600;
   line-height: 150%;
   /* 30px */
+}
+
+.title2500 {
+  color: $black;
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%;
+  /* 30px */
+}
+
+.title3 {
+  color: #000;
+  font-family: Montserrat;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.titleSmall {
+  color: #000;
+  font-family: Montserrat;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  /* 200% */
+}
+
+.titleSmall1 {
+  color: $grey;
+  font-family: Montserrat;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 .text {
@@ -84,6 +166,16 @@ body {
   /* 30px */
 }
 
+.smallText {
+  color: $grey;
+  font-family: Montserrat;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  /* 200% */
+}
+
 .linkTextPrimary {
   color: $blue;
   font-family: Montserrat;
@@ -93,10 +185,34 @@ body {
   line-height: 24px;
 
   cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
   /* 150% */
 }
 
 .disabled {
   opacity: 0.6;
   pointer-events: none;
+}
+
+.verticalScroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar-track {
+    border-radius: 2px;
+    background-color: inherit;
+    border: none;
+  }
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    opacity: 0.4;
+    background: rgba(0, 0, 0, 0.4);
+  }
 }
