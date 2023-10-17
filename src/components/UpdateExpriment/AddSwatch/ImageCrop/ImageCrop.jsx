@@ -11,6 +11,8 @@ import { ReactSVG } from 'react-svg';
 
 import cropIcon from "../../../../assets/svg/crop.svg";
 
+import rightArrowIcon from "../../../../assets/svg/rightArrow.svg"
+
 
 // function centerAspectCrop(
 //     mediaWidth: number,
@@ -129,6 +131,10 @@ export default function ImageCrop() {
                         <button onClick={() => updateAspectRatio(2 / 39 / 1)} className={cx(s.btnDark, s.buttonStyle, "mb-2")}> <div className={s.rectangle1} />2.39:1 ratio</button>
                         <button onClick={() => updateAspectRatio(1 / 85 / 1)} className={cx(s.btnDark, s.buttonStyle, "mb-2")}> <div className={s.rectangle2} />1:85:1 ratio</button>
                     </div>
+                </div>
+                <div className={s.bottomBar}>
+                    <button className={s.btnSecondary}>Cancel</button>
+                    <button className={s.btnPrimary}>Continue <ReactSVG src={rightArrowIcon} /></button>
                 </div>
             </div>
         </>

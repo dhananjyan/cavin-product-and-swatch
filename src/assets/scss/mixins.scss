@@ -93,7 +93,7 @@
 
 
   text-decoration: none;
-    /* 100% */
+  /* 100% */
 }
 
 @mixin btn-primary {
@@ -109,12 +109,14 @@
 
 @mixin btn-secondary {
   @include btn;
-  background: $grey;
-  color: $black;
   text-align: center;
   font-size: 16px;
   font-weight: 600;
   font-style: normal;
   line-height: 24px;
-  color: $white
+  color: $white;
+  border-radius: 25px;
+  border: 1px solid $blue;
+  color: $blue;
+  background: rgba(255, 255, 255, 0.50);
 }

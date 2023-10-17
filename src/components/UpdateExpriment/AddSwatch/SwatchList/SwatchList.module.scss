@@ -4,8 +4,10 @@
 .parent {
     height: 100%;
     border-right: 2px solid var(--grey-grey-200, #DCDCDE);
-background: radial-gradient(87.5% 87.5% at 51.11% 50%, rgba(255, 255, 255, 0.40) 0%, #FFF 100%), url(<path-to-image>), lightgray 50% / cover no-repeat, #FFF;
+    background: radial-gradient(87.5% 87.5% at 51.11% 50%, rgba(255, 255, 255, 0.40) 0%, #FFF 100%), url("../../../../assets/svg/side-nav-bg.svg"), lightgray 50% / cover no-repeat, #FFF;
+    background-image: url("../../../../assets/svg/side-nav-bg.svg");
 }
+
 .titleBatch {
     border-bottom: 1px solid rgba(0, 0, 0, 0.20);
     background: #FFF;

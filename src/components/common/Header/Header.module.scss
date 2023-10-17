@@ -1,10 +1,11 @@
 @import "../../../assets//scss/abstracts";
 
 .topBar {
-    background-color: $white;
+    // background-color: $white;
     box-shadow: 0px 2px 2px 0px rgba(17, 54, 92, 0.10);
     padding: 12px 0;
     z-index: 101;
+    background-image: url("../../../assets/svg/Header-bg.svg");
 
     .header {
         display: flex;

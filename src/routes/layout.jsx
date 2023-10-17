@@ -22,7 +22,7 @@ export default function Layout() {
         <div className={cx(s.layout)}>
             <Header />
             <div className={s.main} ref={mainRef}>
-                {(isModalOpen || isImageModalOpen) ? <Popup className={s.popupContainer}>
+                {(isModalOpen || isImageModalOpen) ? <Popup className={cx({ [s.imageCropContainer]: isImageModalOpen }, s.popupContainer)}>
                     <div className={s.popup}>
                         {isModalOpen ? <AddExpriment /> : <ImageCrop />}
                     </div>

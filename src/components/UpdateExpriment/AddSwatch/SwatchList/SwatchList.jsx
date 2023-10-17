@@ -15,6 +15,9 @@ export default function SwatchList() {
 
     const handleDrag = (index, newPriority) => {
         const updatedTodos = [...todos];
+
+        let existingDataIndex = updatedTodos.findIndex(d => d.currentPosition === newPriority)
+        updatedTodos[existingDataIndex].currentPosition = updatedTodos[index].currentPosition;
         updatedTodos[index].currentPosition = newPriority;
 
         setTodos(updatedTodos);

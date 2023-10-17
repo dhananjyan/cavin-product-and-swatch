@@ -8,6 +8,7 @@
 
     .cropContainer {
         background: #081524;
+        grid-row: span 2;
     }
 
     .settingSection {
@@ -52,5 +53,13 @@
 
         }
 
+    }
+
+    .bottomBar {
+        background-color: $blue-light-4;
+        display: flex;
+        padding: 16px 0;
+        justify-content: center;
+        gap: 10px;
     }
 }

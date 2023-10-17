@@ -29,3 +29,8 @@
     background-color: white;
     z-index: 100;
 }
+
+.imageCropContainer>.popup {
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
