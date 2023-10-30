@@ -1,0 +1,19 @@
+@import "../../../assets/scss/abstracts";
+
+.item {
+    padding: 12px 15px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: rgba(255, 255, 255, 0.05);
+
+    .avatar {
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: 1;
+        border-radius: 50px;
+
+        background-color: #F8BBD0;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+}

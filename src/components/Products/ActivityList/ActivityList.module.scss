@@ -1,0 +1,15 @@
+@import "../../../assets/scss//abstracts";
+
+.parent {
+    // max-width: 270px;
+
+    .item {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+        background: #FFF;
+
+        .content {
+            max-width: 230px;
+        }
+
+    }
+}

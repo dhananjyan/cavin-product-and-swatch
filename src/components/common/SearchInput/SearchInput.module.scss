@@ -1,0 +1,21 @@
+.inputContainer {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    min-width: 260px;
+
+    .icon {
+        position: absolute;
+        left: 12px;
+    }
+
+    .input {
+        padding: 8px 15px 8px 52px;
+        border-radius: 20px;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        background: #FFF;
+        width: 100%;
+        // padding-left: 52px;
+    }
+}

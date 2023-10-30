@@ -136,6 +136,16 @@ $colors in $myColors {
   line-height: normal;
 }
 
+.title4 {
+  color: #000;
+  font-family: Montserrat;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 32px;
+  /* 177.778% */
+}
+
 .titleSmall {
   color: #000;
   font-family: Montserrat;
@@ -144,6 +154,25 @@ $colors in $myColors {
   font-weight: 600;
   line-height: 24px;
   /* 200% */
+}
+
+.titleSmall1 {
+  color: rgba(0, 0, 0, 0.75);
+  font-family: Montserrat;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  /* 184.615% */
+}
+
+.titleBold {
+  color: $grey;
+  font-family: Montserrat;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
 }
 
 .titleSmall1 {

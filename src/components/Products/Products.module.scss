@@ -1,10 +1,13 @@
 @import "../../assets/scss/abstracts";
 
 .productSection {
-    padding: 40px 30px;
+    // padding: 40px 30px;
     position: relative;
     height: 100%;
-    overflow: auto;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto 1fr;
 
     .popup {
         background-color: $white;
@@ -13,37 +16,108 @@
         z-index: 100;
     }
 
-    .table {
-        margin-top: 20px;
-        border: 1px solid rgba(0, 0, 0, 0.10);
+    .sideHeader {
+        padding: 12px 15px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.20);
+        background: #FFF;
+        box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.03);
+    }
 
-        tbody {
-            tr {
-                td {
-                    border-top: 1px solid rgba(0, 0, 0, 0.10);
-                    border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+    .mainHeader {
+
+        padding: 12px 18px;
+        border: 1px solid rgba(0, 0, 0, 0.20);
+        background: #FFF;
+        box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.03);
+
+        .filterSelect {
+
+            padding: 8px 15px 8px 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            background: #FFF;
+            // width: 100%;
+            min-width: 260px;
+        }
+    }
+
+    .main {
+        flex: 1;
+        overflow: auto;
+
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        background: #FFF;
+        box-shadow: 0px 2px 2px 0px rgba(17, 54, 92, 0.10);
+        padding: 15px 10px;
+
+
+
+        .table {
+            // margin-top: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.10);
+
+            tbody {
+                tr {
+                    td {
+                        border-top: 1px solid rgba(0, 0, 0, 0.10);
+                        border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+
+                        .userAvatarList {
+                            display: flex;
+
+                            .item {
+                                aspect-ratio: 1;
+                                width: 25px;
+                                position: relative;
+
+                                &::after {
+                                    position: absolute;
+                                    background-color: #FFCCBC;
+                                    border-radius: 50px;
+                                    border: 1px solid rgba(0, 0, 0, 0.05);
+                                    width: 30px;
+                                    height: 30px;
+                                    left: 0;
+                                    top: 0;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    content: attr(data);
+
+                                    color: var(--grey-grey-600, #44464C);
+                                    text-align: center;
+                                    font-family: Montserrat;
+                                    font-size: 11px;
+                                    font-style: normal;
+                                    font-weight: 500;
+                                    line-height: normal;
+
+                                }
+                            }
+                        }
+
+                    }
+                }
+
+                tr:nth-child(even) {
+                    border: 1px solid rgba(0, 0, 0, 0.10);
+
+                    td {
+                        background: #FAFAFA;
+                    }
 
                 }
             }
 
-            tr:nth-child(even) {
-                border: 1px solid rgba(0, 0, 0, 0.10);
 
-                td {
-                    background: #FAFAFA;
-                }
-
+            thead th {
+                background-color: $blue-light;
             }
-        }
 
-
-        thead th {
-            background-color: $blue-light;
-        }
-
-        th,
-        td {
-            padding: 15px 1.5rem !important
+            th,
+            td {
+                padding: 15px 1.5rem !important
+            }
         }
     }
 }

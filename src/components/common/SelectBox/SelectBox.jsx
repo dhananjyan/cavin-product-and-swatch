@@ -10,7 +10,7 @@ import searchIcon from "../../../assets/svg/search.svg";
 import useDebounce from "../../../hooks/useDebounce";
 
 export default function SelectBox(props) {
-    const { options = [], value: selectedList = [], onOpen = () => { }, onChange = () => { }, name, isMultiSelect = false, onClose = () => { }, zIndex = "10001" } = props;
+    const { options = [], placeholder, className, value: selectedList = [], onOpen = () => { }, onChange = () => { }, name, isMultiSelect = false, onClose = () => { }, zIndex = "10001" } = props;
     const popupRef = useRef();
     const selectRef = useRef();
     const [filteredOptions, setFilteredOptions] = useState(options);
@@ -93,10 +93,10 @@ export default function SelectBox(props) {
     }, []);
 
     return (
-        <div className={cx(s.selectBox, { [s.isOpen]: isOpen })} tabIndex="0" ref={selectRef} onClick={handleSelectBoxClick} >
+        <div className={cx(s.selectBox, { [s.isOpen]: isOpen }, className)} tabIndex="0" ref={selectRef} onClick={handleSelectBoxClick} >
 
             {!selectedList?.length ?
-                <div>Please Select...</div> :
+                <div>{placeholder ? placeholder : "Please Select..."}</div> :
                 <div className={s.placeholder}>{selectedList?.map((item, i) => {
                     return i == 0 ? item : `, ${item}`
                 })}</div>}
