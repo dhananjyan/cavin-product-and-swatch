@@ -19,7 +19,9 @@
 
     .navLinkSidebar {
         grid-row: span 2;
-
+        background: #FFF;
+        box-shadow: 4px 0px 8px 0px rgba(49, 103, 177, 0.24);
+        z-index: 2;
     }
 
     .sideHeader {

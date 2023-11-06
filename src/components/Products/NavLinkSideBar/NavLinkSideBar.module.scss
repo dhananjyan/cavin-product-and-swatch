@@ -1,9 +1,24 @@
 .link {
+    padding: 10px 20px;
+    max-width: 110px;
+    text-align: center;
+    color: #003DA6;
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px;
+    /* 133.333% */
+    letter-spacing: 0.24px;
+    text-transform: capitalize;
+
     .icon {
         color: red;
-         svg {
-           margin: auto;
-           width: 100%;
+
+        svg {
+            margin: auto;
+            width: 100%;
         }
     }
 }

@@ -5,14 +5,13 @@ import Pagination from "../common/Pagination/Pagination";
 
 import binIcon from "../../assets/svg/bin.svg";
 import eyeIcon from "../../assets/svg/eye.svg";
-import pencilIcon from "../../assets/svg/pencil.svg";
+import plusIcon from "../../assets/svg/plus.svg";
 import { ReactSVG } from "react-svg";
 import GroupsSideBar from "./GroupsSideBar/GroupsSideBar";
 import SearchInput from "../common/SearchInput/SearchInput";
 import SelectBox from "../common/SelectBox/SelectBox";
 import ActivityList from "./ActivityList/ActivityList";
 import NavLinkSideBar from "./NavLinkSideBar/NavLinkSideBar";
-
 
 export default function Products() {
     return (
@@ -23,7 +22,10 @@ export default function Products() {
                 <NavLinkSideBar />
             </div>
             <div className={s.sideHeader}>
-                <div className={cx(s.title4, "pb-2")}>Total groups 12</div>
+                <div className={cx(s.title4, "pb-2 d-flex align-items-center gap-4")}>
+                    <div>Total groups 12</div>
+                    <div className={cx("d-flex")}><ReactSVG src={plusIcon} /> New group</div>
+                </div>
                 <div><SearchInput placeholder="Search group name" /></div>
             </div>
             <div className={cx("h-100 d-flex justify-content-center flex-column w-100", s.mainHeader)}>
