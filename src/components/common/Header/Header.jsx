@@ -20,20 +20,20 @@ export default function Header() {
         <div className={s.topBar}>
             <div className={cx(s.container, s.header)}>
                 <ReactSVG src={logoIcon} />
-                <div>
+                {/* <div>
                     <ul className={cx(s.headerList)}>
 
                         <li className={s.navLink}>Dashboard</li>
                         <li className={cx(s.navLink, s.active)}>Product & swatches</li>
                     </ul>
-                </div>
+                </div> */}
                 <div className="d-flex gap-4">
-                    <div>
+                    {/* <div>
                         <div role="button" onClick={openModal} className={cx({ [s.disabled]: isModalOpen }, s.btnPrimary)}>
                             <ReactSVG src={plusIcon} />
                             New experiment
                         </div>
-                    </div>
+                    </div> */}
                     <div className="d-flex align-items-center">
 
                         <ul className={cx(s.headerList)}>
