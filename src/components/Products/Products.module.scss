@@ -6,14 +6,20 @@
     height: 100%;
     overflow: hidden;
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto auto 1fr auto;
     grid-template-rows: auto 1fr;
+
 
     .popup {
         background-color: $white;
         width: 85%;
         height: 100%;
         z-index: 100;
+    }
+
+    .navLinkSidebar {
+        grid-row: span 2;
+
     }
 
     .sideHeader {

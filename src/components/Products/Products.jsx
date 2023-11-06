@@ -11,6 +11,7 @@ import GroupsSideBar from "./GroupsSideBar/GroupsSideBar";
 import SearchInput from "../common/SearchInput/SearchInput";
 import SelectBox from "../common/SelectBox/SelectBox";
 import ActivityList from "./ActivityList/ActivityList";
+import NavLinkSideBar from "./NavLinkSideBar/NavLinkSideBar";
 
 
 export default function Products() {
@@ -18,6 +19,9 @@ export default function Products() {
         <div className={s.productSection}>
             {/* <Filters /> */}
             {/* <Pagination /> */}
+            <div className={s.navLinkSidebar}>
+                <NavLinkSideBar />
+            </div>
             <div className={s.sideHeader}>
                 <div className={cx(s.title4, "pb-2")}>Total groups 12</div>
                 <div><SearchInput placeholder="Search group name" /></div>
