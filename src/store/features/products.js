@@ -53,9 +53,9 @@ export const incrementAsync = (amount) => (dispatch) => {
 export const initializeProductPage = () => async (dispatch, getState) => {
   // const data = api call
   // lenght, status
-  //   const { status, data } = await client.post("/view_by_user_id", {
-  //     body: { user_id: 1 },
-  //   });
+    // const { status, data } = await client.post("/view_by_user_id", {
+    //   body: { user_id: 1 },
+    // });
   // const groupList = status ? data?.result || [];
   const groupList = [
     {
@@ -85,3 +85,10 @@ export const initializeProductPage = () => async (dispatch, getState) => {
   dispatch(updateGroupList(groupList));
   dispatch(updateTotalGroupNum(totalGroup));
 };
+
+export const getExperimentsByGroupId = (groupId) => async (dispatch, getState) => {
+   dispatch(updateSelectedGroup(groupId));
+   const {status, data} = await client.post("/get_experiments_by_group_id", {
+    body : {group_id : groupId}
+   })
+}

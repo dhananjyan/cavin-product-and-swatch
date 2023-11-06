@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import s from "./GroupsSideBar.module.scss";
 import cx from "classnames";
-import { updateSelectedGroup } from "../../../store/features/products";
+import { getExperimentsByGroupId } from "../../../store/features/products";
 
 export default function GroupsSideBar() {
     const dispatch = useDispatch();
@@ -9,7 +9,7 @@ export default function GroupsSideBar() {
     const selectedGroup = useSelector(state => state?.products?.selectedGroup);
 
     const handleGroupClick = (id) => {
-        dispatch(updateSelectedGroup(id));
+        dispatch(getExperimentsByGroupId(id));
     }
 
     return (
