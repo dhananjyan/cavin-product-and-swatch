@@ -1,10 +1,13 @@
+import { useSelector } from "react-redux";
 import s from "./GroupsSideBar.module.scss";
 import cx from "classnames"
 
 export default function GroupsSideBar() {
+    const selectedGroup = useSelector(state => state?.products?.selectedGroup)
+
     return (
         <div>
-            <div className={s.item}>
+            <div className={cx(s.item, { [s.active]: true })}>
                 <div className={cx(s.titleBold, "pb-2")}>Group name 1</div>
                 <div className={cx(s.titleSmall1, "pb-1")}>Total no. of experiments&nbsp;&nbsp;<b>15</b></div>
                 <div className={cx("d-flex align-items-center gap-2")}>

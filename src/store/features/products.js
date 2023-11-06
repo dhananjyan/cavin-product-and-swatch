@@ -5,7 +5,8 @@ export const counterSlice = createSlice({
     name: 'products',
     initialState: {
         value: 0,
-        groupList: []
+        groupList: [],
+        selectedGroup: null
     },
     reducers: {
         increment: state => {
@@ -23,11 +24,14 @@ export const counterSlice = createSlice({
         },
         updateGroupList: (state, action) => {
             state.groupList = action.payload
+        },
+        updateSelectedGroup: (state, action) => {
+            state.selectedGroup = action.payload
         }
     }
 })
 
-export const { increment, decrement, incrementByAmount, updateGroupList } = counterSlice.actions
+export const { increment, decrement, incrementByAmount, updateGroupList, updateSelectedGroup } = counterSlice.actions
 
 export default counterSlice.reducer;
 
@@ -39,7 +43,7 @@ export const incrementAsync = amount => dispatch => {
 export const initializeProductPage = () => async (dispatch, getState) => {
     // const data = api call
     // lenght, status
-    const data = await client.post("/view_by_user_id", {body : {user_id : 1}});
+    const data = await client.post("/view_by_user_id", { body: { user_id: 1 } });
     console.log(data)
     dispatch(updateGroupList([]))
 }

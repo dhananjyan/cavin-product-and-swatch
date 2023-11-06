@@ -22,6 +22,7 @@ export default function Products() {
     useEffect(() => {
         dispatch(initializeProductPage());
     });
+
     return (
         <div className={s.productSection}>
             {/* <Filters /> */}
@@ -32,7 +33,7 @@ export default function Products() {
             <div className={s.sideHeader}>
                 <div className={cx(s.title4, "pb-2 d-flex align-items-center gap-4")}>
                     <div>Total groups 12</div>
-                    <div className={cx("d-flex")}><ReactSVG src={plusIcon} /> New group</div>
+                    <div className={cx("d-flex", s.blueText)}><ReactSVG src={plusIcon} /> New group</div>
                 </div>
                 <div>
                     <SearchInput placeholder="Search group name" />
