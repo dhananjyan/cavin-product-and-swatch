@@ -58,20 +58,24 @@ export default function AddExpriment() {
                                 <label className={cx(s.text, "form-label")} >Group name</label>
                                 <SelectBox
                                     name="groupName"
+                                    register={register}
                                 />
                             </div>
                             <Inputs
                                 label="Experiment ID"
                                 name="exprimentId"
+                                register={register}
                             />
                             <Inputs
                                 label="Experiment name"
                                 name="exprimentName"
+                                register={register}
                             />
                             <Inputs
                                 label="Date"
                                 name="date"
                                 type="date"
+                                register={register}
                             />
                         </div>
                     </div>

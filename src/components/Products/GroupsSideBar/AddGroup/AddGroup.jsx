@@ -27,6 +27,7 @@ export default function AddGroup() {
                     register={register}
                     inputClassName={s.input}
                     name="groupName"
+                    autofocus
                     placeholder="Enter group name"
                     validation={{ required: true, pattern: /\S/ }}
                     showError={errors.groupName}
