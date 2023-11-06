@@ -12,8 +12,16 @@ import SearchInput from "../common/SearchInput/SearchInput";
 import SelectBox from "../common/SelectBox/SelectBox";
 import ActivityList from "./ActivityList/ActivityList";
 import NavLinkSideBar from "./NavLinkSideBar/NavLinkSideBar";
+import { useEffect } from "react";
+import { initializeProductPage } from "../../store/features/products";
+import { useDispatch } from "react-redux";
 
 export default function Products() {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(initializeProductPage());
+    });
     return (
         <div className={s.productSection}>
             {/* <Filters /> */}
@@ -26,9 +34,16 @@ export default function Products() {
                     <div>Total groups 12</div>
                     <div className={cx("d-flex")}><ReactSVG src={plusIcon} /> New group</div>
                 </div>
-                <div><SearchInput placeholder="Search group name" /></div>
+                <div>
+                    <SearchInput placeholder="Search group name" />
+                </div>
             </div>
-            <div className={cx("h-100 d-flex justify-content-center flex-column w-100", s.mainHeader)}>
+            <div
+                className={cx(
+                    "h-100 d-flex justify-content-center flex-column w-100",
+                    s.mainHeader
+                )}
+            >
                 <div className={cx(s.title3, "pb-3")}>Group name 3</div>
                 <div className="d-flex gap-3 w-100">
                     <SearchInput placeholder="Search experiment name, experiment ID, product name, status...." />
@@ -37,7 +52,9 @@ export default function Products() {
             </div>
             <div className={s.sideHeader}>
                 <div className={cx(s.title4, "pb-2")}>Recent activities</div>
-                <div><SearchInput placeholder="Search activity name" /></div>
+                <div>
+                    <SearchInput placeholder="Search activity name" />
+                </div>
             </div>
             <GroupsSideBar />
             <div className={cx(s.main)}>
@@ -66,7 +83,6 @@ export default function Products() {
                                         <div className={s.item} data="AD" />
                                     </div>
                                     <div>+2</div>
-
                                 </div>
                             </td>
                             <td>Washing</td>
@@ -76,7 +92,6 @@ export default function Products() {
                 </table>
             </div>
             <ActivityList />
-
         </div>
-    )
+    );
 }
