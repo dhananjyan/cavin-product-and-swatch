@@ -69,6 +69,11 @@ $colors in $myColors {
   @include btn-secondary;
 }
 
+.smallBtn {
+  padding: 4px 16px;
+  font-size: 14px
+}
+
 .btnDark {
   @include btn;
   border-radius: 20px;
