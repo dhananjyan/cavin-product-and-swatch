@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { client } from '../../utils/client';
 
 export const counterSlice = createSlice({
     name: 'products',
     initialState: {
-        value: 0
+        value: 0,
+        groupList: []
     },
     reducers: {
         increment: state => {
@@ -18,14 +20,26 @@ export const counterSlice = createSlice({
         },
         incrementByAmount: (state, action) => {
             state.value += action.payload
+        },
+        updateGroupList: (state, action) => {
+            state.groupList = action.payload
         }
     }
 })
 
-export const { increment, decrement, incrementByAmount } = counterSlice.actions
+export const { increment, decrement, incrementByAmount, updateGroupList } = counterSlice.actions
 
 export default counterSlice.reducer;
 
 export const incrementAsync = amount => dispatch => {
     dispatch(incrementByAmount(amount))
+}
+
+
+export const initializeProductPage = () => async (dispatch, getState) => {
+    // const data = api call
+    // lenght, status
+    const data = await client.post("/view_by_user_id", {body : {user_id : 1}});
+    console.log(data)
+    dispatch(updateGroupList([]))
 }
