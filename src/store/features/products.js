@@ -19,8 +19,32 @@ export const counterSlice = createSlice({
       // immutable state based off those changes
       state.value += 1;
     },
-    decrement: (state) => {
-      state.value -= 1;
+    reducers: {
+      increment: (state) => {
+        // Redux Toolkit allows us to write "mutating" logic in reducers. It
+        // doesn't actually mutate the state because it uses the immer library,
+        // which detects changes to a "draft state" and produces a brand new
+        // immutable state based off those changes
+        state.value += 1;
+      },
+      decrement: (state) => {
+        state.value -= 1;
+      },
+      incrementByAmount: (state, action) => {
+        state.value += action.payload;
+      },
+      updateGroupList: (state, action) => {
+        state.groupList = action.payload;
+      },
+      updateTotalGroupNum: (state, action) => {
+        state.totalGroup = action.payload;
+      },
+      updateSelectedGroup: (state, action) => {
+        state.selectedGroup = action.payload;
+      },
+      updateAddGroupPopupStatus: (state, action) => {
+        state.isAddGroup = action.payload;
+      },
     },
     incrementByAmount: (state, action) => {
       state.value += action.payload;
@@ -38,8 +62,8 @@ export const counterSlice = createSlice({
       state.isAddGroup = action.payload;
     },
     updateExperimentData: (state, action) => {
-        state.experimentData = action.payload;
-    }
+      state.experimentData = action.payload;
+    },
   },
 });
 
@@ -51,7 +75,7 @@ export const {
   updateSelectedGroup,
   updateTotalGroupNum,
   updateAddGroupPopupStatus,
-  updateExperimentData
+  updateExperimentData,
 } = counterSlice.actions;
 
 export default counterSlice.reducer;
@@ -79,5 +103,15 @@ export const getExperimentsByGroupId =
     });
 
     const experimentData = status ? data.results : [];
-    dispatch(updateExperimentData(experimentData)); 
+    dispatch(updateExperimentData(experimentData));
   };
+
+export const createGroup = (group_name) => async (dispatch, getState) => {
+  dispatch(updateAddGroupPopupStatus(false));
+  const { status, data } = await client.post("/add_group", {
+    group_name,
+    user_id: 1,
+  });
+
+  console.log("adfjakldfja", data, status);
+};
