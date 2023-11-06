@@ -15,6 +15,8 @@ import NavLinkSideBar from "./NavLinkSideBar/NavLinkSideBar";
 import { useEffect } from "react";
 import { initializeProductPage } from "../../store/features/products";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+
 
 export default function Products() {
     const dispatch = useDispatch();
@@ -22,6 +24,9 @@ export default function Products() {
     useEffect(() => {
         dispatch(initializeProductPage());
     });
+
+    const totalGroups = useSelector((state) => state?.products?.totalGroup);
+
 
     return (
         <div className={s.productSection}>
@@ -32,7 +37,7 @@ export default function Products() {
             </div>
             <div className={s.sideHeader}>
                 <div className={cx(s.title4, "pb-2 d-flex align-items-center gap-4")}>
-                    <div>Total groups 12</div>
+                    <div>Total groups {totalGroups}</div>
                     <div className={cx("d-flex", s.blueText)}><ReactSVG src={plusIcon} /> New group</div>
                 </div>
                 <div>
