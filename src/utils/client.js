@@ -26,8 +26,8 @@ export async function client(url, { body, method, ...customConfig } = {}) {
   try {
     const response = await axios(config);
     data = await response.data;
+    const { status, ...restData } = data || {};
     if (response.status === 200) {
-      const { status, ...restData } = data || {};
       if (data?.status === "success")
         return {
           status: true,
@@ -36,7 +36,7 @@ export async function client(url, { body, method, ...customConfig } = {}) {
     }
     return {
       status: false,
-      data: {},
+      data: restData,
       message: data?.status,
     };
   } catch (err) {
