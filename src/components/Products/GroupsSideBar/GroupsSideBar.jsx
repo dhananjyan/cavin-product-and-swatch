@@ -2,18 +2,26 @@ import { useDispatch, useSelector } from "react-redux";
 import s from "./GroupsSideBar.module.scss";
 import cx from "classnames";
 import { getExperimentsByGroupId } from "../../../store/features/products";
+import { updateSelectedGroup } from "../../../store/features/products";
+import AddGroup from "./AddGroup/AddGroup";
 
 export default function GroupsSideBar() {
     const dispatch = useDispatch();
     const list = useSelector((state) => state?.products?.groupList);
     const selectedGroup = useSelector(state => state?.products?.selectedGroup);
+    const addFormStatus = useSelector(state => state?.products?.isAddGroup);
 
     const handleGroupClick = (id) => {
         dispatch(getExperimentsByGroupId(id));
     }
 
+    console.log("addFormStatus", addFormStatus)
+
     return (
         <div>
+            {addFormStatus ? <div className={s.item}>
+                <AddGroup />
+            </div> : ""}
             {list.map((item, index) => {
                 return (
                     <div role="button" onClick={() => handleGroupClick(item?.group_id)} className={cx(s.item, { [s.active]: selectedGroup === item?.group_id })} key={index}>

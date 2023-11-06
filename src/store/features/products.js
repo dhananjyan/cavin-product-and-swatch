@@ -8,6 +8,7 @@ export const counterSlice = createSlice({
     groupList: [],
     selectedGroup: null,
     totalGroup: 0,
+    isAddGroup: false
   },
   reducers: {
     increment: (state) => {
@@ -32,6 +33,9 @@ export const counterSlice = createSlice({
     updateSelectedGroup: (state, action) => {
       state.selectedGroup = action.payload;
     },
+    updateAddGroupPopupStatus: (state, action) => {
+        state.isAddGroup = action.payload
+    }
   },
 });
 
@@ -42,48 +46,24 @@ export const {
   updateGroupList,
   updateSelectedGroup,
   updateTotalGroupNum,
+  updateAddGroupPopupStatus
 } = counterSlice.actions;
 
 export default counterSlice.reducer;
 
 export const incrementAsync = (amount) => (dispatch) => {
-  dispatch(incrementByAmount(amount));
+    dispatch(incrementByAmount(amount));
 };
 
 export const initializeProductPage = () => async (dispatch, getState) => {
-  // const data = api call
-  // lenght, status
-    // const { status, data } = await client.post("/view_by_user_id", {
-    //   body: { user_id: 1 },
-    // });
-  // const groupList = status ? data?.result || [];
-  const groupList = [
-    {
-      added_by: "1",
-      date_added: "Fri, 03 Nov 2023 11:04:08 GMT",
-      date_modified: "Fri, 03 Nov 2023 12:02:23 GMT",
-      group_id: 1,
-      group_name: "Group A",
-      is_deleted: false,
-      modified_by: "1",
-      user_id: "1",
-    },
-    {
-      added_by: "1",
-      date_added: "Mon, 06 Nov 2023 05:07:30 GMT",
-      date_modified: null,
-      group_id: 3,
-      group_name: "Group 1",
-      is_deleted: false,
-      modified_by: null,
-      user_id: "1",
-    },
-  ];
-  const totalGroup = 10;
+    const { status, data } = await client.post("/view_by_user_id", {
+        user_id: 1,
+    });
+    const groupList = status ? data?.results : [];
+    const totalGroup = data?.total_groups || 0;
 
-  //   console.log(data);
-  dispatch(updateGroupList(groupList));
-  dispatch(updateTotalGroupNum(totalGroup));
+    dispatch(updateGroupList(groupList));
+    dispatch(updateTotalGroupNum(totalGroup));
 };
 
 export const getExperimentsByGroupId = (groupId) => async (dispatch, getState) => {
