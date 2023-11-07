@@ -1,19 +1,76 @@
 @import "../../assets/scss/abstracts";
 
-.addContributorPopup {
-  width: 289px;
-  height: 326px;
-  border-radius: 6px;
+.popupText {
   position: relative;
-  bottom: 85px;
-  margin-left: 20%;
-  border: 1px solid #00000026;
-  
+
+  .popup {
+    position: absolute;
+    left: 287px;
+    border: 1px solid #00000026;
+    border-radius: 6px;
+    height: 350px;
+    width: 300px;
+    top: -70px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+  }
+}
+
+.addContributorPopup {
   .addConText {
-    font-family: "Montserrat";
+    font-family: Montserrat;
     font-size: 14px;
     font-weight: 600;
     text-align: left;
     padding: 10px 10px;
+    color: #000000;
+  }
+  .contributorCheckbox {
+    height: 24px;
+    width: 24px;
+    display: flex;
+    align-items: center;
+  }
+
+  .userNameAvatar {
+    height: 28px;
+    width: 28px;
+    background-color: #f8bbd0;
+    border: 1px solid #0000000d;
+    border-radius: 50%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+  }
+  .buttons {
+    padding: 12px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-top: 1px solid #00000026;
+    background-color: #eef5fc;
+
+    button {
+      width: 86px;
+      height: 32px;
+      padding: 8px, 22px, 8px, 22px;
+      border-radius: 24px;
+      border: 1px;
+      color: #3771c3;
+      font-family: Montserrat;
+      font-size: 14px;
+      font-weight: 600;
+      border: 1px solid #3771c3;
+    }
+    :nth-of-type(1) {
+      background-color: #ffffffa6;
+    }
+    :nth-of-type(2) {
+      background-color: #3771c3;
+    }
   }
 }
