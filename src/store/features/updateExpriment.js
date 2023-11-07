@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { client } from '../../utils/client';
 
 export const updateExperimentSlice = createSlice({
     name: 'updateExperiment',
@@ -42,6 +43,10 @@ export const initializeExperimentPage = (experiment_id) => async (dispatch, getS
     });
 
     console.log("status", status, data)
+    // if (status && data)
+    if (data) {
+        dispatch(updateCurrentExperiment(data))
+    }
     const groupList = status ? data?.results : [];
     const totalGroup = data?.total_groups || 0;
 }

@@ -4,6 +4,7 @@ import s from "./SwatchList.module.scss";
 import cx from "classnames"
 import Draggable from "react-draggable";
 import { useState } from "react";
+import AddSwatch from "./AddSwatch/AddSwatch";
 export default function SwatchList() {
     const [todos, setTodos] = useState([
         { id: 1, text: 'Swatch 1', priority: 1, currentPosition: 5 },
@@ -39,6 +40,9 @@ export default function SwatchList() {
             <div className={cx("d-flex justify-content-between gap-5 py-3 px-4", s.titleBatch)}>
                 <div className={s.title2}>Swatches</div>
                 <div className={s.linkTextPrimary}><ReactSVG src={addFileIcon} />New swatch</div>
+            </div>
+            <div>
+                <AddSwatch />
             </div>
             <div className={s.dragContainer} style={{ position: 'relative', overflow: 'hidden', padding: '0', height: `${(todos.length * 50) + 1}px` }}>
                 {todos.map((todo, index) => {

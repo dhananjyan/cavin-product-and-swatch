@@ -18,7 +18,7 @@ export default function GroupsSideBar() {
     console.log("addFormStatus", addFormStatus)
 
     return (
-        <div>
+        <div className={s.verticalScroll}>
             {addFormStatus ? <div className={s.item}>
                 <AddGroup />
             </div> : ""}
