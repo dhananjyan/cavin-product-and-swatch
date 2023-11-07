@@ -96,7 +96,11 @@ export const getGroupData = () => async (dispatch, getState) => {
 }
 
 export const initializeProductPage = () => async (dispatch, getState) => {
-    dispatch(getGroupData())
+    await dispatch(getGroupData());
+    const state = getState()
+    const fristGroupId = state?.products?.groupList?.[0]?.group_id
+    dispatch(getExperimentsByGroupId(fristGroupId))
+
 };
 
 export const getExperimentsByGroupId =

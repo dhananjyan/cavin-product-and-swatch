@@ -18,6 +18,7 @@ import closeIcon from "../../assets/svg/close.svg";
 import { Link } from "react-router-dom";
 import { closeAddModal } from "../../store/features/expriment";
 import { useDispatch } from "react-redux";
+import AddContributors from "../AddContributors/AddContributors";
 
 export default function AddExpriment() {
 
@@ -94,14 +95,15 @@ export default function AddExpriment() {
                             />
                         </div>
                     </div>
-                    <div className="mb-5">
+                    {/* <div className="mb-5">
                         <div className={cx(s.title2, "pt-5")}>Contributors</div>
                         <p className={cx(s.text, "pt-2")}>Placeholder text comes here....</p>
                         <div className={cx("d-flex gap-2 align-items-center", s.linkTextPrimary)}>
                             <ReactSVG src={addUserIcon} />
                             Add contributors
                         </div>
-                    </div>
+                    </div> */}
+                    <AddContributors/>
                 </form>
             </div>
             <div className={s.bottomBar}>

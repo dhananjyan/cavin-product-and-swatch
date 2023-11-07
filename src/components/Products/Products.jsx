@@ -22,7 +22,7 @@ export default function Products() {
 
     useEffect(() => {
         dispatch(initializeProductPage());
-    });
+    }, []);
 
     const totalGroups = useSelector((state) => state?.products?.totalGroup);
     const experimentData = useSelector((state) => state.products.experimentData);
@@ -126,31 +126,35 @@ export default function Products() {
                         </tr>
                     </thead>
                     <tbody>
-                        {experimentData?.map((item) => (
-                            <tr>
-                                <td>{item.experiment_name}</td>
-                                <td>{item.experiment_id}</td>
-                                <td>{item.product_name}</td>
-                                <td className="d-flex">
-                                    <div className="d-flex gap-1 align-items-center">
-                                        <div className={s.userAvatarList}>
-                                            {item.contributors.map((id) => {
-                                                return (
-                                                    <>
-                                                        <div className={s.item} data={id.contributor_id} />
-                                                    </>
-                                                );
-                                            })}
-                                            {item.contributors.length > 4 && (
-                                                <div>{`+${item.contributors.length - 4}`}</div>
-                                            )}
+                        {experimentData && experimentData.length > 0 ?
+                            (experimentData?.map((item) => (
+                                <tr>
+                                    <td>{item.experiment_name}</td>
+                                    <td>{item.experiment_id}</td>
+                                    <td>{item.product_name}</td>
+                                    <td>
+                                        <div className="d-flex gap-1 align-items-center">
+                                            <div className={s.userAvatarList}>
+                                                {item.contributors.map((id) => {
+                                                    return (
+                                                        <>
+                                                            <div className={s.item} data={id.contributor_id} />
+                                                        </>
+                                                    );
+                                                })}
+                                                {item.contributors.length > 4 && (
+                                                    <div className="ms-1 mt-1">{`+${item.contributors.length - 4}`}</div>
+                                                )}
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td>Washing</td>
-                                <td>{formatDate(item.date_modified)}</td>
-                            </tr>
-                        ))}
+                                    </td>
+                                    <td>Washing</td>
+                                    <td>{formatDate(item.date_modified)}</td>
+                                </tr>
+                            ))) :
+                            (<tr>
+                                <td colSpan={7} className="text-center">No Data</td>
+                            </tr>)}
                     </tbody>
                 </table>
             </div>
