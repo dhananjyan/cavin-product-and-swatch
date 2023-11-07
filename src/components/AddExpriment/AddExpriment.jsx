@@ -11,7 +11,7 @@ import leftArrowIcon from "../../assets/svg/leftArrow.svg";
 
 import Inputs from "../common/Inputs/Inputs";
 import SelectBox from "../common/SelectBox/SelectBox";
-import { closeAddModal } from "../../store/features/expriment";
+import { closeAddModal, createExperiment } from "../../store/features/expriment";
 import AddContributors from "../AddContributors/AddContributors";
 
 export default function AddExpriment() {
@@ -36,7 +36,7 @@ export default function AddExpriment() {
     const groupName = watch("groupName")
     const groupList = useSelector(state => state?.products?.groupList)
 
-    const onSubmit = (data) => console.log(data);
+    const onSubmit = (data) => dispatch(createExperiment(data));
 
     const dispatch = useDispatch();
 
