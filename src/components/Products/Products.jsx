@@ -18,7 +18,7 @@ import filterIcon from "../../assets/svg/filter.svg";
 export default function Products() {
     const dispatch = useDispatch();
 
-    const isModalOpen = useSelector((state) => state.expriment.isModalOpen);
+    const isModalOpen = useSelector((state) => state.experiment.isModalOpen);
 
     useEffect(() => {
         dispatch(initializeProductPage());

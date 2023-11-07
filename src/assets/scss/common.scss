@@ -231,6 +231,11 @@ $colors in $myColors {
   pointer-events: none;
 }
 
+
+.errorText {
+  color: rgb(228, 81, 81);
+}
+
 .verticalScroll {
   overflow-y: auto;
   overflow-x: hidden;
