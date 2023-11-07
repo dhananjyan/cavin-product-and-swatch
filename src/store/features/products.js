@@ -11,6 +11,7 @@ export const counterSlice = createSlice({
     isAddGroup: false,
     experimentData: [],
     contributorsData: [],
+    isExperimentLoading: false
   },
   reducers: {
     increment: (state) => {
@@ -20,32 +21,30 @@ export const counterSlice = createSlice({
       // immutable state based off those changes
       state.value += 1;
     },
-    reducers: {
-      increment: (state) => {
-        // Redux Toolkit allows us to write "mutating" logic in reducers. It
-        // doesn't actually mutate the state because it uses the immer library,
-        // which detects changes to a "draft state" and produces a brand new
-        // immutable state based off those changes
-        state.value += 1;
-      },
-      decrement: (state) => {
-        state.value -= 1;
-      },
-      incrementByAmount: (state, action) => {
-        state.value += action.payload;
-      },
-      updateGroupList: (state, action) => {
-        state.groupList = action.payload;
-      },
-      updateTotalGroupNum: (state, action) => {
-        state.totalGroup = action.payload;
-      },
-      updateSelectedGroup: (state, action) => {
-        state.selectedGroup = action.payload;
-      },
-      updateAddGroupPopupStatus: (state, action) => {
-        state.isAddGroup = action.payload;
-      },
+    increment: (state) => {
+      // Redux Toolkit allows us to write "mutating" logic in reducers. It
+      // doesn't actually mutate the state because it uses the immer library,
+      // which detects changes to a "draft state" and produces a brand new
+      // immutable state based off those changes
+      state.value += 1;
+    },
+    decrement: (state) => {
+      state.value -= 1;
+    },
+    incrementByAmount: (state, action) => {
+      state.value += action.payload;
+    },
+    updateGroupList: (state, action) => {
+      state.groupList = action.payload;
+    },
+    updateTotalGroupNum: (state, action) => {
+      state.totalGroup = action.payload;
+    },
+    updateSelectedGroup: (state, action) => {
+      state.selectedGroup = action.payload;
+    },
+    updateAddGroupPopupStatus: (state, action) => {
+      state.isAddGroup = action.payload;
     },
     incrementByAmount: (state, action) => {
       state.value += action.payload;
@@ -68,6 +67,10 @@ export const counterSlice = createSlice({
     updateContributorsData: (state, action) => {
       state.contributorsData = action.payload;
     },
+    updateExperimentLoading: (state, action) => {
+      state.isExperimentLoading = action.payload;
+    },
+
   },
 });
 
@@ -81,6 +84,7 @@ export const {
   updateAddGroupPopupStatus,
   updateExperimentData,
   updateContributorsData,
+  updateExperimentLoading
 } = counterSlice.actions;
 
 export default counterSlice.reducer;
@@ -109,10 +113,13 @@ export const initializeProductPage = () => async (dispatch, getState) => {
 
 export const getExperimentsByGroupId =
   (groupId) => async (dispatch, getState) => {
+    dispatch(updateExperimentLoading(true))
     dispatch(updateSelectedGroup(groupId));
     const { status, data } = await client.post("/get_experiments_by_group_id", {
       group_id: groupId,
     });
+
+    dispatch(updateExperimentLoading(false))
 
     const experimentData = status ? data.results : [];
     dispatch(updateExperimentData(experimentData));

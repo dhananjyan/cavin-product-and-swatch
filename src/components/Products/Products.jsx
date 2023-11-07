@@ -17,11 +17,13 @@ import filterIcon from "../../assets/svg/filter.svg";
 import { Dropdown } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import DropDownMenu from "../common/DropDownMenu/DropDownMenu";
+import Loader from "../common/Loader/Loader";
 
 export default function Products() {
     const dispatch = useDispatch();
 
     const isModalOpen = useSelector((state) => state.experiment.isModalOpen);
+    const isExperimentLoading = useSelector((state) => state.products.isExperimentLoading);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -63,7 +65,7 @@ export default function Products() {
             <div className={s.navLinkSidebar}>
                 <NavLinkSideBar />
             </div>
-            <div className={s.sideHeader}>
+            <div className={cx(s.sideHeader)}>
                 <div className={cx(s.title4, "pb-2 d-flex align-items-center gap-4")}>
                     <div>Total groups {totalGroups}</div>
                     <div
@@ -115,66 +117,68 @@ export default function Products() {
                     {/* <SelectBox placeholder="Filters" className={s.filterSelect} /> */}
                 </div>
             </div>
-            <div className={s.sideHeader}>
-                <div className={cx(s.title4, "pb-4")}>Recent activities</div>
+            <div className={cx(s.sideHeader, "p-0")}>
+                {/* <div className={cx(s.title4, "pb-4")}>Recent activities</div>
                 <div className={cx("pt-3")}>
                     <SearchInput placeholder="Search activity name" />
-                </div>
+                </div> */}
             </div>
             <GroupsSideBar />
             <div className={cx(s.main)}>
-                <table className={cx("table table-responsive", s.table)}>
-                    <thead>
-                        <tr>
-                            <th>Experiment name</th>
-                            <th>Experiment ID</th>
-                            <th>Product name</th>
-                            <th>Contributor</th>
-                            <th>Status</th>
-                            <th>Last updated</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {experimentData && experimentData.length > 0 ?
-                            (experimentData?.map((item) => (
-                                <tr>
-                                    <td>{item.experiment_name}</td>
-                                    <td>{item.experiment_id}</td>
-                                    <td>{item.product_name}</td>
-                                    <td>
-                                        <div className="d-flex gap-1 align-items-center">
-                                            <div className={s.userAvatarList}>
-                                                {item.contributors.map((id) => {
-                                                    return (
-                                                        <>
-                                                            <div className={s.item} data={id.contributor_id} />
-                                                        </>
-                                                    );
-                                                })}
-                                                {item.contributors.length > 4 && (
-                                                    <div className="ms-1 mt-1">{`+${item.contributors.length - 4}`}</div>
-                                                )}
+                <Loader show={isExperimentLoading}>
+                    <table className={cx("table table-responsive", s.table)}>
+                        <thead>
+                            <tr>
+                                <th>Experiment name</th>
+                                <th>Experiment ID</th>
+                                <th>Product name</th>
+                                <th>Contributor</th>
+                                <th>Status</th>
+                                <th>Last updated</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {experimentData && experimentData.length > 0 ?
+                                (experimentData?.map((item) => (
+                                    <tr>
+                                        <td>{item.experiment_name}</td>
+                                        <td>{item.experiment_id}</td>
+                                        <td>{item.product_name}</td>
+                                        <td>
+                                            <div className="d-flex gap-1 align-items-center">
+                                                <div className={s.userAvatarList}>
+                                                    {item.contributors.map((id) => {
+                                                        return (
+                                                            <>
+                                                                <div className={s.item} data={id.contributor_id} />
+                                                            </>
+                                                        );
+                                                    })}
+                                                    {item.contributors.length > 4 && (
+                                                        <div className="ms-1 mt-1">{`+${item.contributors.length - 4}`}</div>
+                                                    )}
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td>Washing</td>
-                                    <td>{formatDate(item.date_modified)}</td>
-                                    <td>
-                                        <DropDownMenu
-                                            editHandle={() => handleExpEdit(item)}
-                                            deleteHandle={() => handleExpEdit(item)}
-                                        />
-                                    </td>
-                                </tr>
-                            ))) :
-                            (<tr>
-                                <td colSpan={8} className="text-center">No Data</td>
-                            </tr>)}
-                    </tbody>
-                </table>
+                                        </td>
+                                        <td>Washing</td>
+                                        <td>{formatDate(item.date_modified)}</td>
+                                        <td>
+                                            <DropDownMenu
+                                                editHandle={() => handleExpEdit(item)}
+                                                deleteHandle={() => handleExpEdit(item)}
+                                            />
+                                        </td>
+                                    </tr>
+                                ))) :
+                                (<tr>
+                                    <td colSpan={8} className="text-center">No Data</td>
+                                </tr>)}
+                        </tbody>
+                    </table>
+                </Loader>
             </div>
-            <ActivityList />
+            {/* <ActivityList /> */}
         </div>
     );
 }
