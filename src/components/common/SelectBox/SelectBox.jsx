@@ -4,7 +4,6 @@ import { ReactSVG } from 'react-svg';
 import cx from "classnames";
 import s from "./SelectBox.module.scss";
 
-
 import downArrow from "../../../assets/svg/downArrow.svg";
 import searchIcon from "../../../assets/svg/search.svg";
 import useDebounce from "../../../hooks/useDebounce";

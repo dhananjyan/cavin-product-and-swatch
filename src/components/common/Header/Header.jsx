@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { openAddPopup } from "../../../store/features/expriment";
 
 export default function Header() {
-    const isModalOpen = useSelector(state => state.expriment.isModalOpen);
+    const isModalOpen = useSelector(state => state.experiment.isModalOpen);
     const dispatch = useDispatch();
     const openModal = () => dispatch(openAddPopup())
 

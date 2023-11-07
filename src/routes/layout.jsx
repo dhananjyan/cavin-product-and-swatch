@@ -12,8 +12,8 @@ import ImageCrop from "../components/UpdateExpriment/AddSwatch/ImageCrop/ImageCr
 
 export default function Layout() {
     const mainRef = useRef();
-    const isModalOpen = useSelector(state => state.expriment.isModalOpen);
-    const isImageModalOpen = useSelector(state => state.updateExpriment.isImageModalOpen);
+    const isModalOpen = useSelector(state => state.experiment.isModalOpen);
+    const isImageModalOpen = useSelector(state => state.updateExperiment.isImageModalOpen);
     useEffect(() => {
         if (isModalOpen) mainRef.current.scrollTo({ top: 0 });
     }, [isModalOpen, isImageModalOpen])

@@ -1,20 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const exprimentSlice = createSlice({
-    name: 'expriment',
+export const experimentSlice = createSlice({
+    name: 'experiment',
     initialState: {
-        isModalOpen: false
+        isModalOpen: false,
+        currentExperiment: {}
     },
     reducers: {
-        openAddPopup: (state, action) => {
-            // Redux Toolkit allows us to write "mutating" logic in reducers. It
-            // doesn't actually mutate the state because it uses the immer library,
-            // which detects changes to a "draft state" and produces a brand new
-            // immutable state based off those changes
-            state.isModalOpen = true
+        openAddPopup: (state) => {
+            state.isModalOpen = true;
         },
-        closeAddModal: (state, action) => {
-            state.isModalOpen = false
+        closeAddModal: (state) => {
+            state.isModalOpen = false;
+        },
+        updateCurrentExperiment: (state, action) => {
+            state.currentExperiment = action?.payload;
         }
     }
 })
@@ -22,8 +22,23 @@ export const exprimentSlice = createSlice({
 export const {
     openAddPopup,
     closeAddModal
-} = exprimentSlice.actions;
+} = experimentSlice.actions;
 
 
-export default exprimentSlice.reducer;
+export default experimentSlice.reducer;
+
+
+export const createExpriment = (data) => async (dispatch, getState) => {
+    const { status, data } = await client.post("/add_experiment", {
+        user_id: 1,
+        experiment_id: data?.experimentId,
+        experiment_name: data?.experimentName,
+        product_name: data?.productName,
+        group_id: data?.groupName,
+        contributor_id: [1, 2, 3]
+        // date
+        // swatch name
+    });
+    dispatch(getGroupData());
+};
 

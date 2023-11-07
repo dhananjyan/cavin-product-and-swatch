@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import products from './features/products'
-import expriment from './features/expriment'
-import updateExpriment from './features/updateExpriment'
+import experiment from './features/expriment'
+import updateExperiment from './features/updateExpriment'
 
 export default configureStore({
     reducer: {
         products,
-        expriment,
-        updateExpriment
+        experiment,
+        updateExperiment
     }
 })

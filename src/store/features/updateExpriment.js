@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export const updateExprimentSlice = createSlice({
-    name: 'updateExpriment',
+    name: 'updateExperiment',
     initialState: {
         isImageModalOpen: false,
         currentImage: null
