@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const updateExprimentSlice = createSlice({
+export const updateExperimentSlice = createSlice({
     name: 'updateExperiment',
     initialState: {
         isImageModalOpen: false,
-        currentImage: null
+        currentImage: null,
+        currentExperiment: {}
     },
     reducers: {
         openImagePopup: (state, action) => {
@@ -19,6 +20,9 @@ export const updateExprimentSlice = createSlice({
         },
         updateCurrentImage: (state, action) => {
             state.currentImage = action.payload
+        },
+        updateCurrentExperiment: (state, action) => {
+            state.currentExperiment = action?.payload;
         }
     }
 })
@@ -26,9 +30,18 @@ export const updateExprimentSlice = createSlice({
 export const {
     openImagePopup,
     closeImageModal,
-    updateCurrentImage
-} = updateExprimentSlice.actions;
+    updateCurrentImage,
+    updateCurrentExperiment
+} = updateExperimentSlice.actions;
 
+export default updateExperimentSlice.reducer;
 
-export default updateExprimentSlice.reducer;
+export const initializeExperimentPage = (experiment_id) => async (dispatch, getState) => {
+    const { status, data } = await client.post("/get_data_by_exp_id", {
+        experiment_id
+    });
 
+    console.log("status", status, data)
+    const groupList = status ? data?.results : [];
+    const totalGroup = data?.total_groups || 0;
+}

@@ -20,11 +20,11 @@ const routes = [
                 element: <div>Contact</div>
             },
             {
-                path: "/expriment/new",
+                path: "/experiment/new",
                 element: <UpdateExpriment />
             },
             {
-                path: "/expriment/update/:id",
+                path: "/experiment/:id",
                 element: <UpdateExpriment />
             },
         ]

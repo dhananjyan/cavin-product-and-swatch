@@ -14,15 +14,20 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { openAddPopup } from "../../store/features/expriment";
 import filterIcon from "../../assets/svg/filter.svg";
+import { Dropdown } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import DropDownMenu from "../common/DropDownMenu/DropDownMenu";
 
 export default function Products() {
     const dispatch = useDispatch();
 
     const isModalOpen = useSelector((state) => state.experiment.isModalOpen);
+    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(initializeProductPage());
     }, []);
+
 
     const totalGroups = useSelector((state) => state?.products?.totalGroup);
     const experimentData = useSelector((state) => state.products.experimentData);
@@ -32,6 +37,10 @@ export default function Products() {
     const handleAddNewGroup = () => {
         dispatch(updateAddGroupPopupStatus(true));
     };
+
+    const handleExpEdit = (data) => {
+        navigate(`/experiment/${data?.experiment_id}`)
+    }
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -123,6 +132,7 @@ export default function Products() {
                             <th>Contributor</th>
                             <th>Status</th>
                             <th>Last updated</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -150,10 +160,16 @@ export default function Products() {
                                     </td>
                                     <td>Washing</td>
                                     <td>{formatDate(item.date_modified)}</td>
+                                    <td>
+                                        <DropDownMenu
+                                            editHandle={() => handleExpEdit(item)}
+                                            deleteHandle={() => handleExpEdit(item)}
+                                        />
+                                    </td>
                                 </tr>
                             ))) :
                             (<tr>
-                                <td colSpan={7} className="text-center">No Data</td>
+                                <td colSpan={8} className="text-center">No Data</td>
                             </tr>)}
                     </tbody>
                 </table>

@@ -236,6 +236,21 @@ $colors in $myColors {
   color: rgb(228, 81, 81);
 }
 
+.dropdown {
+  color: inherit;
+  box-shadow: none;
+
+  button {
+    border: 0;
+    box-shadow: none;
+  }
+
+  button::after {
+    display: none;
+  }
+}
+
+
 .verticalScroll {
   overflow-y: auto;
   overflow-x: hidden;
