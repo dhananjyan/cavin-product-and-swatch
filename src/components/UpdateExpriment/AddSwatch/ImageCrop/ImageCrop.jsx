@@ -53,6 +53,10 @@ export default function ImageCrop() {
         setCrop(c)
     }
 
+    const handleContinue = () => {
+        console.log("crop", crop)
+    }
+
     function onImageLoad(e) {
         const { naturalWidth: width, naturalHeight: height } = e.currentTarget
 
@@ -134,7 +138,7 @@ export default function ImageCrop() {
                 </div>
                 <div className={s.bottomBar}>
                     <button className={s.btnSecondary} onClick={handleClose}>Cancel</button>
-                    <button className={s.btnPrimary}>Continue <ReactSVG src={rightArrowIcon} /></button>
+                    <button className={s.btnPrimary} onClick={handleContinue}>Continue <ReactSVG src={rightArrowIcon} /></button>
                 </div>
             </div>
         </>
