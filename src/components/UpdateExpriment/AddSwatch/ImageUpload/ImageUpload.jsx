@@ -7,6 +7,7 @@ import { ReactSVG } from "react-svg";
 import uploadIcon from "../../../../assets/svg/upload.svg";
 import { useDispatch } from "react-redux";
 import { openImagePopup, updateCurrentImage } from "../../../../store/features/updateExpriment";
+import Bottombar from "../../Bottombar/Bottombar";
 
 export default function ImageUpload() {
 
@@ -22,6 +23,7 @@ export default function ImageUpload() {
     }
 
     return (
+        <>
         <div className={s.parent}>
             <div className={cx(s.title12, "pb-3")}>Swatch name 2</div>
             <div className="d-flex gap-5 pb-5">
@@ -43,5 +45,7 @@ export default function ImageUpload() {
             <div className={cx(s.title12, "pb-3")}>Swatch name 2 activities</div>
             <div className={s.titleSmall1}>Swatch name 2 activities will be listed here...</div>
         </div>
+        <Bottombar/>
+        </>
     )
 }

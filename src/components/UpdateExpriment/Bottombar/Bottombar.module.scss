@@ -7,7 +7,9 @@
     padding: 13px 0;
     background-color: $blue-light;
     gap: 40px;
-
+    position: fixed;
+    bottom:0;
+    width: 56%;
     button {
         @include btn;
         gap: 5px;
