@@ -34,6 +34,7 @@ export default function AddExpriment() {
     const [options, setOptions] = useState([]);
 
     const groupName = watch("groupName")
+    const contributors = watch("contributors")
     const groupList = useSelector(state => state?.products?.groupList)
 
     const onSubmit = (data) => dispatch(createExperiment(data));
@@ -136,7 +137,7 @@ export default function AddExpriment() {
                         />
                     </div>
                     <input {...register("contributors", { required: true })} hidden />
-                    <AddContributors onChange={handleContributorsChange} />
+                    <AddContributors onChange={handleContributorsChange} contributors={contributors}/>
                     {errors?.contributors ? <div className={s.errorText}>Required </div> : ""}
                 </div>
             </div>

@@ -6,16 +6,18 @@ import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SearchInput from "../common/SearchInput/SearchInput";
 import { getContributorsList } from "../../store/features/products";
+import UserAvatar from "../common/UserAvatar/UserAvatar";
 
 export default function AddContributors(props) {
-    const { onChange } = props;
+    const { onChange, contributors } = props;
     const [addContributors, setAddContributors] = useState(false);
     const [search, setSearch] = useState("");
     const [selectedContributors, setSelectedContributors] = useState([]);
+    const [showContributors, setShowContributors] = useState(false)
     const popupRef = useRef(null);
 
     const dispatch = useDispatch();
-
+console.log(contributors,"contributors");
     useEffect(() => {
         function handleClickOutside(event) {
             if (popupRef.current && !popupRef.current.contains(event.target)) {
@@ -58,12 +60,14 @@ export default function AddContributors(props) {
                 return [...prevSelected, contributorId];
             }
         });
+        // setShowContributors(false);
     };
 
     const handleApplyClick = () => {
         // console.log("Selected Contributors:", selectedContributors);
         onChange(selectedContributors)
         setAddContributors(false);
+        // setShowContributors(true);
     };
 
     return (
@@ -75,18 +79,7 @@ export default function AddContributors(props) {
                 <span className={s.linkTextPrimary} onClick={() => setAddContributors(true)}>
                     Add contributors
                 </span>
-                <div className="d-flex gap-1 align-items-center">
-                                                <div className={s.userAvatarList}>
-                                                    {selectedContributors?.map((id, index) => {
-                                                        return (
-                                                                <div key={index} className={s.item} data={id} />
-                                                        );
-                                                    })}
-                                                    {/* {selectedContributors > 4 && (
-                                                        <div className="ms-1 mt-1">{`+${selectedContributors - 4}`}</div>
-                                                    )} */}
-                    </div>
-                </div>
+
                 {addContributors && (
                     <div className={cx(s.popup, s.addContributorPopup)} ref={popupRef}>
                         <div>
@@ -127,6 +120,9 @@ export default function AddContributors(props) {
                     </div>
                 )}
             </div>
+            {  contributors &&<div className="mt-3">
+               <UserAvatar item={selectedContributors}/>
+               </div>}
         </div>
     );
 }

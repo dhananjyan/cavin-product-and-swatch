@@ -149,14 +149,14 @@ export default function Products() {
                                         <td>
                                             <div className="d-flex gap-1 align-items-center">
                                                 <div className={s.userAvatarList}>
-                                                    {/* {item.contributors.map((id, index) => {
+                                                    {item?.contributors?.map((id, index) => {
                                                         return (
                                                             <div key={index} className={s.item} data={id.contributor_id} />
                                                         );
                                                     })}
-                                                    {item.contributors.length > 4 && (
+                                                    {item?.contributors?.length > 4 && (
                                                         <div className="ms-1 mt-1">{`+${item.contributors.length - 4}`}</div>
-                                                    )} */}
+                                                    )}
                                                 </div>
                                             </div>
                                         </td>
