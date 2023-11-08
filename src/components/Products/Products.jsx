@@ -141,22 +141,22 @@ export default function Products() {
                         </thead>
                         <tbody>
                             {experimentData && experimentData.length > 0 ?
-                                (experimentData?.map((item) => (
-                                    <tr>
+                                (experimentData?.map((item, i) => (
+                                    <tr key={`experiment_item_${i}`}>
                                         <td>{item.experiment_name}</td>
                                         <td>{item.experiment_id}</td>
                                         <td>{item.product_name}</td>
                                         <td>
                                             <div className="d-flex gap-1 align-items-center">
                                                 <div className={s.userAvatarList}>
-                                                    {item.contributors?.map((id, index) => {
+                                                    {/* {item.contributors.map((id, index) => {
                                                         return (
                                                             <div key={index} className={s.item} data={id.contributor_id} />
                                                         );
                                                     })}
-                                                    {item?.contributors?.length > 4 && (
-                                                        <div className="ms-1 mt-1">{`+${item?.contributors?.length - 4}`}</div>
-                                                    )}
+                                                    {item.contributors.length > 4 && (
+                                                        <div className="ms-1 mt-1">{`+${item.contributors.length - 4}`}</div>
+                                                    )} */}
                                                 </div>
                                             </div>
                                         </td>

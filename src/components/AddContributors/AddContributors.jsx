@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import SearchInput from "../common/SearchInput/SearchInput";
 import { getContributorsList } from "../../store/features/products";
 
-export default function AddContributors() {
+export default function AddContributors(props) {
+    const { onChange } = props;
     const [addContributors, setAddContributors] = useState(false);
     const [search, setSearch] = useState("");
     const [selectedContributors, setSelectedContributors] = useState([]);
@@ -60,7 +61,8 @@ export default function AddContributors() {
     };
 
     const handleApplyClick = () => {
-        console.log("Selected Contributors:", selectedContributors);
+        // console.log("Selected Contributors:", selectedContributors);
+        onChange(selectedContributors)
         setAddContributors(false);
     };
 
@@ -83,8 +85,8 @@ export default function AddContributors() {
                                                     {/* {selectedContributors > 4 && (
                                                         <div className="ms-1 mt-1">{`+${selectedContributors - 4}`}</div>
                                                     )} */}
-                                                </div>
-                                            </div>
+                    </div>
+                </div>
                 {addContributors && (
                     <div className={cx(s.popup, s.addContributorPopup)} ref={popupRef}>
                         <div>
@@ -117,7 +119,7 @@ export default function AddContributors() {
                                 ))}
                         </div>
                         <div className={s.buttons}>
-                            <button onClick={(()=>setSelectedContributors([]))}>Clear</button>
+                            <button onClick={(() => setSelectedContributors([]))}>Clear</button>
                             <button type="submit" className="text-white" onClick={handleApplyClick}>
                                 Apply
                             </button>
