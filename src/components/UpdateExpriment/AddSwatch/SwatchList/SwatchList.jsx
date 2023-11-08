@@ -5,30 +5,38 @@ import cx from "classnames"
 import Draggable from "react-draggable";
 import { useState } from "react";
 import AddSwatch from "./AddSwatch/AddSwatch";
-import { updateSwatchAdd } from "../../../../store/features/updateExpriment";
+import { updateSwatchAdd, updateSwatchPosition, updateSwatches } from "../../../../store/features/updateExpriment";
 import { useDispatch, useSelector } from "react-redux";
 export default function SwatchList() {
-    const [todos, setTodos] = useState([
-        { id: 1, text: 'Swatch 1', priority: 1, currentPosition: 5 },
-        { id: 2, text: 'Swatch 2', priority: 2, currentPosition: 2 },
-        { id: 3, text: 'Swatch 3', priority: 3, currentPosition: 3 },
-        { id: 4, text: 'Swatch 4', priority: 4, currentPosition: 4 },
-        { id: 5, text: 'Swatch 5', priority: 5, currentPosition: 1 },
-    ]);
+    // const [todos, setTodos] = useState([
+    //     { id: 1, text: 'Swatch 1', priority: 1, currentPosition: 5 },
+    //     { id: 2, text: 'Swatch 2', priority: 2, currentPosition: 2 },
+    //     { id: 3, text: 'Swatch 3', priority: 3, currentPosition: 3 },
+    //     { id: 4, text: 'Swatch 4', priority: 4, currentPosition: 4 },
+    //     { id: 5, text: 'Swatch 5', priority: 5, currentPosition: 1 },
+    // ]);
+
+
+
 
     const dispatch = useDispatch();
 
     const isAddingSwatch = useSelector(state => state?.updateExperiment?.isAddingNewSwatch)
+    const swatches = useSelector(state => state?.updateExperiment?.swatches)
+
 
     const handleDrag = (index, newPriority) => {
-        const updatedTodos = [...todos];
+        dispatch(updateSwatchPosition({ index, newPriority }))
+        // const updatedSwatches = [...swatches];
+        // console.log("ddddddddddddd", updateSwatches)
 
-        let existingDataIndex = updatedTodos.findIndex(d => d.currentPosition === newPriority)
-        updatedTodos[existingDataIndex].currentPosition = updatedTodos[index].currentPosition;
-        updatedTodos[index].currentPosition = newPriority;
+        // let existingDataIndex = updatedSwatches.findIndex(d => d.currentPosition === newPriority)
+        // updatedSwatches[existingDataIndex].currentPosition = updatedSwatches[index].currentPosition;
+        // updatedSwatches[index].currentPosition = newPriority;
 
-        setTodos(updatedTodos);
+        // dispatch(updateSwatches(updatedSwatches));
     }
+
     const getVerticalPos = (todo) => {
         // console.table(todo)
         // alert(`${todo.currentPosition} ${todo.priority}`)
@@ -54,25 +62,25 @@ export default function SwatchList() {
             {isAddingSwatch ? <div>
                 <AddSwatch />
             </div> : ""}
-            <div className={s.dragContainer} style={{ position: 'relative', overflow: 'hidden', padding: '0', height: `${(todos.length * 50) + 1}px` }}>
-                {todos.map((todo, index) => {
-                    // console.table(todo);
-                    const y = getVerticalPos(todo);
+            <div className={s.dragContainer} style={{ position: 'relative', overflow: 'hidden', padding: '0', height: `${(swatches.length * 50) + 1}px` }}>
+                {swatches.map((swatch, index) => {
+                    // console.table(swatch);
+                    const y = getVerticalPos({ ...swatch });
                     return <Draggable
-                        key={todo.id}
+                        key={swatch.priority}
                         axis="y"
                         defaultPosition={{ x: 0, y: 0 }}
                         position={{ x: 0, y }}
                         bounds="parent"
                         onStop={(e, ui) => {
                             // let pos = (ui.y >= 0) ? ui.y : 0
-                            const newPriority = todo.priority + Math.round(ui.y / 50); // Adjust the division based on your layout
+                            const newPriority = swatch.priority + Math.round(ui.y / 50); // Adjust the division based on your layout
                             // alert(`${pos} ${ui.y} ${newPriority}`)
                             // console.log(ui.y, newPriority)
                             handleDrag(index, newPriority);
                         }}
                     >
-                        <div className={s.swatchItem}>{todo.text}</div>
+                        <div className={s.swatchItem}>{swatch.swatch_name}</div>
                     </Draggable>
                 })}
             </div>

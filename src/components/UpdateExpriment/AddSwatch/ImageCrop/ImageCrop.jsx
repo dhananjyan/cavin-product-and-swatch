@@ -41,7 +41,7 @@ export default function ImageCrop() {
 
     const [aspectRatio, setAspectRatio] = useState(undefined)
 
-    const file = useSelector(state => state?.updateExpriment?.currentImage);
+    const file = useSelector(state => state?.updateExperiment?.currentImage);
 
     const dispatch = useDispatch();
 
@@ -114,7 +114,7 @@ export default function ImageCrop() {
                     <div className={cx(s.title3, s["text-white"])}>Hair wig sample 587451.jpg</div>
                     <div className={cx("text-center mt-4")}>
                         <ReactCrop keepSelection={aspectRatio} aspect={aspectRatio} crop={crop} onChange={handleCropChange} minHeight={50} minWidth={50}  >
-                            <img src={file?.preview} onLoad={onImageLoad} ref={imgRef} />
+                            <img src={file?.preview} style={{ color: "red" }} onLoad={onImageLoad} ref={imgRef} />
                         </ReactCrop>
                     </div>
                 </div>
@@ -133,7 +133,7 @@ export default function ImageCrop() {
                     </div>
                 </div>
                 <div className={s.bottomBar}>
-                    <button className={s.btnSecondary}>Cancel</button>
+                    <button className={s.btnSecondary} onClick={handleClose}>Cancel</button>
                     <button className={s.btnPrimary}>Continue <ReactSVG src={rightArrowIcon} /></button>
                 </div>
             </div>
