@@ -11,6 +11,7 @@ export const counterSlice = createSlice({
     isAddGroup: false,
     experimentData: [],
     contributorsData: [],
+    redirectTo: null
   },
   reducers: {
     increment: (state) => {
@@ -20,32 +21,30 @@ export const counterSlice = createSlice({
       // immutable state based off those changes
       state.value += 1;
     },
-    reducers: {
-      increment: (state) => {
-        // Redux Toolkit allows us to write "mutating" logic in reducers. It
-        // doesn't actually mutate the state because it uses the immer library,
-        // which detects changes to a "draft state" and produces a brand new
-        // immutable state based off those changes
-        state.value += 1;
-      },
-      decrement: (state) => {
-        state.value -= 1;
-      },
-      incrementByAmount: (state, action) => {
-        state.value += action.payload;
-      },
-      updateGroupList: (state, action) => {
-        state.groupList = action.payload;
-      },
-      updateTotalGroupNum: (state, action) => {
-        state.totalGroup = action.payload;
-      },
-      updateSelectedGroup: (state, action) => {
-        state.selectedGroup = action.payload;
-      },
-      updateAddGroupPopupStatus: (state, action) => {
-        state.isAddGroup = action.payload;
-      },
+    increment: (state) => {
+      // Redux Toolkit allows us to write "mutating" logic in reducers. It
+      // doesn't actually mutate the state because it uses the immer library,
+      // which detects changes to a "draft state" and produces a brand new
+      // immutable state based off those changes
+      state.value += 1;
+    },
+    decrement: (state) => {
+      state.value -= 1;
+    },
+    incrementByAmount: (state, action) => {
+      state.value += action.payload;
+    },
+    updateGroupList: (state, action) => {
+      state.groupList = action.payload;
+    },
+    updateTotalGroupNum: (state, action) => {
+      state.totalGroup = action.payload;
+    },
+    updateSelectedGroup: (state, action) => {
+      state.selectedGroup = action.payload;
+    },
+    updateAddGroupPopupStatus: (state, action) => {
+      state.isAddGroup = action.payload;
     },
     incrementByAmount: (state, action) => {
       state.value += action.payload;
@@ -68,6 +67,9 @@ export const counterSlice = createSlice({
     updateContributorsData: (state, action) => {
       state.contributorsData = action.payload;
     },
+    updateNavigateTo: (state, action) => {
+      state.redirectTo = action.payload;
+    },
   },
 });
 
@@ -81,6 +83,7 @@ export const {
   updateAddGroupPopupStatus,
   updateExperimentData,
   updateContributorsData,
+  updateNavigateTo
 } = counterSlice.actions;
 
 export default counterSlice.reducer;
@@ -130,61 +133,5 @@ export const createGroup = (group_name) => async (dispatch, getState) => {
 export const getContributorsList = () => async (dispatch, getState) => {
   const { status, data } = await client.post("/get_contributors");
   const contributorsData = status ? data.results : [];
-  dispatch(updateContributorsData([
-    {
-        "added_by": "1",
-        "contributor_id": 2,
-        "contributor_name": "abc",
-        "date_added": "Fri, 03 Nov 2023 11:43:41 GMT",
-        "date_modified": null,
-        "email_id": "abc@com",
-        "is_deleted": false,
-        "modified_by": null,
-        "user_id": 1
-    },
-    {
-        "added_by": "1",
-        "contributor_id": 3,
-        "contributor_name": "def",
-        "date_added": "Fri, 03 Nov 2023 11:43:48 GMT",
-        "date_modified": null,
-        "email_id": "def@com",
-        "is_deleted": false,
-        "modified_by": null,
-        "user_id": 1
-    },
-    {
-        "added_by": "12",
-        "contributor_id": 4,
-        "contributor_name": "sam",
-        "date_added": "Wed, 08 Nov 2023 04:54:30 GMT",
-        "date_modified": null,
-        "email_id": "abc@gmail.com",
-        "is_deleted": false,
-        "modified_by": null,
-        "user_id": 12
-    },
-    {
-        "added_by": "12",
-        "contributor_id": 5,
-        "contributor_name": "def",
-        "date_added": "Wed, 08 Nov 2023 04:54:38 GMT",
-        "date_modified": null,
-        "email_id": "def@gmail.com",
-        "is_deleted": false,
-        "modified_by": null,
-        "user_id": 12
-    },
-    {
-        "added_by": "12",
-        "contributor_id": 6,
-        "contributor_name": "fnm",
-        "date_added": "Wed, 08 Nov 2023 04:54:47 GMT",
-        "date_modified": null,
-        "email_id": "fnm@gmail.com",
-        "is_deleted": false,
-        "modified_by": null,
-        "user_id": 12
-    }
-]));
+  dispatch(updateContributorsData(contributorsData));
 };

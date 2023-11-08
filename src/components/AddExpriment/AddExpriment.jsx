@@ -52,6 +52,11 @@ export default function AddExpriment() {
         clearErrors("groupName")
     }
 
+    const handleContributorsChange = (value) => {
+        setValue("contributors", value)
+        clearErrors("contributors")
+    }
+
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={s.addProductSection} >
             <div className={cx(s.container, s.formSection)}>
@@ -130,7 +135,9 @@ export default function AddExpriment() {
                             error={"Required"}
                         />
                     </div>
-                    <AddContributors />
+                    <input {...register("contributors", { required: true })} hidden />
+                    <AddContributors onChange={handleContributorsChange} />
+                    {errors?.contributors ? <div className={s.errorText}>Required </div> : ""}
                 </div>
             </div>
             <div className={s.bottomBar}>
