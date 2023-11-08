@@ -45,7 +45,7 @@ export default function ImageUpload() {
             <div className={cx(s.title12, "pb-3")}>Swatch name 2 activities</div>
             <div className={s.titleSmall1}>Swatch name 2 activities will be listed here...</div>
         </div>
-        <Bottombar/>
+          <Bottombar/>
         </>
     )
 }

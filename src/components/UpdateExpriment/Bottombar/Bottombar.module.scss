@@ -1,17 +1,23 @@
 @import "../../../assets/scss/abstracts";
 
 .bottomBar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 13px 0;
-    background-color: $blue-light;
-    gap: 40px;
-    position: fixed;
-    bottom:0;
-    width: 56%;
-    button {
-        @include btn;
-        gap: 5px;
-    }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 13px 0;
+  background-color: $blue-light;
+  gap: 40px;
+  position: fixed;
+  bottom: 0;
+  width: 56%;
+  button {
+    @include btn;
+    gap: 5px;
+  }
+  .saveAsDraft {
+    color: 3771C3;
+    border-width: 1px, 1px, 1px, 1px;
+    border-style: solid;
+    border-color: #3771c3;
+  }
 }

@@ -7,6 +7,7 @@ import { useState } from "react";
 import AddSwatch from "./AddSwatch/AddSwatch";
 import { updateSwatchAdd, updateSwatchPosition, updateSwatches } from "../../../../store/features/updateExpriment";
 import { useDispatch, useSelector } from "react-redux";
+import Loader from "../../../common/Loader/Loader"
 export default function SwatchList() {
     // const [todos, setTodos] = useState([
     //     { id: 1, text: 'Swatch 1', priority: 1, currentPosition: 5 },
@@ -23,6 +24,7 @@ export default function SwatchList() {
 
     const isAddingSwatch = useSelector(state => state?.updateExperiment?.isAddingNewSwatch)
     const swatches = useSelector(state => state?.updateExperiment?.swatches)
+    const isSwatchesLoading = useSelector((state) => state.updateExperiment.isSwatchesLoading);
 
 
     const handleDrag = (index, newPriority) => {
@@ -62,28 +64,30 @@ export default function SwatchList() {
             {isAddingSwatch ? <div>
                 <AddSwatch />
             </div> : ""}
-            <div className={s.dragContainer} style={{ position: 'relative', overflow: 'hidden', padding: '0', height: `${(swatches.length * 50) + 1}px` }}>
-                {swatches.map((swatch, index) => {
-                    // console.table(swatch);
-                    const y = getVerticalPos({ ...swatch });
-                    return <Draggable
-                        key={swatch.priority}
-                        axis="y"
-                        defaultPosition={{ x: 0, y: 0 }}
-                        position={{ x: 0, y }}
-                        bounds="parent"
-                        onStop={(e, ui) => {
-                            // let pos = (ui.y >= 0) ? ui.y : 0
-                            const newPriority = swatch.priority + Math.round(ui.y / 50); // Adjust the division based on your layout
-                            // alert(`${pos} ${ui.y} ${newPriority}`)
-                            // console.log(ui.y, newPriority)
-                            handleDrag(index, newPriority);
-                        }}
-                    >
-                        <div className={s.swatchItem}>{swatch.swatch_name}</div>
-                    </Draggable>
-                })}
-            </div>
+            <Loader show={isSwatchesLoading}>
+                <div className={s.dragContainer} style={{ position: 'relative', overflow: 'hidden', padding: '0', height: `${(swatches.length * 50) + 1}px` }}>
+                    {swatches.map((swatch, index) => {
+                        // console.table(swatch);
+                        const y = getVerticalPos({ ...swatch });
+                        return <Draggable
+                            key={swatch.priority}
+                            axis="y"
+                            defaultPosition={{ x: 0, y: 0 }}
+                            position={{ x: 0, y }}
+                            bounds="parent"
+                            onStop={(e, ui) => {
+                                // let pos = (ui.y >= 0) ? ui.y : 0
+                                const newPriority = swatch.priority + Math.round(ui.y / 50); // Adjust the division based on your layout
+                                // alert(`${pos} ${ui.y} ${newPriority}`)
+                                // console.log(ui.y, newPriority)
+                                handleDrag(index, newPriority);
+                            }}
+                        >
+                            <div className={s.swatchItem}>{swatch.swatch_name}</div>
+                        </Draggable>
+                    })}
+                </div>
+            </Loader>
             {/* <div className="box" style={{ position: 'relative', overflow: 'auto', padding: '0' }}>
                 {/* <div style={{ height: '1000px', width: '1000px', padding: '10px' }}> */}
             {/* <Draggable

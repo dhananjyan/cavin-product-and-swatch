@@ -8,7 +8,8 @@ export const updateExperimentSlice = createSlice({
         currentImage: null,
         currentExperiment: {},
         isAddingNewSwatch: false,
-        swatches: []
+        swatches: [],
+        isSwatchesLoading: false,
     },
     reducers: {
         openImagePopup: (state, action) => {
@@ -28,7 +29,10 @@ export const updateExperimentSlice = createSlice({
         },
         updateSwatches: (state, action) => {
             state.swatches = action?.payload?.length ? [...action.payload] : []
-        }
+        },
+        updateSwatchesLoading: (state, action) => {
+            state.isSwatchesLoading = action.payload;
+          },
     }
 })
 
@@ -38,7 +42,8 @@ export const {
     updateCurrentImage,
     updateCurrentExperiment,
     updateSwatchAdd,
-    updateSwatches
+    updateSwatches,
+    updateSwatchesLoading
 } = updateExperimentSlice.actions;
 
 export default updateExperimentSlice.reducer;
@@ -87,6 +92,7 @@ export const updateSwatchPosition = ({ index, newPriority }) => async (dispatch,
 }
 
 export const createSwatch = (swatch_name) => async (dispatch, getState) => {
+    dispatch(updateSwatchesLoading(true));
     dispatch(updateSwatchAdd(false));
     const currentData = getState()?.updateExperiment?.currentExperiment;
     console.log('ddd', currentData)
@@ -99,4 +105,5 @@ export const createSwatch = (swatch_name) => async (dispatch, getState) => {
 
     console.log("asdfasf, status,", data, status)
     dispatch(getSwatchByExperimentId(currentData?.experiment_id));
+    dispatch(updateSwatchesLoading(false));
 };

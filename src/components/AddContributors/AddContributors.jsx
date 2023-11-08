@@ -17,7 +17,6 @@ export default function AddContributors(props) {
     const popupRef = useRef(null);
 
     const dispatch = useDispatch();
-console.log(contributors,"contributors");
     useEffect(() => {
         function handleClickOutside(event) {
             if (popupRef.current && !popupRef.current.contains(event.target)) {
@@ -120,9 +119,9 @@ console.log(contributors,"contributors");
                     </div>
                 )}
             </div>
-            {  contributors &&<div className="mt-3">
-               <UserAvatar item={selectedContributors}/>
-               </div>}
+            {contributors && <div className="mt-3">
+                <UserAvatar item={contributors} />
+            </div>}
         </div>
     );
 }
