@@ -114,7 +114,7 @@ export default function Products() {
                 </div>
                 <div className="d-flex gap-3 w-100">
                     <SearchInput placeholder="Search experiment name, experiment ID, product name, status...."
-                     />
+                    />
                     {/* <SelectBox placeholder="Filters" className={s.filterSelect} /> */}
                 </div>
             </div>
@@ -149,13 +149,13 @@ export default function Products() {
                                         <td>
                                             <div className="d-flex gap-1 align-items-center">
                                                 <div className={s.userAvatarList}>
-                                                    {item?.contributors?.map((id, index) => {
+                                                    {(item?.contributors && item?.contributors?.length) ? item?.contributors.map((id, index) => {
                                                         return (
                                                             <div key={index} className={s.item} data={id.contributor_id} />
                                                         );
-                                                    })}
-                                                    {item?.contributors?.length > 4 && (
-                                                        <div className="ms-1 mt-1">{`+${item.contributors.length - 4}`}</div>
+                                                    }) : ""}
+                                                    {item.contributors?.length > 4 && (
+                                                        <div className="ms-1 mt-1">{`+${item.contributors?.length - 4}`}</div>
                                                     )}
                                                 </div>
                                             </div>
