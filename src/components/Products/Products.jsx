@@ -148,11 +148,9 @@ export default function Products() {
                                         <td>
                                             <div className="d-flex gap-1 align-items-center">
                                                 <div className={s.userAvatarList}>
-                                                    {item.contributors.map((id) => {
+                                                    {item.contributors.map((id, index) => {
                                                         return (
-                                                            <>
-                                                                <div className={s.item} data={id.contributor_id} />
-                                                            </>
+                                                            <div key={index} className={s.item} data={id.contributor_id} />
                                                         );
                                                     })}
                                                     {item.contributors.length > 4 && (

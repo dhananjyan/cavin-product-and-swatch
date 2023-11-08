@@ -10,6 +10,7 @@ import { getContributorsList } from "../../store/features/products";
 export default function AddContributors() {
     const [addContributors, setAddContributors] = useState(false);
     const [search, setSearch] = useState("");
+    const [selectedContributors, setSelectedContributors] = useState([]);
     const popupRef = useRef(null);
 
     const dispatch = useDispatch();
@@ -32,6 +33,7 @@ export default function AddContributors() {
         dispatch(getContributorsList());
     }, []);
     const contributorsData = useSelector((state) => state.products.contributorsData);
+
     function getInitials(fullName) {
         const name = fullName.split(" ");
         if (name.length >= 2) {
@@ -42,9 +44,25 @@ export default function AddContributors() {
             return "";
         }
     }
+
     const filteredContributors = contributorsData.filter((item) =>
-        item.contributor_name.toLowerCase().includes(search.toLowerCase())
+        item.contributor_name?.toLowerCase().includes(search.toLowerCase())
     );
+
+    const handleCheckboxChange = (contributorId) => {
+        setSelectedContributors((prevSelected) => {
+            if (prevSelected.includes(contributorId)) {
+                return prevSelected.filter((id) => id !== contributorId);
+            } else {
+                return [...prevSelected, contributorId];
+            }
+        });
+    };
+
+    const handleApplyClick = () => {
+        console.log("Selected Contributors:", selectedContributors);
+        setAddContributors(false);
+    };
 
     return (
         <div className="mb-5">
@@ -55,6 +73,18 @@ export default function AddContributors() {
                 <span className={s.linkTextPrimary} onClick={() => setAddContributors(true)}>
                     Add contributors
                 </span>
+                <div className="d-flex gap-1 align-items-center">
+                                                <div className={s.userAvatarList}>
+                                                    {selectedContributors.map((id, index) => {
+                                                        return (
+                                                                <div key={index} className={s.item} data={id} />
+                                                        );
+                                                    })}
+                                                    {/* {selectedContributors > 4 && (
+                                                        <div className="ms-1 mt-1">{`+${selectedContributors - 4}`}</div>
+                                                    )} */}
+                                                </div>
+                                            </div>
                 {addContributors && (
                     <div className={cx(s.popup, s.addContributorPopup)} ref={popupRef}>
                         <div>
@@ -68,13 +98,15 @@ export default function AddContributors() {
                             </div>
                         </div>
                         <div className="overflow-y-auto">
-                            {filteredContributors.length > 0 &&
-                                filteredContributors.map((item) => (
+                            {filteredContributors?.length > 0 &&
+                                filteredContributors?.map((item) => (
                                     <div key={item.id} className="d-flex pt-3 ps-2 align-items-center">
                                         <div>
                                             <input
                                                 type="checkbox"
                                                 className={cx(s.contributorCheckbox, "mx-2")}
+                                                onChange={() => handleCheckboxChange(item.contributor_id)}
+                                                checked={selectedContributors.includes(item.contributor_id)}
                                             />
                                         </div>
                                         <div className={cx(s.userNameAvatar, "mx-2")}>
@@ -85,8 +117,8 @@ export default function AddContributors() {
                                 ))}
                         </div>
                         <div className={s.buttons}>
-                            <button>Clear</button>
-                            <button type="submit" className="text-white">
+                            <button onClick={(()=>setSelectedContributors([]))}>Clear</button>
+                            <button type="submit" className="text-white" onClick={handleApplyClick}>
                                 Apply
                             </button>
                         </div>
