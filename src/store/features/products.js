@@ -11,6 +11,8 @@ export const counterSlice = createSlice({
     isAddGroup: false,
     experimentData: [],
     contributorsData: [],
+    isExperimentLoading: false,
+    isGroupDataLoading: false
   },
   reducers: {
     increment: (state) => {
@@ -68,6 +70,12 @@ export const counterSlice = createSlice({
     updateContributorsData: (state, action) => {
       state.contributorsData = action.payload;
     },
+    updateExperimentLoading: (state, action) => {
+      state.isExperimentLoading = action.payload;
+    },
+    updateGroupLoading: (state, action) => {
+      state.isGroupDataLoading = action.payload;
+    },
   },
 });
 
@@ -81,6 +89,8 @@ export const {
   updateAddGroupPopupStatus,
   updateExperimentData,
   updateContributorsData,
+  updateExperimentLoading,
+  updateGroupLoading,
 } = counterSlice.actions;
 
 export default counterSlice.reducer;
@@ -109,23 +119,27 @@ export const initializeProductPage = () => async (dispatch, getState) => {
 
 export const getExperimentsByGroupId =
   (groupId) => async (dispatch, getState) => {
+    dispatch(updateExperimentLoading(true));
     dispatch(updateSelectedGroup(groupId));
     const { status, data } = await client.post("/get_experiments_by_group_id", {
       group_id: groupId,
       user_id: 1
     });
-
+    dispatch(updateExperimentLoading(false))
     const experimentData = status ? data.results : [];
     dispatch(updateExperimentData(experimentData));
   };
 
 export const createGroup = (group_name) => async (dispatch, getState) => {
+  dispatch(updateGroupLoading(true));
   dispatch(updateAddGroupPopupStatus(false));
   const { status, data } = await client.post("/add_group", {
     group_name,
     user_id: 1,
   });
+  dispatch(updateGroupLoading(false));
   dispatch(getGroupData());
+
 };
 export const getContributorsList = () => async (dispatch, getState) => {
   const { status, data } = await client.post("/get_contributors");

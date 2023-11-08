@@ -75,7 +75,7 @@ export default function AddContributors() {
                 </span>
                 <div className="d-flex gap-1 align-items-center">
                                                 <div className={s.userAvatarList}>
-                                                    {selectedContributors.map((id, index) => {
+                                                    {selectedContributors?.map((id, index) => {
                                                         return (
                                                                 <div key={index} className={s.item} data={id} />
                                                         );

@@ -4,6 +4,7 @@ import cx from "classnames";
 import { getExperimentsByGroupId } from "../../../store/features/products";
 import { updateSelectedGroup } from "../../../store/features/products";
 import AddGroup from "./AddGroup/AddGroup";
+import Loader from "../../common/Loader/Loader";
 
 export default function GroupsSideBar() {
     const dispatch = useDispatch();
@@ -17,17 +18,20 @@ export default function GroupsSideBar() {
 
     console.log("addFormStatus", addFormStatus)
 
+    const isGroupDataLoading = useSelector((state) => state.products.isGroupDataLoading);
+
     return (
         <div className={s.verticalScroll}>
             {addFormStatus ? <div className={s.item}>
                 <AddGroup />
             </div> : ""}
+            <Loader show={isGroupDataLoading}>
             {list.map((item, index) => {
                 return (
-                    <div role="button" onClick={() => handleGroupClick(item?.group_id)} className={cx(s.item, { [s.active]: selectedGroup === item?.group_id })} key={index}>
+                     <div role="button" onClick={() => handleGroupClick(item?.group_id)} className={cx(s.item, { [s.active]: selectedGroup === item?.group_id })} key={index}>
                         <div className={cx(s.titleBold, "pb-2")}>{item.group_name}</div>
                         <div className={cx(s.titleSmall1, "pb-1")}>
-                            Total no. of experiments&nbsp;&nbsp;<b>0</b>
+                            Total no. of experiments&nbsp;&nbsp;<b>{item?.total_experiments}</b>
                         </div>
                         <div className={cx("d-flex align-items-center gap-2")}>
                             <div className={s.avatar}>AH</div>
@@ -36,6 +40,7 @@ export default function GroupsSideBar() {
                     </div>
                 );
             })}
+            </Loader>
         </div>
     );
 }
