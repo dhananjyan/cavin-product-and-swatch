@@ -4,6 +4,7 @@ import s from './AddSwatch.module.scss';
 import cx from "classnames"
 import { useDispatch } from 'react-redux';
 import Inputs from '../../../../common/Inputs/Inputs';
+import { createSwatch, updateSwatchAdd } from '../../../../../store/features/updateExpriment';
 // import { createGroup, updateAddGroupPopupStatus } from '../../../../store/features/products';
 
 export default function AddSwatch() {
@@ -13,12 +14,12 @@ export default function AddSwatch() {
         formState: { errors },
     } = useForm();
 
-    const onSubmit = (data) => console.log(data)// dispatch(createGroup(data?.groupName))
+    const onSubmit = (data) => dispatch(createSwatch(data?.swatchName))
 
     const dispatch = useDispatch();
 
     const handleCancel = () => {
-        // dispatch(updateAddGroupPopupStatus(false))
+        dispatch(updateSwatchAdd(false))
     }
     return (
         <form onSubmit={handleSubmit(onSubmit)} className='p-3'>
@@ -26,11 +27,11 @@ export default function AddSwatch() {
                 <Inputs
                     register={register}
                     inputClassName={s.input}
-                    name="groupName"
+                    name="swatchName"
                     autofocus
-                    placeholder="Enter group name"
+                    placeholder="Enter swatch name"
                     validation={{ required: true, pattern: /\S/ }}
-                    showError={errors.groupName}
+                    showError={errors.swatchName}
                     error={"Required"}
                 />
                 {/* errors will return when field validation fails  */}

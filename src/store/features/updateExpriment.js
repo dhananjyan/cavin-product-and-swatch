@@ -6,14 +6,11 @@ export const updateExperimentSlice = createSlice({
     initialState: {
         isImageModalOpen: false,
         currentImage: null,
-        currentExperiment: {}
+        currentExperiment: {},
+        isAddingNewSwatch: false
     },
     reducers: {
         openImagePopup: (state, action) => {
-            // Redux Toolkit allows us to write "mutating" logic in reducers. It
-            // doesn't actually mutate the state because it uses the immer library,
-            // which detects changes to a "draft state" and produces a brand new
-            // immutable state based off those changes
             state.isImageModalOpen = true
         },
         closeImageModal: (state, action) => {
@@ -24,6 +21,9 @@ export const updateExperimentSlice = createSlice({
         },
         updateCurrentExperiment: (state, action) => {
             state.currentExperiment = action?.payload;
+        },
+        updateSwatchAdd: (state, action) => {
+            state.isAddingNewSwatch = action?.payload
         }
     }
 })
@@ -32,7 +32,8 @@ export const {
     openImagePopup,
     closeImageModal,
     updateCurrentImage,
-    updateCurrentExperiment
+    updateCurrentExperiment,
+    updateSwatchAdd
 } = updateExperimentSlice.actions;
 
 export default updateExperimentSlice.reducer;
@@ -47,6 +48,21 @@ export const initializeExperimentPage = (experiment_id) => async (dispatch, getS
     if (data) {
         dispatch(updateCurrentExperiment(data))
     }
-    const groupList = status ? data?.results : [];
-    const totalGroup = data?.total_groups || 0;
+    // const groupList = status ? data?.results : [];
+    // const totalGroup = data?.total_groups || 0;
 }
+
+
+export const createSwatch = (swatch_name) => async (dispatch, getState) => {
+    dispatch(updateSwatchAdd(false));
+    const currentData = getState()?.updateExperiment?.currentExperiment;
+    console.log('ddd', currentData)
+    const { status, data } = await client.post("/create_swatch", {
+        swatch_name,
+        user_id: 1,
+        steps: 1,
+        group_id: currentData?.group_id,
+        experiment_id: currentData?.experiment_id
+    });
+    dispatch(getGroupData());
+};

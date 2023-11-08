@@ -90,7 +90,7 @@ export const incrementAsync = (amount) => (dispatch) => {
 };
 
 export const getGroupData = () => async (dispatch, getState) => {
-  const { status, data } = await client.post("/view_by_user_id", {
+  const { status, data } = await client.post("/view_group_by_user_id", {
     user_id: 1,
   });
   const groupList = status ? data?.results : [];
@@ -112,6 +112,7 @@ export const getExperimentsByGroupId =
     dispatch(updateSelectedGroup(groupId));
     const { status, data } = await client.post("/get_experiments_by_group_id", {
       group_id: groupId,
+      user_id: 1
     });
 
     const experimentData = status ? data.results : [];

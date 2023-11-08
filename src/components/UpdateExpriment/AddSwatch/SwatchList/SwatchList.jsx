@@ -5,6 +5,8 @@ import cx from "classnames"
 import Draggable from "react-draggable";
 import { useState } from "react";
 import AddSwatch from "./AddSwatch/AddSwatch";
+import { updateSwatchAdd } from "../../../../store/features/updateExpriment";
+import { useDispatch, useSelector } from "react-redux";
 export default function SwatchList() {
     const [todos, setTodos] = useState([
         { id: 1, text: 'Swatch 1', priority: 1, currentPosition: 5 },
@@ -13,6 +15,10 @@ export default function SwatchList() {
         { id: 4, text: 'Swatch 4', priority: 4, currentPosition: 4 },
         { id: 5, text: 'Swatch 5', priority: 5, currentPosition: 1 },
     ]);
+
+    const dispatch = useDispatch();
+
+    const isAddingSwatch = useSelector(state => state?.updateExperiment?.isAddingNewSwatch)
 
     const handleDrag = (index, newPriority) => {
         const updatedTodos = [...todos];
@@ -35,15 +41,19 @@ export default function SwatchList() {
         return dd * 50;
     }
 
+    const handleNewSwatchClick = () => {
+        dispatch(updateSwatchAdd(true))
+    }
+
     return (
         <div className={s.parent}>
             <div className={cx("d-flex justify-content-between gap-5 py-3 px-4", s.titleBatch)}>
                 <div className={s.title2}>Swatches</div>
-                <div className={s.linkTextPrimary}><ReactSVG src={addFileIcon} />New swatch</div>
+                <div className={s.linkTextPrimary} onClick={handleNewSwatchClick} role="button"><ReactSVG src={addFileIcon} />New swatch</div>
             </div>
-            <div>
+            {isAddingSwatch ? <div>
                 <AddSwatch />
-            </div>
+            </div> : ""}
             <div className={s.dragContainer} style={{ position: 'relative', overflow: 'hidden', padding: '0', height: `${(todos.length * 50) + 1}px` }}>
                 {todos.map((todo, index) => {
                     // console.table(todo);
