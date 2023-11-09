@@ -40,6 +40,7 @@ export default function ImageCrop() {
     const imgRef = useRef();
 
     const [aspectRatio, setAspectRatio] = useState(undefined)
+    const [croppedImage, setCroppedImage] = useState(null);
 
     const file = useSelector(state => state?.updateExperiment?.currentImage);
 
@@ -53,9 +54,44 @@ export default function ImageCrop() {
         setCrop(c)
     }
 
+    // const handleContinue = () => {
+    //     console.log("crop", crop)
+    // }
+
+    
     const handleContinue = () => {
-        console.log("crop", crop)
-    }
+        if (crop.width && crop.height) {
+          const image = new Image();
+          image.src = file.preview;
+      
+          const scaleX = image.naturalWidth / image.width;
+          const scaleY = image.naturalHeight / image.height;
+      
+          const canvas = document.createElement('canvas');
+          canvas.width = crop.width;
+          canvas.height = crop.height;
+      
+          const ctx = canvas.getContext('2d');
+      
+          ctx.drawImage(
+            image,
+            crop.x * scaleX,
+            crop.y * scaleY,
+            crop.width * scaleX,
+            crop.height * scaleY,
+            0,
+            0,
+            crop.width,
+            crop.height
+          );
+      
+          const croppedDataUrl = canvas.toDataURL('image/jpeg'); // You can change the format if needed (e.g., 'image/png')
+      
+          console.log('Cropped image data URL:', croppedDataUrl);
+          setCroppedImage(croppedDataUrl);
+        }
+      };
+      
 
     function onImageLoad(e) {
         const { naturalWidth: width, naturalHeight: height } = e.currentTarget
@@ -141,6 +177,8 @@ export default function ImageCrop() {
                     <button className={s.btnPrimary} onClick={handleContinue}>Continue <ReactSVG src={rightArrowIcon} /></button>
                 </div>
             </div>
+            {croppedImage && <img src={croppedImage} alt="Cropped Image" />}
+
         </>
     )
 }
