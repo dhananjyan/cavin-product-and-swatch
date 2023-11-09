@@ -41,6 +41,7 @@ export default function ImageCrop() {
 
     const [aspectRatio, setAspectRatio] = useState(undefined)
     const [croppedImage, setCroppedImage] = useState(null);
+    // const [imageRef, setImageRef] = useState(null);
 
     const file = useSelector(state => state?.updateExperiment?.currentImage);
 
@@ -54,26 +55,37 @@ export default function ImageCrop() {
         setCrop(c)
     }
 
-    // const handleContinue = () => {
-    //     console.log("crop", crop)
-    // }
+    const handleContinue = async () => {
+        console.log("crop", crop, imgRef)
+        if (imgRef?.current && crop.width && crop.height) {
+            const croppedImageUrl = await getCroppedImg(
+                imgRef?.current,
+                crop,
+                "newFile.jpeg"
+            );
+            console.log("croppedImageUrl", croppedImageUrl)
+            setCroppedImage(croppedImageUrl)
+            // this.setState({ croppedImageUrl });
+        }
+    }
 
-    
-    const handleContinue = () => {
-        if (crop.width && crop.height) {
-          const image = new Image();
-          image.src = file.preview;
-      
-          const scaleX = image.naturalWidth / image.width;
-          const scaleY = image.naturalHeight / image.height;
-      
-          const canvas = document.createElement('canvas');
-          canvas.width = crop.width;
-          canvas.height = crop.height;
-      
-          const ctx = canvas.getContext('2d');
-      
-          ctx.drawImage(
+    const getCroppedImg = (image, crop, fileName) => {
+        const canvas = document.createElement("canvas");
+
+        console.log("dddddddddddddddd", image, image.naturalHeight, image?.height);
+        console.table({
+            height: image.height,
+            width: image.width,
+            naturalHeight: image.naturalHeight,
+            naturalWidth: image.naturalWidth
+        })
+        const scaleX = image.naturalWidth / image.width;
+        const scaleY = image.naturalHeight / image.height;
+        canvas.width = crop.width;
+        canvas.height = crop.height;
+        const ctx = canvas.getContext("2d");
+
+        ctx.drawImage(
             image,
             crop.x * scaleX,
             crop.y * scaleY,
@@ -83,15 +95,60 @@ export default function ImageCrop() {
             0,
             crop.width,
             crop.height
-          );
-      
-          const croppedDataUrl = canvas.toDataURL('image/jpeg'); // You can change the format if needed (e.g., 'image/png')
-      
-          console.log('Cropped image data URL:', croppedDataUrl);
-          setCroppedImage(croppedDataUrl);
-        }
-      };
-      
+        );
+
+        return new Promise((resolve, reject) => {
+            const base64Image = canvas.toDataURL('image/jpeg');
+            console.log("base64", base64Image)
+            let fileUrl;
+            canvas.toBlob(blob => {
+                if (!blob) {
+                    //reject(new Error('Canvas is empty'));
+                    console.error("Canvas is empty");
+                    return;
+                }
+                blob.name = fileName;
+                window.URL.revokeObjectURL(fileUrl);
+                fileUrl = window.URL.createObjectURL(blob);
+                resolve(fileUrl);
+            }, "image/jpeg");
+        });
+    }
+
+
+    // const handleContinue = () => {
+    //     if (crop.width && crop.height) {
+    //         const image = new Image();
+    //         image.src = file.preview;
+
+    //         const scaleX = image.naturalWidth / image.width;
+    //         const scaleY = image.naturalHeight / image.height;
+
+    //         const canvas = document.createElement('canvas');
+    //         canvas.width = crop.width;
+    //         canvas.height = crop.height;
+
+    //         const ctx = canvas.getContext('2d');
+
+    //         ctx.drawImage(
+    //             image,
+    //             crop.x, // * scaleX,
+    //             crop.y, // * scaleY,
+    //             crop.width, // * scaleX,
+    //             crop.height, // * scaleY,
+    //             0,
+    //             0,
+    //             crop.width,
+    //             crop.height
+    //         );
+
+    //         const croppedDataUrl = canvas.toDataURL('image/jpeg'); // You can change the format if needed (e.g., 'image/png')
+
+    //         console.log('Cropped image data URL:', croppedDataUrl);
+    //         setCroppedImage(croppedDataUrl);
+    //     }
+    // };
+
 
     function onImageLoad(e) {
         const { naturalWidth: width, naturalHeight: height } = e.currentTarget
@@ -146,6 +203,7 @@ export default function ImageCrop() {
         setCrop(crop)
     }
 
+
     return (
         <>
             <Topbar onClose={handleClose} />
@@ -153,8 +211,17 @@ export default function ImageCrop() {
                 <div className={cx(s.cropContainer, "p-5")}>
                     <div className={cx(s.title3, s["text-white"])}>Hair wig sample 587451.jpg</div>
                     <div className={cx("text-center mt-4")}>
-                        <ReactCrop keepSelection={aspectRatio} aspect={aspectRatio} crop={crop} onChange={handleCropChange} minHeight={50} minWidth={50}  >
-                            <img src={file?.preview} style={{ color: "red" }} onLoad={onImageLoad} ref={imgRef} />
+                        <ReactCrop
+                            keepSelection={aspectRatio}
+                            aspect={aspectRatio}
+                            crop={crop}
+                            // onImageLoaded={onCropImageLoaded}
+                            onChange={handleCropChange}
+                            minHeight={50}
+                            minWidth={50}
+                            ruleOfThirds
+                        >
+                            <img src={file?.preview} onLoad={onImageLoad} ref={imgRef} />
                         </ReactCrop>
                     </div>
                 </div>
@@ -177,7 +244,9 @@ export default function ImageCrop() {
                     <button className={s.btnPrimary} onClick={handleContinue}>Continue <ReactSVG src={rightArrowIcon} /></button>
                 </div>
             </div>
-            {croppedImage && <img src={croppedImage} alt="Cropped Image" />}
+            <div style={{ height: 500 }}>
+                {croppedImage && <img style={{ width: "auto", height: "100%" }} src={croppedImage} alt="Cropped Image" />}
+            </div>
 
         </>
     )

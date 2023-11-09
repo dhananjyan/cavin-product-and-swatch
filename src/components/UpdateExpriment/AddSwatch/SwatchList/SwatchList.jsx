@@ -5,20 +5,11 @@ import cx from "classnames"
 import Draggable from "react-draggable";
 import { useState } from "react";
 import AddSwatch from "./AddSwatch/AddSwatch";
-import { updateSwatchAdd, updateSwatchPosition, updateSwatches } from "../../../../store/features/updateExpriment";
+import { updateCurrentSwatch, updateSwatchAdd, updateSwatchPosition, updateSwatches } from "../../../../store/features/updateExpriment";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../common/Loader/Loader"
 import DropDownMenu from "../../../common/DropDownMenu/DropDownMenu";
 export default function SwatchList() {
-    // const [todos, setTodos] = useState([
-    //     { id: 1, text: 'Swatch 1', priority: 1, currentPosition: 5 },
-    //     { id: 2, text: 'Swatch 2', priority: 2, currentPosition: 2 },
-    //     { id: 3, text: 'Swatch 3', priority: 3, currentPosition: 3 },
-    //     { id: 4, text: 'Swatch 4', priority: 4, currentPosition: 4 },
-    //     { id: 5, text: 'Swatch 5', priority: 5, currentPosition: 1 },
-    // ]);
-
-
 
 
     const dispatch = useDispatch();
@@ -56,8 +47,10 @@ export default function SwatchList() {
         dispatch(updateSwatchAdd(true))
     }
 
-    const handleSwatchEdit = () => {
-        
+    const handleSwatchEdit = () => { }
+
+    const handleSwatchClick = (swatch) => {
+        dispatch(updateCurrentSwatch(swatch));
     }
 
     return (
@@ -88,11 +81,13 @@ export default function SwatchList() {
                                 handleDrag(index, newPriority);
                             }}
                         >
-                            <div className={s.swatchItem}>
+                            <div className={s.swatchItem}
+                                onClick={() => handleSwatchClick(swatch)}
+                            >
                                 {swatch.swatch_name}
-                                <DropDownMenu 
-                                 deleteHandle={() => handleSwatchEdit(item)}
-                                />
+                                {/* <DropDownMenu
+                                    deleteHandle={() => handleSwatchEdit(item)}
+                                /> */}
                             </div>
                         </Draggable>
                     })}

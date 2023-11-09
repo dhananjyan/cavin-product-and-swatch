@@ -10,6 +10,9 @@ export const updateExperimentSlice = createSlice({
         isAddingNewSwatch: false,
         swatches: [],
         isSwatchesLoading: false,
+        activeSwatch: null,
+        frontImage: null,
+        backImage: null
     },
     reducers: {
         openImagePopup: (state, action) => {
@@ -28,11 +31,20 @@ export const updateExperimentSlice = createSlice({
             state.isAddingNewSwatch = action?.payload
         },
         updateSwatches: (state, action) => {
-            state.swatches = action?.payload?.length ? [...action.payload] : []
+            state.swatches = action?.payload?.length ? [...action.payload] : [];
         },
         updateSwatchesLoading: (state, action) => {
             state.isSwatchesLoading = action.payload;
-          },
+        },
+        updateCurrentSwatch: (state, action) => {
+            state.activeSwatch = action.payload;
+        },
+        updateFrontImage: (state, action) => {
+            state.frontImage = action.payload;
+        },
+        updateBackImage: (state, action) => {
+            state.backImage = action.payload;
+        }
     }
 })
 
@@ -43,7 +55,10 @@ export const {
     updateCurrentExperiment,
     updateSwatchAdd,
     updateSwatches,
-    updateSwatchesLoading
+    updateSwatchesLoading,
+    updateCurrentSwatch,
+    updateFrontImage,
+    updateBackImage
 } = updateExperimentSlice.actions;
 
 export default updateExperimentSlice.reducer;
@@ -80,13 +95,17 @@ export const getSwatchByExperimentId = (experiment_id) => async (dispatch, getSt
 
 export const updateSwatchPosition = ({ index, newPriority }) => async (dispatch, getState) => {
 
-    const updatedSwatches = getState()?.updateExperiment?.swatches;
-
-    console.log("ddddddddddddd", updateSwatches)
+    const updatedSwatches = [...getState()?.updateExperiment?.swatches];
 
     let existingDataIndex = updatedSwatches.findIndex(d => d.currentPosition === newPriority)
-    updatedSwatches[existingDataIndex].currentPosition = updatedSwatches[index].currentPosition;
-    updatedSwatches[index].currentPosition = newPriority;
+    updatedSwatches[existingDataIndex] = {
+        ...updatedSwatches[existingDataIndex],
+        currentPosition: updatedSwatches[index].currentPosition
+    }
+    updatedSwatches[index] = {
+        ...updatedSwatches[index],
+        currentPosition: newPriority
+    }
 
     dispatch(updateSwatches(updatedSwatches));
 }
@@ -95,7 +114,6 @@ export const createSwatch = (swatch_name) => async (dispatch, getState) => {
     dispatch(updateSwatchesLoading(true));
     dispatch(updateSwatchAdd(false));
     const currentData = getState()?.updateExperiment?.currentExperiment;
-    console.log('ddd', currentData)
     const { status, data } = await client.post("/create_swatch", {
         swatch_name,
         user_id: 1,
@@ -103,7 +121,6 @@ export const createSwatch = (swatch_name) => async (dispatch, getState) => {
         experiment_id: currentData?.experiment_id
     });
 
-    console.log("asdfasf, status,", data, status)
     dispatch(getSwatchByExperimentId(currentData?.experiment_id));
     dispatch(updateSwatchesLoading(false));
 };
