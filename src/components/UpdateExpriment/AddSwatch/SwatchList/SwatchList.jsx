@@ -5,7 +5,7 @@ import cx from "classnames"
 import Draggable from "react-draggable";
 import { useState } from "react";
 import AddSwatch from "./AddSwatch/AddSwatch";
-import { updateCurrentSwatch, updateSwatchAdd, updateSwatchPosition, updateSwatches } from "../../../../store/features/updateExpriment";
+import { updateCurrentSwatch, updateSwatchAdd, updateSwatchPosition, deleteSwatch, updateSwatches } from "../../../../store/features/updateExpriment";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../common/Loader/Loader"
 import DropDownMenu from "../../../common/DropDownMenu/DropDownMenu";
@@ -47,7 +47,11 @@ export default function SwatchList() {
         dispatch(updateSwatchAdd(true))
     }
 
-    const handleSwatchEdit = () => { }
+    const handleSwatchDelete = ( swatchId ) => {
+        console.log( swatchId, "idd");
+        dispatch(deleteSwatch(swatchId));
+    }
+
 
     const handleSwatchClick = (swatch) => {
         dispatch(updateCurrentSwatch(swatch));
@@ -63,7 +67,7 @@ export default function SwatchList() {
                 <AddSwatch />
             </div> : ""}
             <Loader show={isSwatchesLoading}>
-                <div className={s.dragContainer} style={{ position: 'relative', overflow: 'hidden', padding: '0', height: `${(swatches.length * 50) + 1}px` }}>
+                <div className={s.dragContainer} style={{ position: 'relative', padding: '0', height: `${(swatches.length * 50) + 1}px` }}>
                     {swatches.map((swatch, index) => {
                         // console.table(swatch);
                         const y = getVerticalPos({ ...swatch });
@@ -85,9 +89,10 @@ export default function SwatchList() {
                                 onClick={() => handleSwatchClick(swatch)}
                             >
                                 {swatch.swatch_name}
-                                {/* <DropDownMenu
-                                    deleteHandle={() => handleSwatchEdit(item)}
-                                /> */}
+                                {console.log(swatch, "swatch data")}
+                                <DropDownMenu
+                                    deleteHandle={() => handleSwatchDelete( swatch?.swatch_id)}
+                                />
                             </div>
                         </Draggable>
                     })}

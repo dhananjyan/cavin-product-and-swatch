@@ -43,3 +43,8 @@
     border: 0 !important;
 
 }
+
+.dropdown-menu {
+    transform: translate(-28px, -57px) !important;
+
+}
