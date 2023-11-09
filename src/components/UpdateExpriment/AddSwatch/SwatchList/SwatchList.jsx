@@ -8,6 +8,7 @@ import AddSwatch from "./AddSwatch/AddSwatch";
 import { updateSwatchAdd, updateSwatchPosition, updateSwatches } from "../../../../store/features/updateExpriment";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../common/Loader/Loader"
+import DropDownMenu from "../../../common/DropDownMenu/DropDownMenu";
 export default function SwatchList() {
     // const [todos, setTodos] = useState([
     //     { id: 1, text: 'Swatch 1', priority: 1, currentPosition: 5 },
@@ -55,6 +56,10 @@ export default function SwatchList() {
         dispatch(updateSwatchAdd(true))
     }
 
+    const handleSwatchEdit = () => {
+        
+    }
+
     return (
         <div className={s.parent}>
             <div className={cx("d-flex justify-content-between gap-5 py-3 px-4", s.titleBatch)}>
@@ -83,7 +88,12 @@ export default function SwatchList() {
                                 handleDrag(index, newPriority);
                             }}
                         >
-                            <div className={s.swatchItem}>{swatch.swatch_name}</div>
+                            <div className={s.swatchItem}>
+                                {swatch.swatch_name}
+                                <DropDownMenu 
+                                 deleteHandle={() => handleSwatchEdit(item)}
+                                />
+                            </div>
                         </Draggable>
                     })}
                 </div>
