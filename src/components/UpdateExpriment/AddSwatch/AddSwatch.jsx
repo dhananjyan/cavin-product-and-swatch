@@ -15,6 +15,7 @@ import { ReactSVG } from "react-svg";
 import closeIcon from "../../../assets/svg/close.svg";
 import ActivityList from "./ActivityList/ActivityList";
 import ImageUpload from "./ImageUpload/ImageUpload";
+import MiddleBar from "../MiddleBar/MiddleBar";
 
 
 export default function AddSwatch() {
@@ -40,7 +41,7 @@ export default function AddSwatch() {
                 <Topbar />
             </div>
             <div className={s.middlebar}>
-                adf
+               <MiddleBar/>
             </div>
             <div className={s.rsidebar}>
                 {/* <div className="p-3">
