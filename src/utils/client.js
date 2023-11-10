@@ -61,6 +61,6 @@ client.put = function (url, body, customConfig = {}) {
   return client(url, { ...customConfig, method: "PUT", body });
 };
 
-client.delete = function (url, customConfig = {}) {
-  return client(url, { ...customConfig, method: "DELETE" });
+client.delete = function (url, body, customConfig = {}) {
+  return client(url, { ...customConfig, method: "DELETE", body });
 };

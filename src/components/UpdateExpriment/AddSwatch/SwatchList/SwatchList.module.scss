@@ -16,13 +16,13 @@
 
 .dragContainer {
     position: relative;
-    overflow: hidden;
+    // overflow: hidden;
     padding: 0;
     // height: 100%;
 }
 
 .swatchItem {
-    padding: 15px 20px;
+    padding: 5px 20px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.10);
     background: rgba(255, 255, 255, 0.05);
 
@@ -33,6 +33,13 @@
     font-weight: 600;
     line-height: normal;
     cursor: grab;
-    // display: flex;
-    // justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &.active {
+        border: 1px solid rgba(0, 0, 0, 0.10);
+        background: #3167B1;
+        color: white;
+    }
 }

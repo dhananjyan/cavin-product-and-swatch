@@ -72,15 +72,16 @@ export const {
 
 export default updateExperimentSlice.reducer;
 
-export const initializeExperimentPage = (experiment_id) => async (dispatch, getState) => {
+export const initializeExperimentPage =
+  (experiment_id) => async (dispatch, getState) => {
     const { status, data } = await client.post("/get_data_by_exp_id", {
-        experiment_id
+      experiment_id,
     });
 
-    console.log("status", status, data)
+    console.log("status", status, data);
     // if (status && data)
     if (data) {
-        dispatch(updateCurrentExperiment(data?.results))
+      dispatch(updateCurrentExperiment(data?.results));
     }
     await dispatch(getSwatchByExperimentId(experiment_id));
 
@@ -95,56 +96,78 @@ export const updateSwatch = (swatch) => async (dispatch, getState) => {
     dispatch(getSwatchList())
 }
 
-export const getSwatchByExperimentId = (experiment_id) => async (dispatch, getState) => {
-    const { status, data } = await client.post("/get_swatch_info_by_experiment_id", {
-        experiment_id
-    });
+export const getSwatchByExperimentId =
+  (experiment_id) => async (dispatch, getState) => {
+    const { status, data } = await client.post(
+      "/get_swatch_info_by_experiment_id",
+      {
+        experiment_id,
+      }
+    );
     if (status && data) {
-        const list = data?.results?.length ? data?.results?.map((item, i) => {
+      const list = data?.results?.length
+        ? data?.results?.map((item, i) => {
             return {
-                ...item,
-                priority: i + 1,
-                currentPosition: i + 1
-            }
-        }) : []
-        dispatch(updateSwatches(list))
+              ...item,
+              priority: i + 1,
+              currentPosition: i + 1,
+            };
+          })
+        : [];
+      dispatch(updateSwatches(list));
     }
-}
+  };
 
-
-export const updateSwatchPosition = ({ index, newPriority }) => async (dispatch, getState) => {
-
+export const updateSwatchPosition =
+  ({ index, newPriority }) =>
+  async (dispatch, getState) => {
     const updatedSwatches = [...getState()?.updateExperiment?.swatches];
 
-    let existingDataIndex = updatedSwatches.findIndex(d => d.currentPosition === newPriority)
+    let existingDataIndex = updatedSwatches.findIndex(
+      (d) => d.currentPosition === newPriority
+    );
     updatedSwatches[existingDataIndex] = {
-        ...updatedSwatches[existingDataIndex],
-        currentPosition: updatedSwatches[index].currentPosition
-    }
+      ...updatedSwatches[existingDataIndex],
+      currentPosition: updatedSwatches[index].currentPosition,
+    };
     updatedSwatches[index] = {
-        ...updatedSwatches[index],
-        currentPosition: newPriority
-    }
+      ...updatedSwatches[index],
+      currentPosition: newPriority,
+    };
 
     dispatch(updateSwatches(updatedSwatches));
-}
+  };
 
 export const createSwatch = (swatch_name) => async (dispatch, getState) => {
-    dispatch(updateSwatchesLoading(true));
-    dispatch(updateSwatchAdd(false));
-    const currentData = getState()?.updateExperiment?.currentExperiment;
-    const { status, data } = await client.post("/create_swatch", {
-        swatch_name,
-        user_id: 1,
-        group_id: currentData?.group_id,
-        experiment_id: currentData?.experiment_id
-    });
+  dispatch(updateSwatchesLoading(true));
+  dispatch(updateSwatchAdd(false));
+  const currentData = getState()?.updateExperiment?.currentExperiment;
+  const { status, data } = await client.post("/create_swatch_by_rank", {
+    swatch_name,
+    user_id: 1,
+    group_id: currentData?.group_id,
+    experiment_id: currentData?.experiment_id,
+  });
 
-    dispatch(getSwatchByExperimentId(currentData?.experiment_id));
-    dispatch(updateSwatchesLoading(false));
+  dispatch(getSwatchByExperimentId(currentData?.experiment_id));
+  dispatch(updateSwatchesLoading(false));
 };
 
-const getSwatchList = () => async (dispatch, getState) => {
+export const deleteSwatch =
+  (swatchId) => async (dispatch, getState) => {
+    const { status, data } = await client.delete("/delete_swatch", {
+      user_id: 1,
+      swatch_id: swatchId,
+    });
+    if (status) {
+      const currentData = getState()?.updateExperiment?.currentExperiment;
+      dispatch(getSwatchByExperimentId(currentData?.experiment_id));
+      toastr.success("Swatch deleted successfully");
+    } else {
+      toastr.error("Error deleting swatch");
+    }
+  };
+  const getSwatchList = () => async (dispatch, getState) => {
     const currentSwatch = getState()?.updateExperiment?.activeSwatch;
     const { status, data } = await client.post("/get_all_by_swatch_id", {
         swatch_id: currentSwatch?.swatch_id
