@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { client } from '../../utils/client';
+import { dataURLtoFile } from '../../helpers/convertFileToBase64';
+import { toastr } from 'react-redux-toastr';
 
 export const updateExperimentSlice = createSlice({
     name: 'updateExperiment',
@@ -12,7 +14,9 @@ export const updateExperimentSlice = createSlice({
         isSwatchesLoading: false,
         activeSwatch: null,
         frontImage: null,
-        backImage: null
+        backImage: null,
+        swatchList: [],
+        currentSwatchStatus: null
     },
     reducers: {
         openImagePopup: (state, action) => {
@@ -44,6 +48,10 @@ export const updateExperimentSlice = createSlice({
         },
         updateBackImage: (state, action) => {
             state.backImage = action.payload;
+        },
+        updateSwatchList: (state, action) => {
+            state.swatchList = action.payload;
+            state.currentSwatchStatus = action?.payload[action.payload?.length - 1]
         }
     }
 })
@@ -58,7 +66,8 @@ export const {
     updateSwatchesLoading,
     updateCurrentSwatch,
     updateFrontImage,
-    updateBackImage
+    updateBackImage,
+    updateSwatchList
 } = updateExperimentSlice.actions;
 
 export default updateExperimentSlice.reducer;
@@ -73,7 +82,17 @@ export const initializeExperimentPage = (experiment_id) => async (dispatch, getS
     if (data) {
         dispatch(updateCurrentExperiment(data?.results))
     }
-    dispatch(getSwatchByExperimentId(experiment_id))
+    await dispatch(getSwatchByExperimentId(experiment_id));
+
+    const firstSwatch = getState()?.updateExperiment?.swatches;
+    console.log("firstSwatch[firstSwatch?.length - 1]", firstSwatch[firstSwatch?.length - 1], firstSwatch)
+    dispatch(updateSwatch(firstSwatch[0]))
+
+}
+
+export const updateSwatch = (swatch) => async (dispatch, getState) => {
+    await dispatch(updateCurrentSwatch(swatch));
+    dispatch(getSwatchList())
 }
 
 export const getSwatchByExperimentId = (experiment_id) => async (dispatch, getState) => {
@@ -123,4 +142,40 @@ export const createSwatch = (swatch_name) => async (dispatch, getState) => {
 
     dispatch(getSwatchByExperimentId(currentData?.experiment_id));
     dispatch(updateSwatchesLoading(false));
+};
+
+const getSwatchList = () => async (dispatch, getState) => {
+    const currentSwatch = getState()?.updateExperiment?.activeSwatch;
+    const { status, data } = await client.post("/get_all_by_swatch_id", {
+        swatch_id: currentSwatch?.swatch_id
+    });
+    if (status)
+        dispatch(updateSwatchList((data?.results?.images)))
+}
+
+export const addSwatchImage = () => async (dispatch, getState) => {
+    const currentSwatch = getState()?.updateExperiment?.activeSwatch;
+    const currentData = getState()?.updateExperiment?.currentExperiment;
+    const frontImage = getState()?.updateExperiment?.frontImage;
+    const backImage = getState()?.updateExperiment?.backImage;
+
+    const bodyFormData = new FormData();
+
+    bodyFormData.append('user_id', 1);
+    bodyFormData.append('group_id', currentData?.group_id);
+    bodyFormData.append('experiment_id', currentData?.experiment_id);
+    bodyFormData.append('swatch_id', currentSwatch?.swatch_id);
+    bodyFormData.append('steps', 1);
+    bodyFormData.append('wash_count', 0);
+    bodyFormData.append('front_image', dataURLtoFile(frontImage?.preview, frontImage?.name));
+    bodyFormData.append('back_image', dataURLtoFile(backImage?.preview, backImage?.name));
+
+    const { status, data, message } = await client.post("/add_image_to_swatch", bodyFormData, { contentType: "multipart/form-data" });
+
+    if (status) {
+        dispatch(getSwatchList())
+    } else {
+        toastr.error(message)
+    }
+
 };
