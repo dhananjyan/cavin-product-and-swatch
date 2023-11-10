@@ -16,7 +16,8 @@ export default function SwatchList() {
 
     const isAddingSwatch = useSelector(state => state?.updateExperiment?.isAddingNewSwatch)
     const swatches = useSelector(state => state?.updateExperiment?.swatches)
-    const isSwatchesLoading = useSelector((state) => state.updateExperiment.isSwatchesLoading);
+    const isSwatchesLoading = useSelector((state) => state?.updateExperiment?.isSwatchesLoading);
+    const activeSwatch = useSelector((state) => state?.updateExperiment?.activeSwatch?.swatch_id);
 
 
     const handleDrag = (index, newPriority) => {
@@ -48,7 +49,6 @@ export default function SwatchList() {
     }
 
     const handleSwatchDelete = ( swatchId ) => {
-        console.log( swatchId, "idd");
         dispatch(deleteSwatch(swatchId));
     }
 
@@ -73,7 +73,7 @@ export default function SwatchList() {
                         const y = getVerticalPos({ ...swatch });
                         return <Draggable
                             key={swatch.priority}
-                            axis="y"
+                            axis="y" 
                             defaultPosition={{ x: 0, y: 0 }}
                             position={{ x: 0, y }}
                             bounds="parent"
@@ -85,7 +85,8 @@ export default function SwatchList() {
                                 handleDrag(index, newPriority);
                             }}
                         >
-                            <div className={s.swatchItem}
+                            <div 
+                             className={cx(s.swatchItem, { [s.active]: activeSwatch === swatch?.swatch_id })}
                                 onClick={() => handleSwatchClick(swatch)}
                             >
                                 {swatch.swatch_name}
