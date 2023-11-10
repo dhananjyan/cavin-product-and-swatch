@@ -54,6 +54,7 @@ export default function SwatchList() {
 
 
     const handleSwatchClick = (swatch) => {
+        console.log("dddddkfajdsfjladsf");
         dispatch(updateSwatch(swatch));
     }
 

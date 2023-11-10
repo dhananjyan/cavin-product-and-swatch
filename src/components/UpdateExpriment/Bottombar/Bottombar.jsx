@@ -18,7 +18,7 @@ export default function Bottombar() {
     return (
         <div className={cx(s.bottomBar, "")}>
             <button style={{ color: "#3771C3" }} className={s.saveAsDraft} onClick={handleSaveAsDraft}> <ReactSVG src={editArrowIcon} /> Save as draft</button>
-            <button className={s.btnPrimary}><ReactSVG src={leftArrowIcon} />&nbsp;  Back</button>
+            <button className={cx(s.btnPrimary, s.disabled)}><ReactSVG src={leftArrowIcon} />&nbsp;  Back</button>
             <button className={s.btnPrimary}>Continue<ReactSVG src={rightArrowIcon} /></button>
         </div>
     )
