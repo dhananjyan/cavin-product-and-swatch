@@ -39,6 +39,9 @@ export default function AddSwatch() {
             <div className={s.topbar}>
                 <Topbar />
             </div>
+            <div className={s.middlebar}>
+                adf
+            </div>
             <div className={s.rsidebar}>
                 {/* <div className="p-3">
                     <div className={cx("d-flex align-items-center justify-content-between")}>
