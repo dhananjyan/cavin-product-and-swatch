@@ -40,13 +40,13 @@ export default function AddSwatch() {
                 <Topbar />
             </div>
             <div className={s.rsidebar}>
-                <div className="p-3">
+                {/* <div className="p-3">
                     <div className={cx("d-flex align-items-center justify-content-between")}>
                         <div className={s.title3}>Overall activity</div>
                         <ReactSVG src={closeIcon} />
                     </div>
                     <div className={s.text}>EXP125458745 - Experiment name</div>
-                </div>
+                </div> */}
             </div>
             <div className={cx(s.lsidebar, s.verticalScroll)}>
                 <SwatchList />
@@ -55,7 +55,7 @@ export default function AddSwatch() {
                 <ImageUpload />
             </div>
             <div className={cx(s.rsidebar1, s.verticalScroll)}>
-                <ActivityList />
+                {/* <ActivityList /> */}
             </div>
             {/* <div>
                 <div className={s.formSection}>

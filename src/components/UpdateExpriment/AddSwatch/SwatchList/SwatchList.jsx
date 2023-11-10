@@ -5,7 +5,7 @@ import cx from "classnames"
 import Draggable from "react-draggable";
 import { useState } from "react";
 import AddSwatch from "./AddSwatch/AddSwatch";
-import { updateCurrentSwatch, updateSwatchAdd, updateSwatchPosition, updateSwatches } from "../../../../store/features/updateExpriment";
+import { updateCurrentSwatch, updateSwatch, updateSwatchAdd, updateSwatchPosition, updateSwatches } from "../../../../store/features/updateExpriment";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../common/Loader/Loader"
 import DropDownMenu from "../../../common/DropDownMenu/DropDownMenu";
@@ -50,7 +50,7 @@ export default function SwatchList() {
     const handleSwatchEdit = () => { }
 
     const handleSwatchClick = (swatch) => {
-        dispatch(updateCurrentSwatch(swatch));
+        dispatch(updateSwatch(swatch));
     }
 
     return (

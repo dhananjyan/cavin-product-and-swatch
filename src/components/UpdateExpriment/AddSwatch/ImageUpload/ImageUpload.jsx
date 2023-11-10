@@ -14,8 +14,6 @@ import binIcon from "../../../../assets/svg/bin.svg";
 import { bitesToMb } from "../../../../helpers";
 import config from "../../../../config";
 
-
-
 const { apiBaseUrl } = config || {};
 
 export default function ImageUpload() {
@@ -58,7 +56,7 @@ export default function ImageUpload() {
         <>
             <div className={s.parent}>
                 <div className={s.main}>
-                    <div className={cx(s.title12, "pb-3")}>Swatch name 2</div>
+                    <div className={cx(s.title12, "pb-3")}>{activeSwatch?.swatch_name}</div>
                     <div className="d-flex gap-5 pb-5">
                         <div>
                             <div className={cx(s.title2, s.fw500, "pb-2")}>Front image</div>
