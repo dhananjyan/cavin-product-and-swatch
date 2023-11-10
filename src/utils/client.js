@@ -3,7 +3,7 @@ import config from "../config";
 
 const { apiBaseUrl } = config || {};
 
-export async function client(url, { body, method, ...customConfig } = {}) {
+export async function client(url, { body, method, contentType = "application/json", ...customConfig } = {}) {
   // const accessToken = localStorageHelper("accessToken");
   // const userToken = localStorageHelper("userToken");
 
@@ -17,7 +17,7 @@ export async function client(url, { body, method, ...customConfig } = {}) {
     method,
     baseURL: apiBaseUrl,
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": contentType,
     },
     data: method === "GET" ? null : body,
   };
