@@ -54,7 +54,7 @@ export default function ImageUpload() {
 
     return (
         <>
-            <div className={s.parent}>
+            {activeSwatch ? <div className={s.parent}>
                 <div className={s.main}>
                     <div className={cx(s.title12, "pb-3")}>{activeSwatch?.swatch_name}</div>
                     <div className="d-flex gap-5 pb-5">
@@ -74,10 +74,10 @@ export default function ImageUpload() {
                         </div>
                         <div className="ms-3">
                             <div className={cx(s.title2, s.fw500, "pb-2")}>Back image</div>
-                            {!backImage ? <Dropzone className={s.dropzone} onChange={f => onImageChange(f, "back")}>
+                            {(!backImage  && !currentSwatchStatus?.back_image_url) ? <Dropzone className={s.dropzone} onChange={f => onImageChange(f, "back")}>
                                 <ReactSVG src={uploadIcon} />
                                 <div>Upload image</div>
-                            </Dropzone> : <div className={s.imgContainer} ><img className={s.img} src={backImage?.preview} alt="Swatch Back Image" /></div>}
+                            </Dropzone> : <div className={s.imgContainer} ><img className={s.img} src={backImage?.preview || `${apiBaseUrl}${currentSwatchStatus?.back_image_url}`} alt="Swatch Back Image" /></div>}
                             {!backImage ? "" : <>
                                 <div className="d-flex justify-content-between  pt-2 pe-3">
                                     <div className={cx(s.text, s.fw500)}>{backImage?.name}</div>
@@ -122,7 +122,7 @@ export default function ImageUpload() {
                     <div className={s.titleSmall1}>Swatch name 2 activities will be listed here...</div>
                 </div>
                 <Bottombar />
-            </div>
+            </div> : ""}
         </>
     )
 }
