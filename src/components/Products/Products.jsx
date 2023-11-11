@@ -46,7 +46,7 @@ export default function Products() {
     }
 
     const handleExpDelete = (expId) => {
-       dispatch(deleteExpirement(expId));
+        dispatch(deleteExpirement(expId));
     }
 
     function formatDate(dateString) {
@@ -169,7 +169,7 @@ export default function Products() {
                                             </div>
                                         </td>
                                         <td>Washing</td>
-                                        <td className="text-center">{item?.date_modified ? formatDate(item.date_modified) : '-' }</td>
+                                        <td className="text-center">{item?.date_modified ? formatDate(item.date_modified) : '-'}</td>
                                         <td>
                                             <DropDownMenu
                                                 editHandle={() => handleExpEdit(item)}

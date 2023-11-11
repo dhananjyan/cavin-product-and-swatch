@@ -142,9 +142,9 @@ export const deleteExpirement = (expId) => async (dispatch, getState) => {
     const currentGroup = getState()?.products?.selectedGroup;
     console.log(currentGroup, "currentGroup");
     dispatch(getExperimentsByGroupId(currentGroup));
-    toastr.success("Swatch deleted successfully");
+    toastr.success("Experiment deleted successfully");
   } else {
-    toastr.error("Error deleting swatch");
+    toastr.error("Error deleting experiment");
   }
 };
 
