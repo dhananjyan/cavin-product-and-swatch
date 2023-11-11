@@ -23,7 +23,7 @@ export default function Topbar(props) {
                 <div className="d-flex gap-2">
                     <ReactSVG src={leftArrowIcon} />
                     <div>
-                        <div className={s.step}>EXP125458745 - Experiment name  <ReactSVG src={pencilIcon} /></div>
+                        <div className={s.step}>EXP125458745 - Experiment name</div>
                         <div className={cx(s.stepDesc, "pt-2")}>Step 1 - Upload the swatch images</div>
                     </div>
                 </div>
@@ -44,10 +44,10 @@ export default function Topbar(props) {
                                 <span>4</span>
                             </div>
                         </div>
-                        <div className={s.activityLink}>
+                        {/* <div className={s.activityLink}>
                             <ReactSVG src={eyeIcon} />
                             View overall activity
-                        </div>
+                        </div> */}
                     </div>
                     <div >
                         <ReactSVG role="button" onClick={handleClose} src={closeIcon} />
