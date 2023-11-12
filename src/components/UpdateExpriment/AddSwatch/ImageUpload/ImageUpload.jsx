@@ -52,6 +52,11 @@ export default function ImageUpload() {
             }));
     }
 
+    const handleDelete = () => {
+        dispatch(updateBackImage(null))
+        dispatch(updateFrontImage(null))
+    }
+
     return (
         <>
             {activeSwatch ? <div className={s.parent}>
@@ -60,25 +65,25 @@ export default function ImageUpload() {
                     <div className="d-flex gap-5 pb-5">
                         <div>
                             <div className={cx(s.title2, s.fw500, "pb-2")}>Front image</div>
-                            {(!frontImage && !currentSwatchStatus?.front_image_url) ? <Dropzone className={s.dropzone} onChange={f => onImageChange(f, "front")}>
+                            {(!frontImage?.preview && !currentSwatchStatus?.front_image_url) ? <Dropzone className={s.dropzone} onChange={f => onImageChange(f, "front")}>
                                 <ReactSVG src={uploadIcon} />
                                 <div>Upload image</div>
                             </Dropzone> : <div className={s.imgContainer} ><img className={s.img} src={frontImage?.preview || `${apiBaseUrl}${currentSwatchStatus?.front_image_url}`} alt="Swatch Front Image" /></div>}
-                            {!frontImage ? "" : <>
+                            {!frontImage?.preview ? "" : <>
                                 <div className="d-flex justify-content-between pt-2 pe-3">
                                     <div className={cx(s.text, s.fw500)}>{frontImage?.name}</div>
-                                    {/* <ReactSVG src={binIcon} /> */}
+                                    <ReactSVG src={binIcon} onClick={() => handleDelete("front")} />
                                 </div>
                                 <div>{bitesToMb(frontImage?.size)}</div>
                             </>}
                         </div>
                         <div className="ms-3">
                             <div className={cx(s.title2, s.fw500, "pb-2")}>Back image</div>
-                            {(!backImage  && !currentSwatchStatus?.back_image_url) ? <Dropzone className={s.dropzone} onChange={f => onImageChange(f, "back")}>
+                            {(!backImage?.preview && !currentSwatchStatus?.back_image_url) ? <Dropzone className={s.dropzone} onChange={f => onImageChange(f, "back")}>
                                 <ReactSVG src={uploadIcon} />
                                 <div>Upload image</div>
                             </Dropzone> : <div className={s.imgContainer} ><img className={s.img} src={backImage?.preview || `${apiBaseUrl}${currentSwatchStatus?.back_image_url}`} alt="Swatch Back Image" /></div>}
-                            {!backImage ? "" : <>
+                            {!backImage?.preview ? "" : <>
                                 <div className="d-flex justify-content-between  pt-2 pe-3">
                                     <div className={cx(s.text, s.fw500)}>{backImage?.name}</div>
                                     {/* <ReactSVG src={binIcon} /> */}

@@ -16,7 +16,8 @@ export const updateExperimentSlice = createSlice({
         frontImage: null,
         backImage: null,
         swatchList: [],
-        currentSwatchStatus: null
+        currentSwatchStatus: null,
+        washCount: 0,
     },
     reducers: {
         openImagePopup: (state, action) => {
@@ -50,8 +51,13 @@ export const updateExperimentSlice = createSlice({
             state.backImage = action.payload;
         },
         updateSwatchList: (state, action) => {
+            let currentStatus = action?.payload?.length ? action?.payload[action.payload?.length - 1] : null
             state.swatchList = action.payload;
-            state.currentSwatchStatus = action?.payload?.length ? action?.payload[action.payload?.length - 1] : null
+            state.currentSwatchStatus = currentStatus;
+            state.washCount = currentStatus?.wash_count || 0;
+        },
+        updateWashCount: (state, action) => {
+            state.washCount = action.payload;
         }
     }
 })
@@ -67,7 +73,8 @@ export const {
     updateCurrentSwatch,
     updateFrontImage,
     updateBackImage,
-    updateSwatchList
+    updateSwatchList,
+    updateWashCount
 } = updateExperimentSlice.actions;
 
 export default updateExperimentSlice.reducer;
@@ -184,6 +191,9 @@ export const addSwatchImage = () => async (dispatch, getState) => {
     const currentData = getState()?.updateExperiment?.currentExperiment;
     const frontImage = getState()?.updateExperiment?.frontImage;
     const backImage = getState()?.updateExperiment?.backImage;
+    const washCount = getState()?.updateExperiment?.washCount;
+
+    const currentSwatchStatus = getState()?.updateExperiment?.currentSwatchStatus
 
     const bodyFormData = new FormData();
 
@@ -191,8 +201,8 @@ export const addSwatchImage = () => async (dispatch, getState) => {
     bodyFormData.append('group_id', currentData?.group_id);
     bodyFormData.append('experiment_id', currentData?.experiment_id);
     bodyFormData.append('swatch_id', currentSwatch?.swatch_id);
-    bodyFormData.append('steps', 1);
-    bodyFormData.append('wash_count', 0);
+    bodyFormData.append('steps', (currentSwatchStatus?.steps || 0) + 1);
+    bodyFormData.append('wash_count', washCount);
     bodyFormData.append('front_image', dataURLtoFile(frontImage?.preview, frontImage?.name));
     bodyFormData.append('back_image', dataURLtoFile(backImage?.preview, backImage?.name));
 
