@@ -8,6 +8,7 @@ import ActivityList from "./ActivityList/ActivityList";
 import NavLinkSideBar from "./NavLinkSideBar/NavLinkSideBar";
 import { useEffect } from "react";
 import {
+    deleteExpirement,
     initializeProductPage,
     updateAddGroupPopupStatus,
 } from "../../store/features/products";
@@ -42,6 +43,10 @@ export default function Products() {
 
     const handleExpEdit = (data) => {
         navigate(`/experiment/${data?.experiment_id}`)
+    }
+
+    const handleExpDelete = (expId) => {
+        dispatch(deleteExpirement(expId));
     }
 
     function formatDate(dateString) {
@@ -149,23 +154,26 @@ export default function Products() {
                                         <td>
                                             <div className="d-flex gap-1 align-items-center">
                                                 <div className={s.userAvatarList}>
-                                                    {(item?.contributors && item?.contributors?.length) ? item?.contributors.map((id, index) => {
-                                                        return (
-                                                            <div key={index} className={s.item} data={id.contributor_id} />
-                                                        );
-                                                    }) : ""}
-                                                    {item.contributors?.length > 4 && (
-                                                        <div className="ms-1 mt-1">{`+${item.contributors?.length - 4}`}</div>
-                                                    )}
+                                                    {item?.contributors && item?.contributors?.length > 0 ? (
+                                                        <div className={s.userAvatarList}>
+                                                            {item?.contributors.slice(0, 3).map((id, index) => (
+                                                                <div key={index} className={s.item} data={id.cont_id} />
+                                                            ))}
+                                                            {item.contributors.length > 3 && (
+                                                                <div className="ms-1 mt-1">{`+${item.contributors.length - 3}`}</div>
+                                                            )}
+                                                        </div>
+                                                    ) : ""}
+
                                                 </div>
                                             </div>
                                         </td>
                                         <td>Washing</td>
-                                        <td>{formatDate(item.date_modified)}</td>
+                                        <td className="text-center">{item?.date_modified ? formatDate(item.date_modified) : '-'}</td>
                                         <td>
                                             <DropDownMenu
                                                 editHandle={() => handleExpEdit(item)}
-                                                deleteHandle={() => handleExpEdit(item)}
+                                                deleteHandle={() => handleExpDelete(item.experiment_id)}
                                             />
                                         </td>
                                     </tr>

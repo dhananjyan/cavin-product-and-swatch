@@ -17,9 +17,9 @@ const MiddleBar = () => {
     return (
         <div className={s.middlebar}>
             <div className={cx(s.label, "ms-4")}>Product Name</div>
-            <div className={s.value}>Meera Herbal Shampoo 50ml</div>
-            <div className={cx(s.label, "ms-4")}>{activeSwatch?.swatch_name}</div>
-            <div className={s.value}>MHS - Swatch 1</div>
+            <div className={s.value}> - </div>
+            <div className={cx(s.label, "ms-4")}>Swatch Name</div>
+            <div className={s.value}>{activeSwatch?.swatch_name}</div>
             {currentSwatchStatus?.steps === 3 ? <>
                 <div className={cx(s.label, "ms-4")}>Wash Number</div>
                 <input className={s.input} value={washCount} type="number" onChange={e => handleInputChange(e.target.value)} />

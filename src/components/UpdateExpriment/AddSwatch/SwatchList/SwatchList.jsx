@@ -5,7 +5,7 @@ import cx from "classnames"
 import Draggable from "react-draggable";
 import { useState } from "react";
 import AddSwatch from "./AddSwatch/AddSwatch";
-import { updateCurrentSwatch, updateSwatchAdd, updateSwatchPosition, deleteSwatch, updateSwatches, updateSwatch } from "../../../../store/features/updateExpriment";
+import { updateCurrentSwatch, updateSwatchAdd, updateSwatchPosition, deleteSwatch, updateSwatches, updateSwatch, editSwatch, updateSwatchName } from "../../../../store/features/updateExpriment";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../common/Loader/Loader"
 import DropDownMenu from "../../../common/DropDownMenu/DropDownMenu";
@@ -18,6 +18,10 @@ export default function SwatchList() {
     const swatches = useSelector(state => state?.updateExperiment?.swatches)
     const isSwatchesLoading = useSelector((state) => state?.updateExperiment?.isSwatchesLoading);
     const activeSwatch = useSelector((state) => state?.updateExperiment?.activeSwatch?.swatch_id);
+
+
+    const [editingSwatchId, setEditingSwatchId] = useState(null);
+
 
 
     const handleDrag = (index, newPriority) => {
@@ -48,7 +52,7 @@ export default function SwatchList() {
         dispatch(updateSwatchAdd(true))
     }
 
-    const handleSwatchDelete = ( swatchId ) => {
+    const handleSwatchDelete = (swatchId) => {
         dispatch(deleteSwatch(swatchId));
     }
 
@@ -57,6 +61,11 @@ export default function SwatchList() {
         console.log("dddddkfajdsfjladsf");
         dispatch(updateSwatch(swatch));
     }
+
+    const handleSwatchSave = (swatchId, newSwatchName) => {
+        dispatch(editSwatch({ swatchId, swatchName: newSwatchName }));
+        setEditingSwatchId(null);
+    };
 
     return (
         <div className={s.parent}>
@@ -72,31 +81,46 @@ export default function SwatchList() {
                     {swatches.map((swatch, index) => {
                         // console.table(swatch);
                         const y = getVerticalPos({ ...swatch });
-                        return <Draggable
-                            key={swatch.priority}
-                            axis="y" 
-                            defaultPosition={{ x: 0, y: 0 }}
-                            position={{ x: 0, y }}
-                            bounds="parent"
-                            onStop={(e, ui) => {
-                                // let pos = (ui.y >= 0) ? ui.y : 0
-                                const newPriority = swatch.priority + Math.round(ui.y / 50); // Adjust the division based on your layout
-                                // alert(`${pos} ${ui.y} ${newPriority}`)
-                                // console.log(ui.y, newPriority)
-                                handleDrag(index, newPriority);
-                            }}
-                        >
-                            <div 
-                             className={cx(s.swatchItem, { [s.active]: activeSwatch === swatch?.swatch_id })}
-                                onClick={() => handleSwatchClick(swatch)}
+                        return (
+                            <Draggable
+                                key={swatch.priority}
+                                axis="y"
+                                defaultPosition={{ x: 0, y: 0 }}
+                                position={{ x: 0, y: getVerticalPos({ ...swatch }) }}
+                                bounds="parent"
+                                onStop={(e, ui) => {
+                                    const newPriority = swatch.priority + Math.round(ui.y / 50);
+                                    handleDrag(index, newPriority);
+                                }}
                             >
-                                {swatch.swatch_name}
-                                {console.log(swatch, "swatch data")}
-                                <DropDownMenu
-                                    deleteHandle={() => handleSwatchDelete( swatch?.swatch_id)}
-                                />
-                            </div>
-                        </Draggable>
+                                <div
+                                    className={cx(s.swatchItem, { [s.active]: activeSwatch === swatch?.swatch_id })}
+                                    onClick={() => handleSwatchClick(swatch)}
+                                >
+                                    {activeSwatch === swatch.swatch_id && editingSwatchId === swatch.swatch_id ? (
+                                        <div className={s.swatchEdit}>
+                                            <input
+                                                className={cx()}
+                                                type="text"
+                                                value={swatch.swatch_name}
+                                                onChange={(e) => dispatch(updateSwatchName({ swatchId: swatch.swatch_id, newName: e.target.value }))}
+                                            />
+                                            <button onClick={() => handleSwatchSave(swatch.swatch_id, swatch.swatch_name)}>Save</button>
+                                        </div>
+
+                                    ) : (
+                                        <>
+                                            {swatch.swatch_name}
+                                            <DropDownMenu
+                                                deleteHandle={() => handleSwatchDelete(swatch?.swatch_id)}
+                                                editHandle={() => setEditingSwatchId(swatch?.swatch_id)}
+                                            />
+                                        </>
+                                    )}
+                                </div>
+                            </Draggable>
+
+                        )
                     })}
                 </div>
             </Loader>

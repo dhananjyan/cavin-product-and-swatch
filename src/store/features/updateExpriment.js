@@ -58,7 +58,14 @@ export const updateExperimentSlice = createSlice({
         },
         updateWashCount: (state, action) => {
             state.washCount = action.payload;
-        }
+        },
+        updateSwatchName: (state, action) => {
+            const { swatchId, newName } = action.payload;
+            const swatchToUpdate = state.swatches.find(swatch => swatch.swatch_id === swatchId);
+            if (swatchToUpdate) {
+                swatchToUpdate.swatch_name = newName;
+            }
+        },
     }
 })
 
@@ -74,7 +81,8 @@ export const {
     updateFrontImage,
     updateBackImage,
     updateSwatchList,
-    updateWashCount
+    updateWashCount,
+    updateSwatchName
 } = updateExperimentSlice.actions;
 
 export default updateExperimentSlice.reducer;
@@ -177,6 +185,19 @@ export const deleteSwatch =
             toastr.error("Error deleting swatch");
         }
     };
+
+    export const editSwatch = ({ swatchId, swatchName }) => async (dispatch, getState) => {
+        const { status, data } = await client.put("/update_swatch", {
+            user_id: 1,
+            swatch_id: swatchId,
+            swatch_name: swatchName
+        });
+    
+        if (status) {
+            dispatch(updateSwatchName({ swatchId, newName: swatchName }));
+        } 
+    };
+    
 const getSwatchList = () => async (dispatch, getState) => {
     const currentSwatch = getState()?.updateExperiment?.activeSwatch;
     const { status, data } = await client.post("/get_all_by_swatch_id", {

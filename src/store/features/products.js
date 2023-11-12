@@ -133,6 +133,21 @@ export const getExperimentsByGroupId =
     dispatch(updateExperimentData(experimentData));
   };
 
+export const deleteExpirement = (expId) => async (dispatch, getState) => {
+  const { status, data } = await client.delete("/delete_experiment", {
+    user_id: 1,
+    id: expId,
+  });
+  if (status) {
+    const currentGroup = getState()?.products?.selectedGroup;
+    console.log(currentGroup, "currentGroup");
+    dispatch(getExperimentsByGroupId(currentGroup));
+    toastr.success("Experiment deleted successfully");
+  } else {
+    toastr.error("Error deleting experiment");
+  }
+};
+
 export const createGroup = (group_name) => async (dispatch, getState) => {
   dispatch(updateGroupLoading(true));
   dispatch(updateAddGroupPopupStatus(false));
@@ -143,6 +158,7 @@ export const createGroup = (group_name) => async (dispatch, getState) => {
   dispatch(updateGroupLoading(false));
   dispatch(getGroupData());
 };
+
 export const getContributorsList = () => async (dispatch, getState) => {
   const { status, data } = await client.post("/get_contributors");
   const contributorsData = status ? data.results : [];
