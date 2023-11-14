@@ -95,6 +95,7 @@ export default function AddContributors(props) {
                             {filteredContributors?.length > 0 &&
                                 filteredContributors?.map((item) => (
                                     <div key={item.id} className="d-flex pt-3 ps-2 align-items-center">
+                                        {console.log(item,"items")}
                                         <div>
                                             <input
                                                 type="checkbox"

@@ -48,12 +48,14 @@ export default function AddExpriment() {
         setOptions(options);
     }, [groupList]);
 
-    const handleGroupNameChange = ({ filed, value, item }) => {
+    const handleGroupNameChange = ({ filed, value, item, label }) => {
+        console.log(item?.label,"label");
         setValue("groupName", value?.[0])
         clearErrors("groupName")
     }
 
     const handleContributorsChange = (value) => {
+        console.log(value,"value");
         setValue("contributors", value)
         clearErrors("contributors")
     }

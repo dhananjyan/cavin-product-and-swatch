@@ -32,9 +32,9 @@ export default function ImageUpload() {
         //     preview: URL.createObjectURL(f[0])
         // })
         // console.log("check this", from, f, file);
-
+        console.log(f[0],file,"line 35");
         // dispatch(updateCurrentImage(file));
-        // dispatch(openImagePopup());
+        dispatch(openImagePopup());
         const base64File = await convertFileToBase64(f[0]);
         console.log("ddddddddddddd", {
             preview: base64File.preview,
