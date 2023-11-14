@@ -27,6 +27,9 @@ export default function ImageUpload() {
     const currentData = useSelector(state => state?.updateExperiment?.currentSwatchStatus)
     const isAddSwatchLoading = useSelector(state => state?.updateExperiment?.isAddSwatchLoading)
 
+
+    const step = currentSwatchStatus?.steps;
+
     const onImageChange = async (f, from) => {
         // const file = Object.assign(f[0], {
         //     preview: URL.createObjectURL(f[0])
@@ -63,73 +66,77 @@ export default function ImageUpload() {
             {activeSwatch ? <div className={s.parent}>
                 <Loader show={isAddSwatchLoading}>
                     <div className={s.main}>
-                        <div className={cx(s.title12, "pb-3")}>{activeSwatch?.swatch_name}</div>
-                        <div className="d-flex gap-5 pb-5">
-                            <div>
-                                <div className={cx(s.title2, s.fw500, "pb-2")}>Front image</div>
-                                {(!frontImage?.preview && !activeSwatch?.front_image_url) ? <Dropzone className={s.dropzone} onChange={f => onImageChange(f, "front")}>
-                                    <ReactSVG src={uploadIcon} />
-                                    <div>Upload image</div>
-                                </Dropzone> :
-                                    <>
-                                        <div className={s.imgContainer} >
-                                            <img className={s.img} src={frontImage?.preview || `${apiBaseUrl}${currentSwatchStatus?.front_image_url}`} alt="Swatch Front Image" />
+                        {(step <= 3) ? <>
+                            <div className={cx(s.title12, "pb-3")}>{activeSwatch?.swatch_name}</div>
+                            <div className="d-flex gap-5 pb-5">
+                                <div>
+                                    <div className={cx(s.title2, s.fw500, "pb-2")}>Front image</div>
+                                    {(!frontImage?.preview && !activeSwatch?.front_image_url) ? <Dropzone className={s.dropzone} onChange={f => onImageChange(f, "front")}>
+                                        <ReactSVG src={uploadIcon} />
+                                        <div>Upload image</div>
+                                    </Dropzone> :
+                                        <>
+                                            <div className={s.imgContainer} >
+                                                <img className={s.img} src={frontImage?.preview || `${apiBaseUrl}${currentSwatchStatus?.front_image_url}`} alt="Swatch Front Image" />
+                                            </div>
+                                            <div className="d-flex justify-content-between pt-2 pe-3">
+                                                <div className={cx(s.text, s.fw500)}>{frontImage?.name}</div>
+                                                <ReactSVG role="button" src={binIcon} onClick={() => handleDelete("front")} />
+                                            </div>
+                                            <div>{bitesToMb(frontImage?.size)}</div>
+                                        </>}
+                                </div>
+                                <div className="ms-3">
+                                    <div className={cx(s.title2, s.fw500, "pb-2")}>Back image</div>
+                                    {(!backImage?.preview && !activeSwatch?.back_image_url) ? <Dropzone className={s.dropzone} onChange={f => onImageChange(f, "back")}>
+                                        <ReactSVG src={uploadIcon} />
+                                        <div>Upload image</div>
+                                    </Dropzone> : <>
+                                        <div className={s.imgContainer} ><img className={s.img} src={backImage?.preview || `${apiBaseUrl}${currentSwatchStatus?.back_image_url}`} alt="Swatch Back Image" /></div>
+                                        <div className="d-flex justify-content-between  pt-2 pe-3">
+                                            <div className={cx(s.text, s.fw500)}>{backImage?.name}</div>
+                                            <ReactSVG role="button" src={binIcon} onClick={() => handleDelete("back")} />
                                         </div>
-                                        <div className="d-flex justify-content-between pt-2 pe-3">
-                                            <div className={cx(s.text, s.fw500)}>{frontImage?.name}</div>
-                                            <ReactSVG role="button" src={binIcon} onClick={() => handleDelete("front")} />
-                                        </div>
-                                        <div>{bitesToMb(frontImage?.size)}</div>
+                                        <div>{bitesToMb(backImage?.size)}</div>
                                     </>}
+                                </div>
                             </div>
-                            <div className="ms-3">
-                                <div className={cx(s.title2, s.fw500, "pb-2")}>Back image</div>
-                                {(!backImage?.preview && !activeSwatch?.back_image_url) ? <Dropzone className={s.dropzone} onChange={f => onImageChange(f, "back")}>
-                                    <ReactSVG src={uploadIcon} />
-                                    <div>Upload image</div>
-                                </Dropzone> : <>
-                                    <div className={s.imgContainer} ><img className={s.img} src={backImage?.preview || `${apiBaseUrl}${currentSwatchStatus?.back_image_url}`} alt="Swatch Back Image" /></div>
-                                    <div className="d-flex justify-content-between  pt-2 pe-3">
-                                        <div className={cx(s.text, s.fw500)}>{backImage?.name}</div>
-                                        <ReactSVG role="button" src={binIcon} onClick={() => handleDelete("back")} />
-                                    </div>
-                                    <div>{bitesToMb(backImage?.size)}</div>
-                                </>}
-                            </div>
-                        </div>
-                        {currentData ? <div>
-                            <table className={cx("table text-center")}>
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th colSpan={3}>Front</th>
-                                        <th colSpan={3}>Back</th>
-                                    </tr>
-                                    <tr>
-                                        <th></th>
-                                        <th>L*</th>
-                                        <th>A*</th>
-                                        <th>B*</th>
-                                        <th>L*</th>
-                                        <th>A*</th>
-                                        <th>B*</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>{activeSwatch?.swatch_name}</td>
-                                        <td>{currentData?.L_front}</td>
-                                        <td>{currentData?.A_front}</td>
-                                        <td>{currentData?.B_front}</td>
-                                        <td>{currentData?.L_back}</td>
-                                        <td>{currentData?.A_back}</td>
-                                        <td>{currentData?.B_back}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div> : ""}
-                        <div className={cx(s.title12, "pb-3")}>Swatch name 2 activities</div>
-                        <div className={s.titleSmall1}>Swatch name 2 activities will be listed here...</div>
+                            {currentData ? <div>
+                                <table className={cx("table text-center")}>
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th colSpan={3}>Front</th>
+                                            <th colSpan={3}>Back</th>
+                                        </tr>
+                                        <tr>
+                                            <th></th>
+                                            <th>L*</th>
+                                            <th>A*</th>
+                                            <th>B*</th>
+                                            <th>L*</th>
+                                            <th>A*</th>
+                                            <th>B*</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{activeSwatch?.swatch_name}</td>
+                                            <td>{currentData?.L_front}</td>
+                                            <td>{currentData?.A_front}</td>
+                                            <td>{currentData?.B_front}</td>
+                                            <td>{currentData?.L_back}</td>
+                                            <td>{currentData?.A_back}</td>
+                                            <td>{currentData?.B_back}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div> : ""}
+                            <div className={cx(s.title12, "pb-3")}>Swatch name 2 activities</div>
+                            <div className={s.titleSmall1}>Swatch name 2 activities will be listed here...</div>
+                        </> : <div>
+kk
+                        </div>}
                     </div>
                 </Loader>
                 <Bottombar />
