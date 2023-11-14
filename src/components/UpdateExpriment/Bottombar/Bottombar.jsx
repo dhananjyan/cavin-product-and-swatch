@@ -10,18 +10,19 @@ import { addSwatchImage } from '../../../store/features/updateExpriment';
 
 export default function Bottombar() {
     const dispatch = useDispatch();
-    const handleSaveAsDraft = () => {
-        dispatch(addSwatchImage())
+    const handleContinue = ({ isSameStep }) => {
+        dispatch(addSwatchImage({ isSameStep }))
     }
 
     const frontImage = useSelector(state => state?.updateExperiment?.frontImage)
     const backImage = useSelector(state => state?.updateExperiment?.backImage)
+    const currentSwatchStatus = useSelector(state => state?.updateExperiment?.currentSwatchStatus)
 
     return (
         <div className={cx(s.bottomBar, "")}>
-            {/* <button style={{ color: "#3771C3" }} className={s.saveAsDraft} onClick={handleSaveAsDraft}> <ReactSVG src={editArrowIcon} /> Save as draft</button> */}
+            {(currentSwatchStatus?.steps > 3) ? "" : <button style={{ color: "#3771C3" }} className={cx(s.saveAsDraft, { [s.disabled]: !(frontImage && backImage) })} onClick={() => handleContinue({ isSameStep: true })}> <ReactSVG src={editArrowIcon} /> Save as draft</button>}
             <button className={cx(s.btnPrimary, s.disabled)}><ReactSVG src={leftArrowIcon} />&nbsp;  Back</button>
-            <button className={cx(s.btnPrimary, { [s.disabled]: !(frontImage && backImage) })} onClick={handleSaveAsDraft} >Continue<ReactSVG src={rightArrowIcon} /></button>
-        </div>
+            <button className={cx(s.btnPrimary, { [s.disabled]: !(frontImage && backImage) })} onClick={() => handleContinue({ isSameStep: false })} >Continue<ReactSVG src={rightArrowIcon} /></button>
+        </div >
     )
 }

@@ -271,7 +271,7 @@ const getSwatchList = () => async (dispatch, getState) => {
         dispatch(updateSwatchList((data?.results?.images)))
 }
 
-export const addSwatchImage = () => async (dispatch, getState) => {
+export const addSwatchImage = ({ isSameStep }) => async (dispatch, getState) => {
     const currentSwatch = getState()?.updateExperiment?.activeSwatch;
     const currentData = getState()?.updateExperiment?.currentExperiment;
     const frontImage = getState()?.updateExperiment?.frontImage;
@@ -286,7 +286,7 @@ export const addSwatchImage = () => async (dispatch, getState) => {
     bodyFormData.append('group_id', currentData?.group_id);
     bodyFormData.append('experiment_id', currentData?.experiment_id);
     bodyFormData.append('swatch_id', currentSwatch?.swatch_id);
-    bodyFormData.append('steps', (currentSwatchStatus?.steps || 1) + 1);
+    bodyFormData.append('steps', isSameStep ? (currentSwatchStatus?.steps || 1) : ((currentSwatchStatus?.steps || 1) + 1));
     bodyFormData.append('wash_count', washCount);
     bodyFormData.append('front_image', dataURLtoFile(frontImage?.preview, frontImage?.name));
     bodyFormData.append('back_image', dataURLtoFile(backImage?.preview, backImage?.name));
@@ -301,8 +301,8 @@ export const addSwatchImage = () => async (dispatch, getState) => {
 
 
         const swatches = getState()?.updateExperiment?.swatches;
-        let currentSwatch = swatches.find(item => item?.swatch_id == currentSwatch?.swatch_id)
-        dispatch(updateSwatch(currentSwatch))
+        let current = swatches.find(item => item?.swatch_id == currentSwatch?.swatch_id)
+        dispatch(updateSwatch(current))
     } else {
         toastr.error(message)
     }
