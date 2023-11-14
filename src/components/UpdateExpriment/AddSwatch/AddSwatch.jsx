@@ -16,6 +16,7 @@ import closeIcon from "../../../assets/svg/close.svg";
 import ActivityList from "./ActivityList/ActivityList";
 import ImageUpload from "./ImageUpload/ImageUpload";
 import MiddleBar from "../MiddleBar/MiddleBar";
+import { useSelector } from "react-redux";
 
 
 export default function AddSwatch() {
@@ -32,6 +33,8 @@ export default function AddSwatch() {
         }
     });
 
+    const isAddSwatchLoading = useSelector(state => state?.updateExperiment?.isAddSwatchLoading)
+
 
     const onSubmit = (data) => console.log(data)
 
@@ -41,7 +44,7 @@ export default function AddSwatch() {
                 <Topbar />
             </div>
             <div className={s.middlebar}>
-               <MiddleBar/>
+                <MiddleBar />
             </div>
             <div className={s.rsidebar}>
                 {/* <div className="p-3">
@@ -52,7 +55,7 @@ export default function AddSwatch() {
                     <div className={s.text}>EXP125458745 - Experiment name</div>
                 </div> */}
             </div>
-            <div className={cx(s.lsidebar, s.verticalScroll)}>
+            <div className={cx(s.lsidebar, s.verticalScroll, { [s.disabled]: isAddSwatchLoading })}>
                 <SwatchList />
             </div>
             <div className={s.main}>

@@ -17,6 +17,7 @@ export const updateExperimentSlice = createSlice({
         backImage: null,
         swatchList: [],
         currentSwatchStatus: null,
+        isAddSwatchLoading: false,
         washCount: 0,
     },
     reducers: {
@@ -66,6 +67,9 @@ export const updateExperimentSlice = createSlice({
                 swatchToUpdate.swatch_name = newName;
             }
         },
+        updateIsAddSwatchLoading: (state, action) => {
+            state.isAddSwatchLoading = action.payload
+        }
     }
 })
 
@@ -82,7 +86,8 @@ export const {
     updateBackImage,
     updateSwatchList,
     updateWashCount,
-    updateSwatchName
+    updateSwatchName,
+    updateIsAddSwatchLoading
 } = updateExperimentSlice.actions;
 
 export default updateExperimentSlice.reducer;
@@ -101,7 +106,6 @@ export const initializeExperimentPage =
         await dispatch(getSwatchByExperimentId(experiment_id));
 
         const firstSwatch = getState()?.updateExperiment?.swatches;
-        console.log("firstSwatch[firstSwatch?.length - 1]", firstSwatch[firstSwatch?.length - 1], firstSwatch)
         dispatch(updateSwatch(firstSwatch[0]))
 
     }
@@ -144,6 +148,8 @@ export const updateSwatchPosition =
             let existingDataIndex = updatedSwatches.findIndex(
                 (d) => d.currentPosition === newPriority
             );
+            dispatch(updateSwatchRank({ swatch_id: updatedSwatches[existingDataIndex]?.swatch_id, new_rank: newPriority }))
+
             updatedSwatches[existingDataIndex] = {
                 ...updatedSwatches[existingDataIndex],
                 currentPosition: updatedSwatches[index].currentPosition,
@@ -167,37 +173,95 @@ export const createSwatch = (swatch_name) => async (dispatch, getState) => {
         experiment_id: currentData?.experiment_id,
     });
 
-    dispatch(getSwatchByExperimentId(currentData?.experiment_id));
+    await dispatch(getSwatchByExperimentId(currentData?.experiment_id));
+
+    const swatchLists = getState()?.updateExperiment?.swatches;
+    let currentSwatch = swatchLists.find(item => item?.swatch_id == data?.swatch_id)
+    dispatch(updateSwatch(currentSwatch))
     dispatch(updateSwatchesLoading(false));
 };
 
 export const deleteSwatch =
     (swatchId) => async (dispatch, getState) => {
+        dispatch(updateIsAddSwatchLoading(true))
         const { status, data } = await client.delete("/delete_swatch", {
             user_id: 1,
             swatch_id: swatchId,
         });
         if (status) {
             const currentData = getState()?.updateExperiment?.currentExperiment;
-            dispatch(getSwatchByExperimentId(currentData?.experiment_id));
+            await dispatch(getSwatchByExperimentId(currentData?.experiment_id));
+
+            const firstSwatch = getState()?.updateExperiment?.swatches;
+            dispatch(updateSwatch(firstSwatch[0]))
             toastr.success("Swatch deleted successfully");
         } else {
             toastr.error("Error deleting swatch");
         }
+        dispatch(updateIsAddSwatchLoading(false))
     };
 
-    export const editSwatch = ({ swatchId, swatchName }) => async (dispatch, getState) => {
-        const { status, data } = await client.put("/update_swatch", {
-            user_id: 1,
-            swatch_id: swatchId,
-            swatch_name: swatchName
-        });
-    
-        if (status) {
-            dispatch(updateSwatchName({ swatchId, newName: swatchName }));
-        } 
-    };
-    
+export const deleteSwatchImage = (image_type) => async (dispatch, getState) => {
+    const currentSwatch = getState()?.updateExperiment?.activeSwatch;
+
+
+    const bodyFormData = new FormData();
+
+    bodyFormData.append('user_id', 1);
+    bodyFormData.append('id', currentSwatch?.id);
+    bodyFormData.append('image_type', image_type);
+
+    dispatch(updateIsAddSwatchLoading(true))
+    const { status, data } = await client.delete("/delete_image_for_swatch", bodyFormData, { contentType: "multipart/form-data" });
+    if (image_type === "front") {
+        dispatch(updateFrontImage(null))
+
+        dispatch(updateCurrentSwatch({
+            ...currentSwatch,
+            front_image_url: null
+        }))
+    } else {
+        dispatch(updateBackImage(null))
+
+        dispatch(updateCurrentSwatch({
+            ...currentSwatch,
+            back_image_url: null
+        }))
+    }
+
+    dispatch(updateIsAddSwatchLoading(false))
+    // if (status) {
+    //     dispatch(getSwatchList());
+    //     toastr.success("Swatch Image deleted successfully");
+    // } else {
+    //     toastr.error("Error deleting swatch");
+    // }
+};
+
+export const editSwatch = ({ swatchId, swatchName }) => async (dispatch, getState) => {
+    const { status, data } = await client.put("/update_swatch", {
+        user_id: 1,
+        swatch_id: swatchId,
+        swatch_name: swatchName
+    });
+
+    if (status) {
+        dispatch(updateSwatchName({ swatchId, newName: swatchName }));
+    }
+};
+
+export const updateSwatchRank = ({ swatch_id, new_rank }) => async (dispatch, getState) => {
+    const { status, data } = await client.put("/update_swatch_rank", {
+        swatch_id,
+        new_rank
+    });
+
+    if (status) {
+        const currentData = getState()?.updateExperiment?.currentExperiment;
+        dispatch(getSwatchByExperimentId(currentData?.experiment_id));
+    }
+};
+
 const getSwatchList = () => async (dispatch, getState) => {
     const currentSwatch = getState()?.updateExperiment?.activeSwatch;
     const { status, data } = await client.post("/get_all_by_swatch_id", {
@@ -222,17 +286,26 @@ export const addSwatchImage = () => async (dispatch, getState) => {
     bodyFormData.append('group_id', currentData?.group_id);
     bodyFormData.append('experiment_id', currentData?.experiment_id);
     bodyFormData.append('swatch_id', currentSwatch?.swatch_id);
-    bodyFormData.append('steps', (currentSwatchStatus?.steps || 0) + 1);
+    bodyFormData.append('steps', (currentSwatchStatus?.steps || 1) + 1);
     bodyFormData.append('wash_count', washCount);
     bodyFormData.append('front_image', dataURLtoFile(frontImage?.preview, frontImage?.name));
     bodyFormData.append('back_image', dataURLtoFile(backImage?.preview, backImage?.name));
 
+    dispatch(updateIsAddSwatchLoading(true))
     const { status, data, message } = await client.post("/add_image_to_swatch", bodyFormData, { contentType: "multipart/form-data" });
 
+
     if (status) {
-        dispatch(getSwatchList())
+        const currentData = getState()?.updateExperiment?.currentExperiment;
+        await dispatch(getSwatchByExperimentId(currentData?.experiment_id));
+
+
+        const swatches = getState()?.updateExperiment?.swatches;
+        let currentSwatch = swatches.find(item => item?.swatch_id == currentSwatch?.swatch_id)
+        dispatch(updateSwatch(currentSwatch))
     } else {
         toastr.error(message)
     }
+    dispatch(updateIsAddSwatchLoading(false))
 
 };
