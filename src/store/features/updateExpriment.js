@@ -297,10 +297,9 @@ export const addSwatchImage = ({ isSameStep }) => async (dispatch, getState) => 
     const currentSwatchStatus = getState()?.updateExperiment?.currentSwatchStatus;
 
     dispatch(updateIsAddSwatchLoading(true));
-    const currentStep = (currentSwatchStatus?.steps || 1);
-    if (currentStep === 1) {
+    const currentStep = +(currentSwatchStatus?.steps || 1);
+    if (currentStep === 1 || (currentSwatchStatus?.wash_count !== washCount)) {
         const bodyFormData = new FormData();
-
 
         bodyFormData.append('user_id', 1);
         bodyFormData.append('group_id', currentData?.group_id);
@@ -308,8 +307,10 @@ export const addSwatchImage = ({ isSameStep }) => async (dispatch, getState) => 
         bodyFormData.append('swatch_id', currentSwatch?.swatch_id);
         bodyFormData.append('steps', (currentSwatchStatus?.steps || 1));
         bodyFormData.append('wash_count', washCount);
-        bodyFormData.append('front_image', dataURLtoFile(frontImage?.preview, "front.jpg"));
-        bodyFormData.append('back_image', dataURLtoFile(backImage?.preview, "back.jpg"));
+        if (frontImage?.preview)
+            bodyFormData.append('front_image', dataURLtoFile(frontImage?.preview, "front.jpg"));
+        if (backImage?.preview)
+            bodyFormData.append('back_image', dataURLtoFile(backImage?.preview, "back.jpg"));
 
         const { status, data, message } = await client.post("/add_image_to_swatch", bodyFormData, { contentType: "multipart/form-data" });
         if (!status)
@@ -328,7 +329,7 @@ export const addSwatchImage = ({ isSameStep }) => async (dispatch, getState) => 
 
     }
 
-    if (!isSameStep) {
+    if (!isSameStep && ((currentSwatchStatus?.steps || 1) < 3)) {
 
         const bodyFormData = new FormData();
 
