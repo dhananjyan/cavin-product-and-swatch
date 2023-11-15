@@ -19,6 +19,7 @@ export const updateExperimentSlice = createSlice({
         currentSwatchStatus: null,
         isAddSwatchLoading: false,
         washCount: 0,
+        showFinal: false
     },
     reducers: {
         openImagePopup: (state, action) => {
@@ -69,6 +70,12 @@ export const updateExperimentSlice = createSlice({
         },
         updateIsAddSwatchLoading: (state, action) => {
             state.isAddSwatchLoading = action.payload
+        },
+        showFinalStep: (state, action) => {
+            state.showFinal = true
+        },
+        hideFinalStep: (state, action) => {
+            state.showFinal = false
         }
     }
 })
@@ -87,7 +94,9 @@ export const {
     updateSwatchList,
     updateWashCount,
     updateSwatchName,
-    updateIsAddSwatchLoading
+    updateIsAddSwatchLoading,
+    showFinalStep,
+    hideFinalStep
 } = updateExperimentSlice.actions;
 
 export default updateExperimentSlice.reducer;
@@ -278,7 +287,7 @@ export const addSwatchImage = ({ isSameStep }) => async (dispatch, getState) => 
     const backImage = getState()?.updateExperiment?.backImage;
     const washCount = getState()?.updateExperiment?.washCount;
 
-    const currentSwatchStatus = getState()?.updateExperiment?.currentSwatchStatus
+    const currentSwatchStatus = getState()?.updateExperiment?.currentSwatchStatus;
 
     const bodyFormData = new FormData();
 
@@ -288,8 +297,10 @@ export const addSwatchImage = ({ isSameStep }) => async (dispatch, getState) => 
     bodyFormData.append('swatch_id', currentSwatch?.swatch_id);
     bodyFormData.append('steps', isSameStep ? (currentSwatchStatus?.steps || 1) : ((currentSwatchStatus?.steps || 1) + 1));
     bodyFormData.append('wash_count', washCount);
-    bodyFormData.append('front_image', dataURLtoFile(frontImage?.preview, frontImage?.name));
-    bodyFormData.append('back_image', dataURLtoFile(backImage?.preview, backImage?.name));
+    if (frontImage?.preview)
+        bodyFormData.append('front_image', dataURLtoFile(frontImage?.preview, frontImage?.name));
+    if (backImage?.preview)
+        bodyFormData.append('back_image', dataURLtoFile(backImage?.preview, backImage?.name));
 
     dispatch(updateIsAddSwatchLoading(true))
     const { status, data, message } = await client.post("/add_image_to_swatch", bodyFormData, { contentType: "multipart/form-data" });
@@ -307,5 +318,4 @@ export const addSwatchImage = ({ isSameStep }) => async (dispatch, getState) => 
         toastr.error(message)
     }
     dispatch(updateIsAddSwatchLoading(false))
-
 };
