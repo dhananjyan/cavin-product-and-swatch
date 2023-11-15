@@ -51,11 +51,11 @@ export default function AddExpriment() {
     const handleGroupNameChange = ({ filed, value, item, label }) => {
         console.log(item?.label,"label");
         setValue("groupName", value?.[0])
+        // setValue("groupName", item?.label)
         clearErrors("groupName")
     }
 
     const handleContributorsChange = (value) => {
-        console.log(value,"value");
         setValue("contributors", value)
         clearErrors("contributors")
     }
@@ -72,7 +72,7 @@ export default function AddExpriment() {
                 </div>
                 <div>
                     <div className={cx(s.title2, "pt-5")}>Experiment information</div>
-                    <p className={cx(s.text, "pt-2")}>Placeholder text comes here....</p>
+                    {/* <p className={cx(s.text, "pt-2")}>Placeholder text comes here....</p> */}
                     <div className="d-flex gap-3 flex-wrap">
                         <div>
                             <label className={cx(s.text, "form-label")} >Group name</label>
@@ -83,6 +83,7 @@ export default function AddExpriment() {
                                 options={options}
                                 value={[groupName]}
                                 onChange={handleGroupNameChange}
+                                placeholder="Please select group name"
                             // showError={errors?.groupName}
                             // error={"Required"}
                             // {...register("groupName")}
@@ -118,7 +119,7 @@ export default function AddExpriment() {
                 </div>
                 <div>
                     <div className={cx(s.title2, "pt-5")}>Product & swatch information</div>
-                    <p className={cx(s.text, "pt-2")}>Placeholder text comes here....</p>
+                    {/* <p className={cx(s.text, "pt-2")}>Placeholder text comes here....</p> */}
                     <div className="d-flex gap-3 flex-wrap">
 
                         <Inputs
@@ -129,14 +130,14 @@ export default function AddExpriment() {
                             showError={errors?.productName}
                             error={"Required"}
                         />
-                        <Inputs
+                        {/* <Inputs
                             label="Swatch name"
                             name="swatchName"
                             register={register}
                             validation={{ required: true, pattern: /\S/ }}
                             showError={errors?.swatchName}
                             error={"Required"}
-                        />
+                        /> */}
                     </div>
                     <input {...register("contributors", { required: true })} hidden />
                     <AddContributors onChange={handleContributorsChange} contributors={contributors}/>
