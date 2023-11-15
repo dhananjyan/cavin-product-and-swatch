@@ -32,12 +32,16 @@ export default function AddExpriment() {
     });
 
     const [options, setOptions] = useState([]);
+    const [selectedGroup, setSelectedGroup] = useState({ label: "", value: "" });
 
     const groupName = watch("groupName")
     const contributors = watch("contributors")
     const groupList = useSelector(state => state?.products?.groupList)
 
-    const onSubmit = (data) => dispatch(createExperiment(data));
+    const onSubmit = (data) => {
+        const formData = { ...data, groupName: selectedGroup.value }; I
+        dispatch(createExperiment(formData)); 
+    };
 
     const dispatch = useDispatch();
 
@@ -50,8 +54,8 @@ export default function AddExpriment() {
 
     const handleGroupNameChange = ({ filed, value, item, label }) => {
         console.log(item?.label,"label");
-        setValue("groupName", value?.[0])
-        // setValue("groupName", item?.label)
+        setValue("groupName", item?.label);
+        setSelectedGroup({ label: item?.label, value:value[0] });
         clearErrors("groupName")
     }
 

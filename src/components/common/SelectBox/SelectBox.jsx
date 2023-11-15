@@ -50,25 +50,43 @@ export default function SelectBox(props) {
         setFilterValue(e.target.value)
     }
 
+    // const handleCheckboxChange = (item) => {
+    //     // let sortedSelectedList = [...selectedList]?.sort();
+    //     // let sortedUpdatedList = [...selectedList, item].sort();
+    //     // setSelectedList(list => {
+    //     let newValue = [...selectedList];
+    //     if (!isMultiSelect)
+    //         newValue = [item?.value];
+    //     else if (!selectedList?.includes(item?.value))
+    //         newValue.push(item?.value);
+    //     else
+    //         newValue = newValue.filter(data => data != item?.value)
+    //     if (typeof onChange == "function") onChange({ field: name, value: newValue, item })
+    //     // return newValue;
+    //     // })
+    //     if (!isMultiSelect) {
+    //         setIsOpen(false);
+    //         setFilteredOptions(options)
+    //     }
+    // };
+
     const handleCheckboxChange = (item) => {
-        // let sortedSelectedList = [...selectedList]?.sort();
-        // let sortedUpdatedList = [...selectedList, item].sort();
-        // setSelectedList(list => {
         let newValue = [...selectedList];
         if (!isMultiSelect)
             newValue = [item?.value];
         else if (!selectedList?.includes(item?.value))
             newValue.push(item?.value);
         else
-            newValue = newValue.filter(data => data != item?.value)
-        if (typeof onChange == "function") onChange({ field: name, value: newValue, item })
-        // return newValue;
-        // })
+            newValue = newValue.filter(data => data !== item?.value);
+        if (typeof onChange === "function") {
+            onChange({ value: newValue, item }); 
+        }
         if (!isMultiSelect) {
             setIsOpen(false);
-            setFilteredOptions(options)
+            setFilteredOptions(options);
         }
     };
+    
 
     useEffect(() => {
         const handleOutsideClick = (event) => {
@@ -110,7 +128,7 @@ export default function SelectBox(props) {
 
                     {filteredOptions?.length ? filteredOptions.map((item, i) => {
                         return (<div key={`FILTERED_OPTION_ITEM_${i}`} className={s.multiSelectField}>
-                            <input type="checkbox" onChange={e => handleCheckboxChange(item)} checked={selectedList?.includes(item?.value)} className={s.checkbox} />
+                            <input type="checkbox" onChange={e => handleCheckboxChange(item)} checked={selectedList?.includes(item?.label)} className={s.checkbox} />
                             <div onClick={() => handleCheckboxChange(item)}>{item.label}</div>
                         </div>);
                     }) : <div className="text-center py-2">No match</div>}

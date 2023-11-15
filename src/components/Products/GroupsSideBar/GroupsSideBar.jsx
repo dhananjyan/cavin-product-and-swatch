@@ -1,8 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import s from "./GroupsSideBar.module.scss";
 import cx from "classnames";
-import { getExperimentsByGroupId } from "../../../store/features/products";
-import { updateSelectedGroup } from "../../../store/features/products";
+import { getExperimentsByGroupId, updateSelectedGroupName } from "../../../store/features/products";
 import AddGroup from "./AddGroup/AddGroup";
 import Loader from "../../common/Loader/Loader";
 
@@ -12,8 +11,9 @@ export default function GroupsSideBar() {
     const selectedGroup = useSelector(state => state?.products?.selectedGroup);
     const addFormStatus = useSelector(state => state?.products?.isAddGroup);
 
-    const handleGroupClick = (id) => {
+    const handleGroupClick = ({id, groupName}) => {
         dispatch(getExperimentsByGroupId(id));
+        dispatch(updateSelectedGroupName(groupName));
     }
 
     console.log("addFormStatus", addFormStatus)
@@ -28,7 +28,7 @@ export default function GroupsSideBar() {
             <Loader show={isGroupDataLoading}>
             {list.map((item, index) => {
                 return (
-                     <div role="button" onClick={() => handleGroupClick(item?.group_id)} className={cx(s.item, { [s.active]: selectedGroup === item?.group_id })} key={index}>
+                     <div role="button" onClick={() => handleGroupClick({id: item?.group_id, groupName:item?.group_name})} className={cx(s.item, { [s.active]: selectedGroup === item?.group_id })} key={index}>
                         <div className={cx(s.titleBold, "pb-2")}>{item.group_name}</div>
                         <div className={cx(s.titleSmall1, "pb-1")}>
                             Total no. of experiments&nbsp;&nbsp;<b>{item?.total_experiments}</b>
