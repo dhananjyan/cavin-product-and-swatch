@@ -27,6 +27,7 @@ export default function Products() {
     const isExperimentLoading = useSelector((state) => state.products.isExperimentLoading);
     const groupName = useSelector(state => state?.products?.selectedGroupName)
 
+
     const navigate = useNavigate();
 
     useEffect(() => {

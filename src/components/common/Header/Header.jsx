@@ -10,11 +10,17 @@ import plusIcon from "../../../assets/svg/plus.svg";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { openAddPopup } from "../../../store/features/expriment";
+import { updateNavigateTo } from "../../../store/features/products";
 
 export default function Header() {
     const isModalOpen = useSelector(state => state.experiment.isModalOpen);
     const dispatch = useDispatch();
     const openModal = () => dispatch(openAddPopup())
+
+
+    const handleContributors = () => {
+        dispatch(updateNavigateTo("/manage-contributors"))
+    }
 
     return (
         <div className={s.topBar}>
@@ -44,7 +50,7 @@ export default function Header() {
                                 <ReactSVG src={bellNotifySvg} />
                             </li>
                             <li>
-                                <ReactSVG src={avatarSvg} />
+                                <ReactSVG src={avatarSvg} onClick={handleContributors} />
                             </li>
                         </ul>
                     </div>

@@ -4,6 +4,7 @@ import HomePage from "./home";
 import Layout from "./layout";
 import NewExpriment from "./newExpriment";
 import UpdateExpriment from "./updateExpriment";
+import Contributors from "./contributors";
 
 const routes = [
     {
@@ -26,6 +27,10 @@ const routes = [
             {
                 path: "/experiment/:id",
                 element: <UpdateExpriment />
+            },
+            {
+                path: "/manage-contributors",
+                element: <Contributors />
             },
         ]
     },
