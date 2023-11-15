@@ -7,6 +7,7 @@ export const counterSlice = createSlice({
     value: 0,
     groupList: [],
     selectedGroup: null,
+    selectedGroupName: "",
     totalGroup: 0,
     isAddGroup: false,
     experimentData: [],
@@ -45,6 +46,9 @@ export const counterSlice = createSlice({
     updateSelectedGroup: (state, action) => {
       state.selectedGroup = action.payload;
     },
+    updateSelectedGroupName: (state, action) => {
+      state.selectedGroupName = action.payload;
+    },
     updateAddGroupPopupStatus: (state, action) => {
       state.isAddGroup = action.payload;
     },
@@ -56,9 +60,6 @@ export const counterSlice = createSlice({
     },
     updateTotalGroupNum: (state, action) => {
       state.totalGroup = action.payload;
-    },
-    updateSelectedGroup: (state, action) => {
-      state.selectedGroup = action.payload;
     },
     updateAddGroupPopupStatus: (state, action) => {
       state.isAddGroup = action.payload;
@@ -87,6 +88,7 @@ export const {
   incrementByAmount,
   updateGroupList,
   updateSelectedGroup,
+  updateSelectedGroupName,
   updateTotalGroupNum,
   updateAddGroupPopupStatus,
   updateExperimentData,
@@ -121,7 +123,7 @@ export const initializeProductPage = () => async (dispatch, getState) => {
 };
 
 export const getExperimentsByGroupId =
-  (groupId) => async (dispatch, getState) => {
+  (groupId) => async (dispatch, getState) => { 
     dispatch(updateExperimentLoading(true));
     dispatch(updateSelectedGroup(groupId));
     const { status, data } = await client.post("/get_experiments_by_group_id", {
@@ -138,10 +140,12 @@ export const deleteExpirement = (expId) => async (dispatch, getState) => {
     user_id: 1,
     id: expId,
   });
+  // dispatch(updateExperimentLoading(true));
   if (status) {
     const currentGroup = getState()?.products?.selectedGroup;
     console.log(currentGroup, "currentGroup");
     dispatch(getExperimentsByGroupId(currentGroup));
+    dispatch(updateExperimentLoading(false));
     toastr.success("Experiment deleted successfully");
   } else {
     toastr.error("Error deleting experiment");

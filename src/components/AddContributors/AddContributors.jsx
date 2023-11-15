@@ -62,6 +62,10 @@ export default function AddContributors(props) {
         // setShowContributors(false);
     };
 
+    const selectedContributorNames = contributorsData
+    .filter(item => contributors.includes(item.contributor_id))
+    .map(selected => getInitials(selected.contributor_name));
+
     const handleApplyClick = () => {
         // console.log("Selected Contributors:", selectedContributors);
         onChange(selectedContributors)
@@ -72,7 +76,7 @@ export default function AddContributors(props) {
     return (
         <div className="mb-5">
             <div className={cx(s.title2, "pt-5")}>Contributors</div>
-            <p className={cx(s.text, "pt-2")}>Placeholder text comes here....</p>
+            {/* <p className={cx(s.text, "pt-2")}>Placeholder text comes here....</p> */}
             <div className={cx("d-flex gap-2 align-items-center", s.popupText)}>
                 <ReactSVG src={addUserIcon} />
                 <span className={s.linkTextPrimary} onClick={() => setAddContributors(true)}>
@@ -95,6 +99,7 @@ export default function AddContributors(props) {
                             {filteredContributors?.length > 0 &&
                                 filteredContributors?.map((item) => (
                                     <div key={item.id} className="d-flex pt-3 ps-2 align-items-center">
+                                        {console.log(item,"items")}
                                         <div>
                                             <input
                                                 type="checkbox"
@@ -120,7 +125,7 @@ export default function AddContributors(props) {
                 )}
             </div>
             {contributors && <div className="mt-3">
-                <UserAvatar item={contributors} />
+                <UserAvatar item={selectedContributorNames} />
             </div>}
         </div>
     );

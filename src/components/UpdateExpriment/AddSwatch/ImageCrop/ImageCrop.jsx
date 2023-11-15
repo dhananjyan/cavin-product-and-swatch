@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import Topbar from '../../Topbar/Topbar';
 import s from './ImageCrop.module.scss';
-import { closeImageModal } from '../../../../store/features/updateExpriment';
+import { closeImageModal, updateCurrentImage, updateFrontImage } from '../../../../store/features/updateExpriment';
 import 'react-image-crop/src/ReactCrop.scss'
 import ReactCrop, { centerCrop, makeAspectCrop } from 'react-image-crop'
 import { useRef, useState } from 'react';
@@ -51,7 +51,7 @@ export default function ImageCrop() {
         dispatch(closeImageModal())
     }
 
-    const handleCropChange = (_, c) => {
+    const handleCropChange = ( c, percentCrop) => {
         setCrop(c)
     }
 
@@ -64,7 +64,10 @@ export default function ImageCrop() {
                 "newFile.jpeg"
             );
             console.log("croppedImageUrl", croppedImageUrl)
-            setCroppedImage(croppedImageUrl)
+            const base64File = await convertFileToBase64(croppedImageUrl);
+            console.log("base64File",base64File);
+            dispatch(updateCurrentImage(croppedImageUrl));
+            dispatch(closeImageModal());
             // this.setState({ croppedImageUrl });
         }
     }
@@ -112,6 +115,8 @@ export default function ImageCrop() {
                 fileUrl = window.URL.createObjectURL(blob);
                 resolve(fileUrl);
             }, "image/jpeg");
+
+            console.log(fileUrl,"fileUrl");
         });
     }
 
@@ -174,7 +179,6 @@ export default function ImageCrop() {
 
     const updateAspectRatio = (aspectRatio) => {
         setAspectRatio(aspectRatio)
-
         if (!aspectRatio) {
             setAspectRatio(undefined)
             setCrop({});
@@ -182,27 +186,55 @@ export default function ImageCrop() {
         }
 
 
-        const { width, height } = imgRef.current
+        const { naturalWidth: width, naturalHeight: height } = imgRef.current;
 
-        const crop = centerCrop(
-            makeAspectCrop(
-                {
-                    // You don't need to pass a complete crop into
-                    // makeAspectCrop or centerCrop.
-                    unit: '%',
-                    width: 60,
-                },
-                aspectRatio || 4 / 3,
-                width,
-                height
-            ),
-            width,
-            height
-        )
+        let newCrop;
 
-        setCrop(crop)
+        // const crop = centerCrop(
+        //     makeAspectCrop(
+        //         {
+        //             // You don't need to pass a complete crop into
+        //             // makeAspectCrop or centerCrop.
+        //             unit: '%',
+        //             width: 60,
+        //         },
+        //         aspectRatio || 4 / 3,
+        //         width,
+        //         height
+        //     ),
+        //     width,
+        //     height
+        // )
+
+        // setCrop(crop)
+        if (aspectRatio) {
+                    let x, y, newWidth, newHeight;
+            
+                    if (width / height > aspectRatio) {
+                        newHeight = height;
+                        newWidth = height * aspectRatio;
+                        x = (width - newWidth) / 2;
+                        y = 0;
+                    } else {
+                        newWidth = width;
+                        newHeight = width / aspectRatio;
+                        x = 0;
+                        y = (height - newHeight) / 2;
+                    }
+            
+                    newCrop = {
+
+                        unit: 'px',
+                        aspect: aspectRatio,
+                        width: newWidth,
+                        height: newHeight,
+                        x,
+                        y,
+                    };
+                }
+            
+                setCrop(newCrop || {});
     }
-
 
     return (
         <>
@@ -244,8 +276,8 @@ export default function ImageCrop() {
                     <button className={s.btnPrimary} onClick={handleContinue}>Continue <ReactSVG src={rightArrowIcon} /></button>
                 </div>
             </div>
-            <div style={{ height: 500 }}>
-                {croppedImage && <img style={{ width: "auto", height: "100%" }} src={croppedImage} alt="Cropped Image" />}
+            <div style={{ height: '100%' }}>
+                {croppedImage && <img style={{ width: "100px", height: "100%" }} src={croppedImage} alt="Cropped Image" />}
             </div>
 
         </>

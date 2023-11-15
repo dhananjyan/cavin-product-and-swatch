@@ -25,6 +25,8 @@ export default function Products() {
 
     const isModalOpen = useSelector((state) => state.experiment.isModalOpen);
     const isExperimentLoading = useSelector((state) => state.products.isExperimentLoading);
+    const groupName = useSelector(state => state?.products?.selectedGroupName)
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -97,7 +99,7 @@ export default function Products() {
                     )}
                 >
                     <div className={cx(s.title3, " d-flex align-items-center")}>
-                        Group name 3
+                        {groupName}
                     </div>
                     <div className={cx("d-flex align-items-center gap-3")}>
                         <div
