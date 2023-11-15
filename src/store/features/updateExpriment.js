@@ -104,13 +104,13 @@ export default updateExperimentSlice.reducer;
 export const initializeExperimentPage =
     (experiment_id) => async (dispatch, getState) => {
         const { status, data } = await client.post("/get_data_by_exp_id", {
-            experiment_id,
+            id: experiment_id,
         });
 
         console.log("status", status, data);
         // if (status && data)
         if (data) {
-            dispatch(updateCurrentExperiment(data?.results));
+            dispatch(updateCurrentExperiment({ ...data?.results, id: experiment_id }));
         }
         await dispatch(getSwatchByExperimentId(experiment_id));
 
@@ -179,10 +179,10 @@ export const createSwatch = (swatch_name) => async (dispatch, getState) => {
         swatch_name,
         user_id: 1,
         group_id: currentData?.group_id,
-        experiment_id: currentData?.experiment_id,
+        experiment_id: currentData?.id,
     });
 
-    await dispatch(getSwatchByExperimentId(currentData?.experiment_id));
+    await dispatch(getSwatchByExperimentId(currentData?.id));
 
     const swatchLists = getState()?.updateExperiment?.swatches;
     let currentSwatch = swatchLists.find(item => item?.swatch_id == data?.swatch_id)

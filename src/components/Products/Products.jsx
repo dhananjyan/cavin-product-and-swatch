@@ -44,7 +44,8 @@ export default function Products() {
     };
 
     const handleExpEdit = (data) => {
-        navigate(`/experiment/${data?.experiment_id}`)
+        console.log("datadata", data)
+        navigate(`/experiment/${data?.id}`)
     }
 
     const handleExpDelete = (expId) => {
@@ -149,7 +150,7 @@ export default function Products() {
                         <tbody>
                             {experimentData && experimentData.length > 0 ?
                                 (experimentData?.map((item, i) => (
-                                    <tr key={`experiment_item_${i}`}>
+                                    <tr key={`experiment_item_${i}`} role="button" onClick={() => handleExpEdit(item)}>
                                         <td>{item.experiment_name}</td>
                                         <td>{item.experiment_id}</td>
                                         <td>{item.product_name}</td>
@@ -175,7 +176,7 @@ export default function Products() {
                                         <td>
                                             <DropDownMenu
                                                 editHandle={() => handleExpEdit(item)}
-                                                deleteHandle={() => handleExpDelete(item.experiment_id)}
+                                                deleteHandle={() => handleExpDelete(item.id)}
                                             />
                                         </td>
                                     </tr>

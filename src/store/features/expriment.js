@@ -31,7 +31,7 @@ export default experimentSlice.reducer;
 
 
 export const createExperiment = (data) => async (dispatch, getState) => {
-    const { status } = await client.post("/add_experiment", {
+    const { status, data: result } = await client.post("/add_experiment", {
         user_id: 1,
         experiment_id: data?.experimentId,
         experiment_name: data?.experimentName,
@@ -52,7 +52,7 @@ export const createExperiment = (data) => async (dispatch, getState) => {
         group_id: data?.groupName,
         contributor_id: [1, 2, 3]
     }));
-    return dispatch(updateNavigateTo(`/experiment/${data?.experimentId}`))
+    return dispatch(updateNavigateTo(`/experiment/${result?.experiment_row_id}`))
 
 
 };

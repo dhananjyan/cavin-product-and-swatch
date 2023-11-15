@@ -39,8 +39,8 @@ export default function AddExpriment() {
     const groupList = useSelector(state => state?.products?.groupList)
 
     const onSubmit = (data) => {
-        const formData = { ...data, groupName: selectedGroup.value }; I
-        dispatch(createExperiment(formData)); 
+        const formData = { ...data, groupName: selectedGroup.value };
+        dispatch(createExperiment(formData));
     };
 
     const dispatch = useDispatch();
@@ -53,9 +53,9 @@ export default function AddExpriment() {
     }, [groupList]);
 
     const handleGroupNameChange = ({ filed, value, item, label }) => {
-        console.log(item?.label,"label");
+        console.log(item?.label, "label");
         setValue("groupName", item?.label);
-        setSelectedGroup({ label: item?.label, value:value[0] });
+        setSelectedGroup({ label: item?.label, value: value[0] });
         clearErrors("groupName")
     }
 
@@ -144,7 +144,7 @@ export default function AddExpriment() {
                         /> */}
                     </div>
                     <input {...register("contributors", { required: true })} hidden />
-                    <AddContributors onChange={handleContributorsChange} contributors={contributors}/>
+                    <AddContributors onChange={handleContributorsChange} contributors={contributors} />
                     {errors?.contributors ? <div className={s.errorText}>Required </div> : ""}
                 </div>
             </div>

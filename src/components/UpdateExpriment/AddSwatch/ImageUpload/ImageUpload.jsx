@@ -317,12 +317,12 @@ export default function ImageUpload() {
 
     return (
         <>
-            {/* {activeSwatch ? <div className={s.parent}> */}
-            {true ? <div className={s.parent}>
+            {activeSwatch ? <div className={s.parent}>
+            {/* {true ? <div className={s.parent}> */}
                 <Loader show={isAddSwatchLoading}>
                     <div className={s.main}>
-                        {/* {((step != 4) && !showFinal) ? <> */}
-                        {false ? <>
+                        {((step != 4) && !showFinal) ? <>
+                        {/* {false ? <> */}
                             <div className={cx(s.title12, "pb-3")}>{activeSwatch?.swatch_name}</div>
                             <div className="d-flex gap-5 pb-5">
                                 <div>
