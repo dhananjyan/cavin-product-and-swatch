@@ -12,6 +12,7 @@ import { ReactSVG } from 'react-svg';
 import cropIcon from "../../../../assets/svg/crop.svg";
 
 import rightArrowIcon from "../../../../assets/svg/rightArrow.svg"
+import convertFileToBase64 from '../../../../helpers/convertFileToBase64';
 
 
 // function centerAspectCrop(
@@ -64,12 +65,20 @@ export default function ImageCrop() {
                 "newFile.jpeg"
             );
             console.log("croppedImageUrl", croppedImageUrl)
+            const croppedImage = new Image;
+            croppedImage.src =  croppedImageUrl;
             const base64File = await convertFileToBase64(croppedImageUrl);
             console.log("base64File",base64File);
             dispatch(updateCurrentImage(croppedImageUrl));
-            dispatch(closeImageModal());
             // this.setState({ croppedImageUrl });
+            dispatch(updateFrontImage({
+                            preview: base64File.preview,
+                            name: base64File.name,
+                            size: base64File.size
+                        }))
         }
+        dispatch(closeImageModal());
+        console.log(croppedImage,"croppedImage");
     }
 
     const getCroppedImg = (image, crop, fileName) => {

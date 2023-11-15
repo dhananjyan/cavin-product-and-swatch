@@ -32,30 +32,30 @@ export default function ImageUpload() {
     const step = currentSwatchStatus?.steps;
 
     const onImageChange = async (f, from) => {
-        // const file = Object.assign(f[0], {
-        //     preview: URL.createObjectURL(f[0])
-        // })
-        // console.log("check this", from, f, file);
-        console.log(f[0],file,"line 35");
-        // dispatch(updateCurrentImage(file));
-        dispatch(openImagePopup());
-        const base64File = await convertFileToBase64(f[0]);
-        console.log("ddddddddddddd", {
-            preview: base64File.preview,
-            name: base64File.name
+        const file = Object.assign(f[0], {
+            preview: URL.createObjectURL(f[0])
         })
-        if (from === "front")
-            dispatch(updateFrontImage({
-                preview: base64File.preview,
-                name: base64File.name,
-                size: base64File.size
-            }))
-        else
-            dispatch(updateBackImage({
-                preview: base64File.preview,
-                name: base64File.name,
-                size: base64File.size
-            }));
+        console.log("check this", from, f, file);
+        console.log(f[0],file,"line 35");
+        dispatch(updateCurrentImage(file));
+        dispatch(openImagePopup());
+    //     const base64File = await convertFileToBase64(f[0]);
+    //     console.log("ddddddddddddd", {
+    //         preview: base64File.preview,
+    //         name: base64File.name
+    //     })
+    //     if (from === "front")
+    //         dispatch(updateFrontImage({
+    //             preview: base64File.preview,
+    //             name: base64File.name,
+    //             size: base64File.size
+    //         }))
+    //     else
+    //         dispatch(updateBackImage({
+    //             preview: base64File.preview,
+    //             name: base64File.name,
+    //             size: base64File.size
+    //         }));
     }
 
     const handleDelete = (type) => {
