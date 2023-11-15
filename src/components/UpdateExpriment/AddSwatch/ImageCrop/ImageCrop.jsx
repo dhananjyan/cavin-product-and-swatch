@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import Topbar from '../../Topbar/Topbar';
 import s from './ImageCrop.module.scss';
-import { closeImageModal, updateCurrentImage, updateFrontImage } from '../../../../store/features/updateExpriment';
+import { closeImageModal, updateBackImage, updateCurrentImage, updateFrontImage } from '../../../../store/features/updateExpriment';
 import 'react-image-crop/src/ReactCrop.scss'
 import ReactCrop, { centerCrop, makeAspectCrop } from 'react-image-crop'
 import { useRef, useState } from 'react';
@@ -12,7 +12,7 @@ import { ReactSVG } from 'react-svg';
 import cropIcon from "../../../../assets/svg/crop.svg";
 
 import rightArrowIcon from "../../../../assets/svg/rightArrow.svg"
-import convertFileToBase64 from '../../../../helpers/convertFileToBase64';
+import convertFileToBase64, { dataURLtoFile } from '../../../../helpers/convertFileToBase64';
 
 
 // function centerAspectCrop(
@@ -45,6 +45,7 @@ export default function ImageCrop() {
     // const [imageRef, setImageRef] = useState(null);
 
     const file = useSelector(state => state?.updateExperiment?.currentImage);
+    const currentImageType = useSelector(state => state?.updateExperiment?.currentImageType);
 
     const dispatch = useDispatch();
 
@@ -52,7 +53,7 @@ export default function ImageCrop() {
         dispatch(closeImageModal())
     }
 
-    const handleCropChange = ( c, percentCrop) => {
+    const handleCropChange = (c, percentCrop) => {
         setCrop(c)
     }
 
@@ -66,31 +67,39 @@ export default function ImageCrop() {
             );
             console.log("croppedImageUrl", croppedImageUrl)
             const croppedImage = new Image;
-            croppedImage.src =  croppedImageUrl;
-            const base64File = await convertFileToBase64(croppedImageUrl);
-            console.log("base64File",base64File);
-            dispatch(updateCurrentImage(croppedImageUrl));
+            croppedImage.src = croppedImageUrl;
+            // cn
+            const base64File = await convertFileToBase64(dataURLtoFile(croppedImageUrl));
+            console.log("base64File", base64File, croppedImage, croppedImageUrl);
+            // dispatch(updateCurrentImage(croppedImageUrl));
             // this.setState({ croppedImageUrl });
-            dispatch(updateFrontImage({
-                            preview: base64File.preview,
-                            name: base64File.name,
-                            size: base64File.size
-                        }))
+            if (currentImageType === "front")
+                dispatch(updateFrontImage({
+                    preview: base64File?.preview,
+                    name: "asdfas",
+                    // size: base64File.size
+                }))
+            else
+                dispatch(updateBackImage({
+                    preview: base64File?.preview,
+                    name: "asdfas",
+                    // size: base64File.size
+                }))
         }
         dispatch(closeImageModal());
-        console.log(croppedImage,"croppedImage");
+        console.log(croppedImage, "croppedImage");
     }
 
     const getCroppedImg = (image, crop, fileName) => {
         const canvas = document.createElement("canvas");
 
-        console.log("dddddddddddddddd", image, image.naturalHeight, image?.height);
-        console.table({
-            height: image.height,
-            width: image.width,
-            naturalHeight: image.naturalHeight,
-            naturalWidth: image.naturalWidth
-        })
+        // console.log("dddddddddddddddd", image, image.naturalHeight, image?.height);
+        // console.table({
+        //     height: image.height,
+        //     width: image.width,
+        //     naturalHeight: image.naturalHeight,
+        //     naturalWidth: image.naturalWidth
+        // })
         const scaleX = image.naturalWidth / image.width;
         const scaleY = image.naturalHeight / image.height;
         canvas.width = crop.width;
@@ -112,20 +121,22 @@ export default function ImageCrop() {
         return new Promise((resolve, reject) => {
             const base64Image = canvas.toDataURL('image/jpeg');
             console.log("base64", base64Image)
-            let fileUrl;
-            canvas.toBlob(blob => {
-                if (!blob) {
-                    //reject(new Error('Canvas is empty'));
-                    console.error("Canvas is empty");
-                    return;
-                }
-                blob.name = fileName;
-                window.URL.revokeObjectURL(fileUrl);
-                fileUrl = window.URL.createObjectURL(blob);
-                resolve(fileUrl);
-            }, "image/jpeg");
 
-            console.log(fileUrl,"fileUrl");
+            resolve(base64Image)
+            // let fileUrl;
+            // canvas.toBlob(blob => {
+            //     if (!blob) {
+            //         //reject(new Error('Canvas is empty'));
+            //         console.error("Canvas is empty");
+            //         return;
+            //     }
+            //     blob.name = fileName;
+            //     window.URL.revokeObjectURL(fileUrl);
+            //     fileUrl = window.URL.createObjectURL(blob);
+            //     resolve(fileUrl);
+            // }, "image/jpeg");
+
+            console.log(fileUrl, "fileUrl");
         });
     }
 
@@ -217,32 +228,32 @@ export default function ImageCrop() {
 
         // setCrop(crop)
         if (aspectRatio) {
-                    let x, y, newWidth, newHeight;
-            
-                    if (width / height > aspectRatio) {
-                        newHeight = height;
-                        newWidth = height * aspectRatio;
-                        x = (width - newWidth) / 2;
-                        y = 0;
-                    } else {
-                        newWidth = width;
-                        newHeight = width / aspectRatio;
-                        x = 0;
-                        y = (height - newHeight) / 2;
-                    }
-            
-                    newCrop = {
+            let x, y, newWidth, newHeight;
 
-                        unit: 'px',
-                        aspect: aspectRatio,
-                        width: newWidth,
-                        height: newHeight,
-                        x,
-                        y,
-                    };
-                }
-            
-                setCrop(newCrop || {});
+            if (width / height > aspectRatio) {
+                newHeight = height;
+                newWidth = height * aspectRatio;
+                x = (width - newWidth) / 2;
+                y = 0;
+            } else {
+                newWidth = width;
+                newHeight = width / aspectRatio;
+                x = 0;
+                y = (height - newHeight) / 2;
+            }
+
+            newCrop = {
+
+                unit: 'px',
+                aspect: aspectRatio,
+                width: newWidth,
+                height: newHeight,
+                x,
+                y,
+            };
+        }
+
+        setCrop(newCrop || {});
     }
 
     return (
@@ -262,7 +273,7 @@ export default function ImageCrop() {
                             minWidth={50}
                             ruleOfThirds
                         >
-                            <img src={file?.preview} onLoad={onImageLoad} ref={imgRef} />
+                            <img src={file} onLoad={onImageLoad} ref={imgRef} />
                         </ReactCrop>
                     </div>
                 </div>
