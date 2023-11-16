@@ -15,6 +15,7 @@ export const counterSlice = createSlice({
     isExperimentLoading: false,
     isGroupDataLoading: false,
     redirectTo: null,
+    isEditContributor:false,
   },
   reducers: {
     increment: (state) => {
@@ -79,6 +80,12 @@ export const counterSlice = createSlice({
     updateNavigateTo: (state, action) => {
       state.redirectTo = action.payload;
     },
+    updateOpenEdit: (state) => {
+      state.isEditContributor = true
+    },
+    updateCloseEdit: (state) => {
+      state.isEditContributor = false
+    }
   },
 });
 
@@ -96,6 +103,8 @@ export const {
   updateExperimentLoading,
   updateGroupLoading,
   updateNavigateTo,
+  updateOpenEdit,
+  updateCloseEdit,
 } = counterSlice.actions;
 
 export default counterSlice.reducer;
@@ -168,3 +177,25 @@ export const getContributorsList = () => async (dispatch, getState) => {
   const contributorsData = status ? data.results : [];
   dispatch(updateContributorsData(contributorsData));
 };
+
+export const deleteContributor = (conId) => async (dispatch, getState) => {
+  const {status, data} = await client.delete("/delete_contributors", {
+    contributor_id : conId,
+    user_id: 1
+  })
+  if (status) {
+    dispatch(getContributorsList());
+  }
+};
+
+export const editContributor = (contData) => async (dispatch, getState) => {
+  const {status, data} = await client.post("/update_contributors", {
+    user_id: 1,
+    contributor_id: contData.contributor_id,
+    contributor_name: contData.contributor_name,
+    email_id: contData.email_id
+  })
+  if (status) {
+    dispatch(getContributorsList());
+  }
+}
