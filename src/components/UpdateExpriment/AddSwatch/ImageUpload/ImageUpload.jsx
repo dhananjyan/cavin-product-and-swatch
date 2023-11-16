@@ -64,14 +64,6 @@ export default function ImageUpload() {
         dispatch(deleteSwatchImage(type))
     }
 
-    useEffect(() => {
-
-
-        return () => {
-
-        }
-    }, [])
-
 
 
 

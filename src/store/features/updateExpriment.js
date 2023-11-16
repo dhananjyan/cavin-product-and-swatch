@@ -20,7 +20,8 @@ export const updateExperimentSlice = createSlice({
         isAddSwatchLoading: false,
         washCount: 0,
         showFinal: false,
-        currentImageType: null
+        currentImageType: null,
+        finalResult: null
     },
     reducers: {
         openImagePopup: (state, action) => {
@@ -81,6 +82,9 @@ export const updateExperimentSlice = createSlice({
         },
         updateCurrentSwatchStatus: (state, action) => {
             state.currentSwatchStatus = action?.payload
+        },
+        updateFinalResult: (state, action) => {
+            state.finalResult = action?.payload;
         }
     }
 })
@@ -102,7 +106,8 @@ export const {
     updateIsAddSwatchLoading,
     showFinalStep,
     hideFinalStep,
-    updateCurrentSwatchStatus
+    updateCurrentSwatchStatus,
+    updateFinalResult
 } = updateExperimentSlice.actions;
 
 export default updateExperimentSlice.reducer;
@@ -126,24 +131,43 @@ export const initializeExperimentPage =
     }
 
 export const updateSwatch = (swatch) => async (dispatch, getState) => {
-    dispatch(updateBackImage(null))
-    dispatch(updateFrontImage(null))
-    dispatch(updateSwatchList(null))
+    dispatch(updateBackImage(null));
+    dispatch(updateFrontImage(null));
+    dispatch(updateSwatchList(null));
     await dispatch(updateCurrentSwatch(swatch));
-    dispatch(getSwatchList())
+    dispatch(getSwatchList());
 }
 
 export const getSwatchByExperimentId =
+    // (experiment_id) => async (dispatch, getState) => {
+    //     const { status, data } = await client.post(
+    //         "/get_swatch_info_by_experiment_id",
+    //         {
+    //             experiment_id,
+    //         }
+    //     );
+    //     if (status && data) {
+    //         const list = data?.results?.length
+    //             ? data?.results?.map((item, i) => {
+    //                 return {
+    //                     ...item,
+    //                     priority: i + 1,
+    //                     currentPosition: i + 1,
+    //                 };
+    //             })
+    //             : [];
+    //         dispatch(updateSwatches(list));
+    //     }
     (experiment_id) => async (dispatch, getState) => {
         const { status, data } = await client.post(
-            "/get_swatch_info_by_experiment_id",
+            "/get_swatch_data",
             {
                 experiment_id,
             }
         );
         if (status && data) {
-            const list = data?.results?.length
-                ? data?.results?.map((item, i) => {
+            const list = data?.swatch_data?.length
+                ? data?.swatch_data?.map((item, i) => {
                     return {
                         ...item,
                         priority: i + 1,
@@ -355,3 +379,13 @@ export const addSwatchImage = ({ isSameStep }) => async (dispatch, getState) => 
     }
     dispatch(updateIsAddSwatchLoading(false))
 };
+
+export const getFinalResult = () => async (dispatch, getState) => {
+    const currentData = getState()?.updateExperiment?.currentExperiment;
+    const { status, data } = await client.post("/final_results_by_exp_id", {
+        eid: currentData?.id
+    });
+    console.log("akjsdfkajsdkfkjasdf", status, data)
+    if (status)
+        dispatch(updateFinalResult((data?.result)))
+}
