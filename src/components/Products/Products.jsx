@@ -31,7 +31,8 @@ export default function Products() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        dispatch(initializeProductPage());
+        if (!groupName)
+            dispatch(initializeProductPage());
     }, []);
 
 
@@ -77,7 +78,7 @@ export default function Products() {
             return "";
         }
     }
-    
+
 
     return (
         <div className={s.productSection}>

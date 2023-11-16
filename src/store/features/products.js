@@ -15,7 +15,7 @@ export const counterSlice = createSlice({
     isExperimentLoading: false,
     isGroupDataLoading: false,
     redirectTo: null,
-    isEditContributor:false,
+    isEditContributor: false,
   },
   reducers: {
     increment: (state) => {
@@ -128,20 +128,22 @@ export const initializeProductPage = () => async (dispatch, getState) => {
   await dispatch(getGroupData());
   const state = getState();
   const fristGroupId = state?.products?.groupList?.[0]?.group_id;
+  const groupName = state?.products?.groupList?.[0]?.group_name;
   dispatch(getExperimentsByGroupId(fristGroupId));
+  dispatch(updateSelectedGroupName(groupName))
 };
 
 export const getExperimentsByGroupId =
-  (groupId) => async (dispatch, getState) => { 
+  (groupId) => async (dispatch, getState) => {
     dispatch(updateExperimentLoading(true));
     dispatch(updateSelectedGroup(groupId));
     const { status, data } = await client.post("/get_experiments_by_group_id", {
       group_id: groupId,
       user_id: 1,
     });
-    dispatch(updateExperimentLoading(false));
     const experimentData = status ? data.results : [];
-    dispatch(updateExperimentData(experimentData));
+    await dispatch(updateExperimentData(experimentData));
+    dispatch(updateExperimentLoading(false));
   };
 
 export const deleteExpirement = (expId) => async (dispatch, getState) => {
@@ -168,8 +170,8 @@ export const createGroup = (group_name) => async (dispatch, getState) => {
     group_name,
     user_id: 1,
   });
+  await dispatch(getGroupData());
   dispatch(updateGroupLoading(false));
-  dispatch(getGroupData());
 };
 
 export const getContributorsList = () => async (dispatch, getState) => {
@@ -179,8 +181,8 @@ export const getContributorsList = () => async (dispatch, getState) => {
 };
 
 export const deleteContributor = (conId) => async (dispatch, getState) => {
-  const {status, data} = await client.delete("/delete_contributors", {
-    contributor_id : conId,
+  const { status, data } = await client.delete("/delete_contributors", {
+    contributor_id: conId,
     user_id: 1
   })
   if (status) {
@@ -189,7 +191,7 @@ export const deleteContributor = (conId) => async (dispatch, getState) => {
 };
 
 export const editContributor = (contData) => async (dispatch, getState) => {
-  const {status, data} = await client.post("/update_contributors", {
+  const { status, data } = await client.post("/update_contributors", {
     user_id: 1,
     contributor_id: contData.contributor_id,
     contributor_name: contData.contributor_name,

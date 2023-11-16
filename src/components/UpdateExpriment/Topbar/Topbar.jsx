@@ -50,18 +50,11 @@ import { useNavigate } from "react-router-dom";
 
 
 export default function Topbar(props) {
-    const { onClose } = props;
     const navigate = useNavigate();
     const currentSwatchStatus = useSelector(state => state?.updateExperiment?.currentSwatchStatus);
     const currentExperiment = useSelector(state => state?.updateExperiment?.currentExperiment);
     const showFinal = useSelector(state => state?.updateExperiment?.showFinal)
     const step = showFinal ? 4 : currentSwatchStatus?.steps;
-    const currentExperiment = useSelector(state => state?.updateExperiment.currentExperiment)
-    console.log(currentExperiment,"78");
-    const handleClose = () => {
-        if (typeof onClose === "function")
-            onClose();
-    }
 
     const dispatch = useDispatch();
 

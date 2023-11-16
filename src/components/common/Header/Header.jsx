@@ -33,6 +33,7 @@ export default function Header() {
                         <li className={cx(s.navLink, s.active)}>Product & swatches</li>
                     </ul>
                 </div> */}
+                <h1>Swatch Analysis</h1>
                 <div className="d-flex gap-4">
                     {/* <div>
                         <div role="button" onClick={openModal} className={cx({ [s.disabled]: isModalOpen }, s.btnPrimary)}>

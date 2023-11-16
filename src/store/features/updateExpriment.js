@@ -51,9 +51,19 @@ export const updateExperimentSlice = createSlice({
         },
         updateFrontImage: (state, action) => {
             state.frontImage = action.payload;
+            // let currentData = state.currentSwatchStatus || {}
+            // state.currentSwatchStatus = {
+            //     ...currentData,
+            //     front_image_url: null
+            // }
         },
         updateBackImage: (state, action) => {
             state.backImage = action.payload;
+            // let currentData = state.currentSwatchStatus || {}
+            // state.currentSwatchStatus = {
+            //     ...currentData,
+            //     back_image_url: null
+            // }
         },
         updateSwatchList: (state, action) => {
             let currentStatus = action?.payload?.length ? action?.payload[action.payload?.length - 1] : null
@@ -117,6 +127,7 @@ export const initializeExperimentPage =
         const { status, data } = await client.post("/get_data_by_exp_id", {
             id: experiment_id,
         });
+        dispatch(hideFinalStep());
 
         console.log("status", status, data);
         // if (status && data)
@@ -136,6 +147,7 @@ export const updateSwatch = (swatch) => async (dispatch, getState) => {
     dispatch(updateSwatchList(null));
     await dispatch(updateCurrentSwatch(swatch));
     dispatch(getSwatchList());
+    dispatch(hideFinalStep())
 }
 
 export const getSwatchByExperimentId =
@@ -352,7 +364,7 @@ export const addSwatchImage = ({ isSameStep }) => async (dispatch, getState) => 
             return toastr.error(message)
 
     }
-    if ((currentSwatchStatus?.steps || 1) == 3)
+    if (!isSameStep && ((currentSwatchStatus?.steps || 1) == 3))
         dispatch(showFinalStep())
     if (!isSameStep && ((currentSwatchStatus?.steps || 1) < 3)) {
 
@@ -375,8 +387,22 @@ export const addSwatchImage = ({ isSameStep }) => async (dispatch, getState) => 
 
         const swatches = getState()?.updateExperiment?.swatches;
         let current = swatches.find(item => item?.swatch_id == currentSwatch?.swatch_id)
-        dispatch(updateSwatch(current))
+        await dispatch(updateSwatch(current))
     }
+
+
+    // if (isSameStep && ((currentSwatchStatus?.steps || 1) == 3)) {
+    // dispatch(updateBackImage(null));
+    // dispatch(updateFrontImage(null));
+
+    // const currentSwatch = getState()?.updateExperiment?.currentSwatchStatus;
+    // dispatch(updateCurrentSwatchStatus({
+    //     ...currentSwatch,
+    //     front_image_url: null,
+    //     back_image_url: null
+    // }))
+
+    // }
     dispatch(updateIsAddSwatchLoading(false))
 };
 

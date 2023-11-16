@@ -72,14 +72,14 @@ export default function ImageUpload() {
             {activeSwatch ? <div className={s.parent}>
                 {/* {true ? <div className={s.parent}> */}
                 <Loader show={isAddSwatchLoading}>
-                    <div className={s.main}>
+                    <div className={(s.main)}>
                         {((step != 4) && !showFinal) ? <>
                             {/* {false ? <> */}
                             <div className={cx(s.title12, "pb-3")}>{activeSwatch?.swatch_name}</div>
                             <div className="d-flex gap-5 pb-5">
                                 <div>
                                     <div className={cx(s.title2, s.fw500, "pb-2")}>Front image</div>
-                                    {(!frontImage?.preview && !currentSwatchStatus?.front_image_url?.includes("img")) ? <Dropzone className={s.dropzone} onChange={f => onImageChange(f, "front")}>
+                                    {((!frontImage?.preview && !currentSwatchStatus?.front_image_url?.includes("img")) || (step == 3 && currentSwatchStatus?.front_image_url?.includes("img"))) ? <Dropzone className={s.dropzone} onChange={f => onImageChange(f, "front")}>
                                         <ReactSVG src={uploadIcon} />
                                         <div>Upload image</div>
                                     </Dropzone> :
@@ -145,7 +145,7 @@ export default function ImageUpload() {
                         </> : <FinalResult />}
                     </div>
                 </Loader>
-                <Bottombar />
+                {/* <Bottombar /> */}
             </div> : ""}
         </>
     )

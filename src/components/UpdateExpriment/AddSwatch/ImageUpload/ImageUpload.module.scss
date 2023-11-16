@@ -1,13 +1,12 @@
 @import "../../../../assets/scss/abstracts";
 
 .parent {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr auto;
-    height: 100%;
+    // display: grid;
+    // grid-template-columns: 1fr;
+    // grid-template-rows: 1fr auto;
+    // height: 100%;
 
     .main {
-
         padding: 30px 40px;
     }
 }

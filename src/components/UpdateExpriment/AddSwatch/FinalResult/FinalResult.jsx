@@ -5,10 +5,24 @@ import cx from "classnames"
 import { getFinalResult } from '../../../../store/features/updateExpriment';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
+import LineChart from '../../../common/LineChart/LineChart';
 
 export default function FinalResult() {
+
     const [headerList, setHeaderList] = useState([]);
+
+    const [back, setBack] = useState({
+        x: [],
+        y: []
+    });
+
+    const [front, setFront] = useState({
+        x: [],
+        y: []
+    });
+
     const dispatch = useDispatch();
+
     const finalResult = useSelector(state => state?.updateExperiment?.finalResult);
 
     useEffect(() => {
@@ -21,6 +35,32 @@ export default function FinalResult() {
             const longIndex = headerList.find(item => item == Math.max(...headerList));
             let crtIndex = Object.keys(finalResult?.swatches?.[0])?.[headerList.findIndex(item => item == longIndex)]
             const longHeaderList = finalResult?.swatches?.[0]?.[crtIndex];
+
+            console.log("asdfasf", longHeaderList)
+
+            const back = {
+                x: [],
+                y: []
+            };
+            const front = {
+                x: [],
+                y: []
+            }
+            Object.keys(finalResult?.swatches_avg_stdev?.[0]?.Avg)?.flatMap((item, i) => {
+                if (item?.includes("wash") && !item?.includes("percentage")) {
+                    let washCount = item?.split("_")?.[1];
+                    console.log("item", item, washCount, finalResult?.swatches_avg_stdev?.[0]?.Avg?.[`${item}_percentage`])
+
+                    back.x.push(washCount)
+                    front.x.push(washCount)
+
+                    back.y.push(finalResult?.swatches_avg_stdev?.[0]?.Avg?.[`${item}_percentage`]?.back)
+                    front.y.push(finalResult?.swatches_avg_stdev?.[0]?.Avg?.[`${item}_percentage`]?.front)
+                }
+            });
+            setBack(back);
+            setFront(front);
+            console.log(back, front)
             setHeaderList(longHeaderList)
         }
     }, [finalResult])
@@ -78,6 +118,7 @@ export default function FinalResult() {
                             </tr>
                         </tfoot>
                     </table>
+                    <LineChart x={front.x} y={front.y} />
 
                     <h4>Back</h4>
                     <table className={cx("table text-center")}>
