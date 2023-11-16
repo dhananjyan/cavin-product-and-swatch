@@ -39,9 +39,9 @@ export default function AddContributors(props) {
     function getInitials(fullName) {
         const name = fullName.split(" ");
         if (name.length >= 2) {
-            return name[0][0] + name[1][0];
+            return name[0][0].toUpperCase() + name[1][0].toUpperCase();
         } else if (name.length === 1) {
-            return name[0][0];
+            return name[0][0].toUpperCase();
         } else {
             return "";
         }

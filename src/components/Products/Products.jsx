@@ -46,7 +46,7 @@ export default function Products() {
 
     const handleExpEdit = (data) => {
         console.log("datadata", data)
-        navigate(`/experiment/${data?.id}`)
+        navigate(`/experiment/${data?.id ? data?.id : data}`)
     }
 
     const handleExpDelete = (expId) => {
@@ -66,6 +66,18 @@ export default function Products() {
 
         return date.toLocaleString("en-US", options);
     }
+
+    function getInitials(fullName) {
+        const name = fullName.split(" ");
+        if (name.length >= 2) {
+            return name[0][0].toUpperCase() + name[1][0].toUpperCase();
+        } else if (name.length === 1) {
+            return name[0][0].toUpperCase();
+        } else {
+            return "";
+        }
+    }
+    
 
     return (
         <div className={s.productSection}>
@@ -151,17 +163,18 @@ export default function Products() {
                         <tbody>
                             {experimentData && experimentData.length > 0 ?
                                 (experimentData?.map((item, i) => (
-                                    <tr key={`experiment_item_${i}`} role="button" onClick={() => handleExpEdit(item)}>
-                                        <td>{item.experiment_name}</td>
-                                        <td>{item.experiment_id}</td>
-                                        <td>{item.product_name}</td>
-                                        <td>
+                                    <tr key={`experiment_item_${i}`} role="button" >
+                                        <td onClick={() => handleExpEdit(item.id)}>{item.experiment_name}</td>
+                                        <td onClick={() => handleExpEdit(item.id)}>{item.experiment_id}</td>
+                                        <td onClick={() => handleExpEdit(item.id)}>{item.product_name}</td>
+                                        <td onClick={() => handleExpEdit(item.id)}>
                                             <div className="d-flex gap-1 align-items-center">
                                                 <div className={s.userAvatarList}>
                                                     {item?.contributors && item?.contributors?.length > 0 ? (
                                                         <div className={s.userAvatarList}>
                                                             {item?.contributors.slice(0, 3).map((id, index) => (
-                                                                <div key={index} className={s.item} data={id.cont_id} />
+                                                                <div key={index} className={s.item} data={getInitials(id.cont_name)} />
+                                                                // console.log(id,"176")
                                                             ))}
                                                             {item.contributors.length > 3 && (
                                                                 <div className="ms-1 mt-1">{`+${item.contributors.length - 3}`}</div>
@@ -172,9 +185,9 @@ export default function Products() {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>Washing</td>
-                                        <td className="text-center">{item?.date_modified ? formatDate(item.date_modified) : '-'}</td>
-                                        <td>
+                                        <td onClick={() => handleExpEdit(item.id)}>Washing</td>
+                                        <td className="text-center" onClick={() => handleExpEdit(item.id)}>{item?.date_modified ? formatDate(item.date_modified) : '-'}</td>
+                                        <td >
                                             <DropDownMenu
                                                 editHandle={() => handleExpEdit(item)}
                                                 deleteHandle={() => handleExpDelete(item.id)}

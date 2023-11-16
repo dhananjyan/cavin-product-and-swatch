@@ -19,7 +19,7 @@ export default function Header() {
 
 
     const handleContributors = () => {
-        dispatch(updateNavigateTo("/manage-contributors"))
+        // dispatch(updateNavigateTo("/manage-contributors"))
     }
 
     return (
