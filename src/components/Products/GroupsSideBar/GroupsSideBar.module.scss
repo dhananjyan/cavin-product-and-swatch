@@ -27,4 +27,39 @@
         background-color: #F8BBD0;
         border: 1px solid rgba(0, 0, 0, 0.05);
     }
+    .groupEdit {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    
+        input {
+          font-family: Montserrat;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: normal;
+        //   border: transparent;
+          padding: 6px 8px;
+          border-radius: 3px;
+          width: 160px;
+        }
+        
+      }
+      .actionIcons {
+        display: flex;
+        justify-content: end;
+        align-items: center;
+      }
+      .icon {
+        border: 1px solid black;
+        height: 30px;
+        width: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 5px;
+        background-color: #FFFF;
+         
+      }
 }

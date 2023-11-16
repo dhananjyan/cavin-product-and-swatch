@@ -15,7 +15,6 @@ import { bitesToMb } from "../../../../helpers";
 import config from "../../../../config";
 import Loader from "../../../common/Loader/Loader";
 import FinalResult from "../FinalResult/FinalResult";
-import { useEffect } from "react";
 
 const { apiBaseUrl } = config || {};
 
@@ -29,7 +28,7 @@ export default function ImageUpload() {
     const currentData = useSelector(state => state?.updateExperiment?.currentSwatchStatus)
     const isAddSwatchLoading = useSelector(state => state?.updateExperiment?.isAddSwatchLoading)
     const showFinal = useSelector(state => state?.updateExperiment?.showFinal)
-
+    const swatchList = useSelector(state => state?.updateExperiment?.swatchList)
 
     const step = currentSwatchStatus?.steps;
 
@@ -79,7 +78,8 @@ export default function ImageUpload() {
                             <div className="d-flex gap-5 pb-5">
                                 <div>
                                     <div className={cx(s.title2, s.fw500, "pb-2")}>Front image</div>
-                                    {((!frontImage?.preview && !currentSwatchStatus?.front_image_url?.includes("img")) || (step == 3 && currentSwatchStatus?.front_image_url?.includes("img"))) ? <Dropzone className={s.dropzone} onChange={f => onImageChange(f, "front")}>
+                                    {/* */}
+                                    {((!frontImage?.preview && !currentSwatchStatus?.front_image_url?.includes("img")) || (step == 3 && !frontImage?.preview)) ? <Dropzone className={s.dropzone} onChange={f => onImageChange(f, "front")}>
                                         <ReactSVG src={uploadIcon} />
                                         <div>Upload image</div>
                                     </Dropzone> :
@@ -96,7 +96,7 @@ export default function ImageUpload() {
                                 </div>
                                 <div className="ms-3">
                                     <div className={cx(s.title2, s.fw500, "pb-2")}>Back image</div>
-                                    {(!backImage?.preview && !currentSwatchStatus?.back_image_url?.includes("img")) ? <Dropzone className={s.dropzone} onChange={f => onImageChange(f, "back")}>
+                                    {(!backImage?.preview && !currentSwatchStatus?.back_image_url?.includes("img") || (step == 3 && !backImage?.preview)) ? <Dropzone className={s.dropzone} onChange={f => onImageChange(f, "back")}>
                                         <ReactSVG src={uploadIcon} />
                                         <div>Upload image</div>
                                     </Dropzone> : <>
@@ -109,7 +109,41 @@ export default function ImageUpload() {
                                     </>}
                                 </div>
                             </div>
-                            {currentData ? <div>
+                            {step == 3 ? swatchList?.map((item, i) => {
+                                if (item?.steps == 3)
+                                    return <div key={`TABLE_${i}`}>
+                                        <h6>Wash - {item?.wash_count}</h6>
+                                        <table className={cx("table text-center")}>
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th colSpan={3}>Front</th>
+                                                    <th colSpan={3}>Back</th>
+                                                </tr>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>L*</th>
+                                                    <th>A*</th>
+                                                    <th>B*</th>
+                                                    <th>L*</th>
+                                                    <th>A*</th>
+                                                    <th>B*</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>{activeSwatch?.swatch_name}</td>
+                                                    <td>{item?.L_front}</td>
+                                                    <td>{item?.A_front}</td>
+                                                    <td>{item?.B_front}</td>
+                                                    <td>{item?.L_back}</td>
+                                                    <td>{item?.A_back}</td>
+                                                    <td>{item?.B_back}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                            }) : currentData ? <div>
                                 <table className={cx("table text-center")}>
                                     <thead>
                                         <tr>

@@ -127,7 +127,7 @@ export default function SelectBox(props) {
                     </div>
 
                     {filteredOptions?.length ? filteredOptions.map((item, i) => {
-                        return (<div key={`FILTERED_OPTION_ITEM_${i}`} className={s.multiSelectField}>
+                        return (<div key={`FILTERED_OPTION_ITEM_${i}`} className={cx(s.multiSelectField,)}>
                             <input type="checkbox" onChange={e => handleCheckboxChange(item)} checked={selectedList?.includes(item?.label)} className={s.checkbox} />
                             <div onClick={() => handleCheckboxChange(item)}>{item.label}</div>
                         </div>);

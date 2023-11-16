@@ -364,8 +364,11 @@ export const addSwatchImage = ({ isSameStep }) => async (dispatch, getState) => 
             return toastr.error(message)
 
     }
-    if (!isSameStep && ((currentSwatchStatus?.steps || 1) == 3))
-        dispatch(showFinalStep())
+    if (!isSameStep && ((currentSwatchStatus?.steps || 1) == 3)) {
+
+        dispatch(updateIsAddSwatchLoading(false))
+        return dispatch(showFinalStep())
+    }
     if (!isSameStep && ((currentSwatchStatus?.steps || 1) < 3)) {
 
         const bodyFormData = new FormData();
@@ -375,7 +378,7 @@ export const addSwatchImage = ({ isSameStep }) => async (dispatch, getState) => 
         bodyFormData.append('experiment_id', currentData?.id);
         bodyFormData.append('swatch_id', currentSwatch?.swatch_id);
         bodyFormData.append('steps', (currentSwatchStatus?.steps || 1) + 1);
-        bodyFormData.append('wash_count', washCount);
+        bodyFormData.append('wash_count', ((currentSwatchStatus?.steps || 1) + 1) == 3 ? 1 : 0);
 
         const { status, data, message } = await client.post("/add_image_to_swatch", bodyFormData, { contentType: "multipart/form-data" });
         if (!status)

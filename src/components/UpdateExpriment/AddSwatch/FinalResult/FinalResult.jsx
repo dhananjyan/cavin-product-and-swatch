@@ -36,7 +36,7 @@ export default function FinalResult() {
             let crtIndex = Object.keys(finalResult?.swatches?.[0])?.[headerList.findIndex(item => item == longIndex)]
             const longHeaderList = finalResult?.swatches?.[0]?.[crtIndex];
 
-            console.log("asdfasf", longHeaderList)
+            console.log("longHeaderList", longHeaderList)
 
             const back = {
                 x: [],
@@ -51,11 +51,11 @@ export default function FinalResult() {
                     let washCount = item?.split("_")?.[1];
                     console.log("item", item, washCount, finalResult?.swatches_avg_stdev?.[0]?.Avg?.[`${item}_percentage`])
 
-                    back.x.push(washCount)
-                    front.x.push(washCount)
+                    back.x.push(+washCount)
+                    front.x.push(+washCount)
 
-                    back.y.push(finalResult?.swatches_avg_stdev?.[0]?.Avg?.[`${item}_percentage`]?.back)
-                    front.y.push(finalResult?.swatches_avg_stdev?.[0]?.Avg?.[`${item}_percentage`]?.front)
+                    back.y.push(+finalResult?.swatches_avg_stdev?.[0]?.Avg?.[`${item}_percentage`]?.back)
+                    front.y.push(+finalResult?.swatches_avg_stdev?.[0]?.Avg?.[`${item}_percentage`]?.front)
                 }
             });
             setBack(back);
@@ -94,6 +94,11 @@ export default function FinalResult() {
                                     {headerList?.map((headItem, ind) => {
                                         if (headItem?.steps == 3) {
                                             let data = finalResult?.swatches?.[0]?.[item]?.find(item => item?.wash_count == headItem?.wash_count)
+                                            console.log("finalResult", data)
+                                            console.table({
+                                                item,
+                                                washCount: headItem?.wash_count
+                                            })
                                             return <>
                                                 <td key={`front_DYNAMIC_HEADER_ITEM_${i}_wash_value_${ind}`}>{data?.front?.[`wash_${headItem?.wash_count}`]}</td>
                                                 <td key={`front_DYNAMIC_HEADER_ITEM_${i}_percent_value_${ind}`}>{data?.front?.[`wash_${headItem?.wash_count}_percentage`]}</td>
@@ -118,7 +123,7 @@ export default function FinalResult() {
                             </tr>
                         </tfoot>
                     </table>
-                    <LineChart x={front.x} y={front.y} />
+                    {front?.x ? <LineChart x={front.x} y={front.y} /> : ""}
 
                     <h4>Back</h4>
                     <table className={cx("table text-center")}>
@@ -167,6 +172,7 @@ export default function FinalResult() {
                             </tr>
                         </tfoot>
                     </table>
+                    {(back?.x && back?.y) ? <LineChart x={back.x} y={back.y} /> : ""}
                 </>
                     : ""
             }

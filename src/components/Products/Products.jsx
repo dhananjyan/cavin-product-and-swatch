@@ -46,8 +46,7 @@ export default function Products() {
     };
 
     const handleExpEdit = (data) => {
-        console.log("datadata", data)
-        navigate(`/experiment/${data?.id ? data?.id : data}`)
+        navigate(`/experiment/${data?.id}`)
     }
 
     const handleExpDelete = (expId) => {
@@ -60,9 +59,9 @@ export default function Products() {
             day: "2-digit",
             month: "short",
             year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
+            // hour: "2-digit",
+            // minute: "2-digit",
+            // hour12: true,
         };
 
         return date.toLocaleString("en-US", options);
@@ -130,7 +129,7 @@ export default function Products() {
                             New experiment
                         </div>
                         <div>
-                            <ReactSVG src={filterIcon} />
+                            {/* <ReactSVG src={filterIcon} /> */}
                         </div>
                     </div>
                 </div>
@@ -165,10 +164,10 @@ export default function Products() {
                             {experimentData && experimentData.length > 0 ?
                                 (experimentData?.map((item, i) => (
                                     <tr key={`experiment_item_${i}`} role="button" >
-                                        <td onClick={() => handleExpEdit(item.id)}>{item.experiment_name}</td>
-                                        <td onClick={() => handleExpEdit(item.id)}>{item.experiment_id}</td>
-                                        <td onClick={() => handleExpEdit(item.id)}>{item.product_name}</td>
-                                        <td onClick={() => handleExpEdit(item.id)}>
+                                        <td onClick={() => handleExpEdit(item)}>{item.experiment_name}</td>
+                                        <td onClick={() => handleExpEdit(item)}>{item.experiment_id}</td>
+                                        <td onClick={() => handleExpEdit(item)}>{item.product_name}</td>
+                                        <td onClick={() => handleExpEdit(item)}>
                                             <div className="d-flex gap-1 align-items-center">
                                                 <div className={s.userAvatarList}>
                                                     {item?.contributors && item?.contributors?.length > 0 ? (
@@ -186,8 +185,8 @@ export default function Products() {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td onClick={() => handleExpEdit(item.id)}>Washing</td>
-                                        <td className="text-center" onClick={() => handleExpEdit(item.id)}>{item?.date_modified ? formatDate(item.date_modified) : '-'}</td>
+                                        <td onClick={() => handleExpEdit(item)}>Washing</td>
+                                        <td className="text-center" onClick={() => handleExpEdit(item)}>{item?.latest_updated ? formatDate(item.latest_updated) : '-'}</td>
                                         <td >
                                             <DropDownMenu
                                                 editHandle={() => handleExpEdit(item)}

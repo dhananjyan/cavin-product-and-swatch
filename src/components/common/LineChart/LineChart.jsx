@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto'; // Import Chart object from chart.js
 
-const LineChart = ({ x, y }) => {
+const LineChart = ({ x = [], y = [] }) => {
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
 
@@ -58,7 +58,7 @@ const LineChart = ({ x, y }) => {
         chartInstance.current.destroy();
       }
     };
-  }, []);
+  }, [x, y]);
 
   return (
     <div>

@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { client } from "../../utils/client";
+import { toastr } from "react-redux-toastr";
 
 export const counterSlice = createSlice({
   name: "products",
@@ -85,7 +86,14 @@ export const counterSlice = createSlice({
     },
     updateCloseEdit: (state) => {
       state.isEditContributor = false
-    }
+    },
+    updateGroupName: (state, action) => {
+      const { groupId, newName } = action.payload;
+      const groupToUpdate = state.groupList?.find(group => group.group_id === groupId);
+      if (groupToUpdate) {
+        groupToUpdate.group_name = newName;
+      }
+  },
   },
 });
 
@@ -105,6 +113,7 @@ export const {
   updateNavigateTo,
   updateOpenEdit,
   updateCloseEdit,
+  updateGroupName,
 } = counterSlice.actions;
 
 export default counterSlice.reducer;
@@ -173,6 +182,34 @@ export const createGroup = (group_name) => async (dispatch, getState) => {
   await dispatch(getGroupData());
   dispatch(updateGroupLoading(false));
 };
+
+export const editGroup = ({ groupId, groupName }) => async (dispatch, getState) => {
+  const { status, data } = await client.post("/update_groups", {
+      user_id: 1,
+      group_id: groupId,
+      group_name: groupName
+  });
+
+  if (status) {
+      dispatch(updateGroupName({ groupId, newName:  groupName}));
+  }
+};
+
+export const deleteGroup = (groupId) => async (dispatch, getState) => {
+  dispatch(updateGroupLoading(true));
+  const {status, data} = await client.delete("delete_group", {
+    user_id: 1,
+    group_id: groupId
+  })
+  if (status) {
+    dispatch(updateGroupLoading(false));
+    dispatch(getGroupData());
+    toastr(data?.message)
+  }
+  else {
+    toastr("Error deleting group")
+  }
+}
 
 export const getContributorsList = () => async (dispatch, getState) => {
   const { status, data } = await client.post("/get_contributors");
