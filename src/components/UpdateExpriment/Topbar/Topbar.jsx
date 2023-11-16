@@ -74,6 +74,8 @@ export default function Topbar(props) {
     const currentSwatchStatus = useSelector(state => state?.updateExperiment?.currentSwatchStatus);
     const showFinal = useSelector(state => state?.updateExperiment?.showFinal)
     const step = showFinal ? 4 : currentSwatchStatus?.steps;
+    const currentExperiment = useSelector(state => state?.updateExperiment.currentExperiment)
+    console.log(currentExperiment,"78");
     const handleClose = () => {
         if (typeof onClose === "function")
             onClose();
@@ -95,7 +97,7 @@ export default function Topbar(props) {
                 <div className="d-flex gap-2">
                     <ReactSVG src={leftArrowIcon} role="button" onClick={handleBack} />
                     <div>
-                        <div className={s.step}>EXP125458745 - Experiment name</div>
+                        <div className={s.step}>{currentExperiment?.experiment_id} - {currentExperiment?.experiment_name}</div>
                         <div className={cx(s.stepDesc, "pt-2")}>Step 1 - Upload the swatch images</div>
                     </div>
                 </div>

@@ -46,7 +46,7 @@ export default function Products() {
 
     const handleExpEdit = (data) => {
         console.log("datadata", data)
-        navigate(`/experiment/${data?.id}`)
+        navigate(`/experiment/${data?.id ? data?.id : data}`)
     }
 
     const handleExpDelete = (expId) => {
@@ -163,11 +163,11 @@ export default function Products() {
                         <tbody>
                             {experimentData && experimentData.length > 0 ?
                                 (experimentData?.map((item, i) => (
-                                    <tr key={`experiment_item_${i}`} role="button" onClick={() => handleExpEdit(item)}>
-                                        <td>{item.experiment_name}</td>
-                                        <td>{item.experiment_id}</td>
-                                        <td>{item.product_name}</td>
-                                        <td>
+                                    <tr key={`experiment_item_${i}`} role="button" >
+                                        <td onClick={() => handleExpEdit(item.id)}>{item.experiment_name}</td>
+                                        <td onClick={() => handleExpEdit(item.id)}>{item.experiment_id}</td>
+                                        <td onClick={() => handleExpEdit(item.id)}>{item.product_name}</td>
+                                        <td onClick={() => handleExpEdit(item.id)}>
                                             <div className="d-flex gap-1 align-items-center">
                                                 <div className={s.userAvatarList}>
                                                     {item?.contributors && item?.contributors?.length > 0 ? (
@@ -185,9 +185,9 @@ export default function Products() {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>Washing</td>
-                                        <td className="text-center">{item?.date_modified ? formatDate(item.date_modified) : '-'}</td>
-                                        <td>
+                                        <td onClick={() => handleExpEdit(item.id)}>Washing</td>
+                                        <td className="text-center" onClick={() => handleExpEdit(item.id)}>{item?.date_modified ? formatDate(item.date_modified) : '-'}</td>
+                                        <td >
                                             <DropDownMenu
                                                 editHandle={() => handleExpEdit(item)}
                                                 deleteHandle={() => handleExpDelete(item.id)}
