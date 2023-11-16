@@ -284,7 +284,7 @@ const getSwatchList = () => async (dispatch, getState) => {
         swatch_id: currentSwatch?.swatch_id
     });
     if (status)
-        dispatch(updateSwatchList((data?.results?.images)))
+        dispatch(updateSwatchList((data?.results?.images || [])))
 }
 
 export const addSwatchImage = ({ isSameStep }) => async (dispatch, getState) => {
@@ -328,7 +328,8 @@ export const addSwatchImage = ({ isSameStep }) => async (dispatch, getState) => 
             return toastr.error(message)
 
     }
-
+    if ((currentSwatchStatus?.steps || 1) == 3)
+        dispatch(showFinalStep())
     if (!isSameStep && ((currentSwatchStatus?.steps || 1) < 3)) {
 
         const bodyFormData = new FormData();

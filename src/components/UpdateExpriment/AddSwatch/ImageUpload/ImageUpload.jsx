@@ -15,6 +15,7 @@ import { bitesToMb } from "../../../../helpers";
 import config from "../../../../config";
 import Loader from "../../../common/Loader/Loader";
 import FinalResult from "../FinalResult/FinalResult";
+import { useEffect } from "react";
 
 const { apiBaseUrl } = config || {};
 
@@ -62,6 +63,15 @@ export default function ImageUpload() {
     const handleDelete = (type) => {
         dispatch(deleteSwatchImage(type))
     }
+
+    useEffect(() => {
+
+
+        return () => {
+
+        }
+    }, [])
+
 
 
 
