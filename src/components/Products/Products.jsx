@@ -67,6 +67,18 @@ export default function Products() {
         return date.toLocaleString("en-US", options);
     }
 
+    function getInitials(fullName) {
+        const name = fullName.split(" ");
+        if (name.length >= 2) {
+            return name[0][0].toUpperCase() + name[1][0].toUpperCase();
+        } else if (name.length === 1) {
+            return name[0][0].toUpperCase();
+        } else {
+            return "";
+        }
+    }
+    
+
     return (
         <div className={s.productSection}>
             {/* <Filters /> */}
@@ -161,7 +173,8 @@ export default function Products() {
                                                     {item?.contributors && item?.contributors?.length > 0 ? (
                                                         <div className={s.userAvatarList}>
                                                             {item?.contributors.slice(0, 3).map((id, index) => (
-                                                                <div key={index} className={s.item} data={id.cont_id} />
+                                                                <div key={index} className={s.item} data={getInitials(id.cont_name)} />
+                                                                // console.log(id,"176")
                                                             ))}
                                                             {item.contributors.length > 3 && (
                                                                 <div className="ms-1 mt-1">{`+${item.contributors.length - 3}`}</div>
