@@ -19,7 +19,8 @@ export const updateExperimentSlice = createSlice({
         currentSwatchStatus: null,
         isAddSwatchLoading: false,
         washCount: 0,
-        showFinal: false
+        showFinal: false,
+        currentImageType: null
     },
     reducers: {
         openImagePopup: (state, action) => {
@@ -29,7 +30,8 @@ export const updateExperimentSlice = createSlice({
             state.isImageModalOpen = false
         },
         updateCurrentImage: (state, action) => {
-            state.currentImage = action.payload
+            state.currentImage = action.payload?.file;
+            state.currentImageType = action.payload?.from;
         },
         updateCurrentExperiment: (state, action) => {
             state.currentExperiment = action?.payload;
@@ -76,6 +78,9 @@ export const updateExperimentSlice = createSlice({
         },
         hideFinalStep: (state, action) => {
             state.showFinal = false
+        },
+        updateCurrentSwatchStatus: (state, action) => {
+            state.currentSwatchStatus = action?.payload
         }
     }
 })
@@ -96,7 +101,8 @@ export const {
     updateSwatchName,
     updateIsAddSwatchLoading,
     showFinalStep,
-    hideFinalStep
+    hideFinalStep,
+    updateCurrentSwatchStatus
 } = updateExperimentSlice.actions;
 
 export default updateExperimentSlice.reducer;
@@ -175,6 +181,7 @@ export const createSwatch = (swatch_name) => async (dispatch, getState) => {
     dispatch(updateSwatchesLoading(true));
     dispatch(updateSwatchAdd(false));
     const currentData = getState()?.updateExperiment?.currentExperiment;
+    const currentImage = getState()?.updateExperiment?.currentImage;
     const { status, data } = await client.post("/create_swatch_by_rank", {
         swatch_name,
         user_id: 1,
@@ -199,7 +206,7 @@ export const deleteSwatch =
         });
         if (status) {
             const currentData = getState()?.updateExperiment?.currentExperiment;
-            await dispatch(getSwatchByExperimentId(currentData?.experiment_id));
+            await dispatch(getSwatchByExperimentId(currentData?.id));
 
             const firstSwatch = getState()?.updateExperiment?.swatches;
             dispatch(updateSwatch(firstSwatch[0]))
@@ -211,7 +218,7 @@ export const deleteSwatch =
     };
 
 export const deleteSwatchImage = (image_type) => async (dispatch, getState) => {
-    const currentSwatch = getState()?.updateExperiment?.activeSwatch;
+    const currentSwatch = getState()?.updateExperiment?.currentSwatchStatus;
 
 
     const bodyFormData = new FormData();
@@ -225,14 +232,14 @@ export const deleteSwatchImage = (image_type) => async (dispatch, getState) => {
     if (image_type === "front") {
         dispatch(updateFrontImage(null))
 
-        dispatch(updateCurrentSwatch({
+        dispatch(updateCurrentSwatchStatus({
             ...currentSwatch,
             front_image_url: null
         }))
     } else {
         dispatch(updateBackImage(null))
 
-        dispatch(updateCurrentSwatch({
+        dispatch(updateCurrentSwatchStatus({
             ...currentSwatch,
             back_image_url: null
         }))
@@ -267,7 +274,7 @@ export const updateSwatchRank = ({ swatch_id, new_rank }) => async (dispatch, ge
 
     if (status) {
         const currentData = getState()?.updateExperiment?.currentExperiment;
-        dispatch(getSwatchByExperimentId(currentData?.experiment_id));
+        dispatch(getSwatchByExperimentId(currentData?.id));
     }
 };
 
@@ -289,33 +296,61 @@ export const addSwatchImage = ({ isSameStep }) => async (dispatch, getState) => 
 
     const currentSwatchStatus = getState()?.updateExperiment?.currentSwatchStatus;
 
-    const bodyFormData = new FormData();
+    dispatch(updateIsAddSwatchLoading(true));
+    const currentStep = +(currentSwatchStatus?.steps || 1);
+    if (currentStep === 1 || (currentSwatchStatus?.wash_count !== washCount)) {
+        const bodyFormData = new FormData();
 
-    bodyFormData.append('user_id', 1);
-    bodyFormData.append('group_id', currentData?.group_id);
-    bodyFormData.append('experiment_id', currentData?.experiment_id);
-    bodyFormData.append('swatch_id', currentSwatch?.swatch_id);
-    bodyFormData.append('steps', isSameStep ? (currentSwatchStatus?.steps || 1) : ((currentSwatchStatus?.steps || 1) + 1));
-    bodyFormData.append('wash_count', washCount);
-    if (frontImage?.preview)
-        bodyFormData.append('front_image', dataURLtoFile(frontImage?.preview, frontImage?.name));
-    if (backImage?.preview)
-        bodyFormData.append('back_image', dataURLtoFile(backImage?.preview, backImage?.name));
+        bodyFormData.append('user_id', 1);
+        bodyFormData.append('group_id', currentData?.group_id);
+        bodyFormData.append('experiment_id', currentData?.id);
+        bodyFormData.append('swatch_id', currentSwatch?.swatch_id);
+        bodyFormData.append('steps', (currentSwatchStatus?.steps || 1));
+        bodyFormData.append('wash_count', washCount);
+        if (frontImage?.preview)
+            bodyFormData.append('front_image', dataURLtoFile(frontImage?.preview, "front.jpg"));
+        if (backImage?.preview)
+            bodyFormData.append('back_image', dataURLtoFile(backImage?.preview, "back.jpg"));
 
-    dispatch(updateIsAddSwatchLoading(true))
-    const { status, data, message } = await client.post("/add_image_to_swatch", bodyFormData, { contentType: "multipart/form-data" });
+        const { status, data, message } = await client.post("/add_image_to_swatch", bodyFormData, { contentType: "multipart/form-data" });
+        if (!status)
+            return toastr.error(message)
+    } else if (frontImage?.preview || backImage?.preview) {
+        const updateBodyFormData = new FormData();
+        updateBodyFormData.append('id', currentSwatchStatus?.id);
+        updateBodyFormData.append('user_id', 1);
+        if (frontImage?.preview)
+            updateBodyFormData.append('front_image', dataURLtoFile(frontImage?.preview, "front.jpg"));
+        if (backImage?.preview)
+            updateBodyFormData.append('back_image', dataURLtoFile(backImage?.preview, "back.jpg"));
+        const { status, data, message } = await client.put("/update_swatch_image", updateBodyFormData, { contentType: "multipart/form-data" });
+        if (!status)
+            return toastr.error(message)
 
+    }
 
-    if (status) {
+    if (!isSameStep && ((currentSwatchStatus?.steps || 1) < 3)) {
+
+        const bodyFormData = new FormData();
+
+        bodyFormData.append('user_id', 1);
+        bodyFormData.append('group_id', currentData?.group_id);
+        bodyFormData.append('experiment_id', currentData?.id);
+        bodyFormData.append('swatch_id', currentSwatch?.swatch_id);
+        bodyFormData.append('steps', (currentSwatchStatus?.steps || 1) + 1);
+        bodyFormData.append('wash_count', washCount);
+
+        const { status, data, message } = await client.post("/add_image_to_swatch", bodyFormData, { contentType: "multipart/form-data" });
+        if (!status)
+            return toastr.error(message)
+    }
+    {
         const currentData = getState()?.updateExperiment?.currentExperiment;
-        await dispatch(getSwatchByExperimentId(currentData?.experiment_id));
-
+        await dispatch(getSwatchByExperimentId(currentData?.id));
 
         const swatches = getState()?.updateExperiment?.swatches;
         let current = swatches.find(item => item?.swatch_id == currentSwatch?.swatch_id)
         dispatch(updateSwatch(current))
-    } else {
-        toastr.error(message)
     }
     dispatch(updateIsAddSwatchLoading(false))
 };
