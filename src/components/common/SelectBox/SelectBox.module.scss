@@ -3,9 +3,9 @@
 .selectBox {
     display: flex;
     justify-content: space-between;
-    // border-radius: 3px;
+    border-radius: 25px !important;
     position: relative;
-    border: 1px solid rgba(0, 0, 0, 0.20);
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
     padding: 12px 20px;
     cursor: pointer;
     width: 364px;

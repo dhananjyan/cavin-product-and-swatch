@@ -59,9 +59,9 @@ export default function Products() {
             day: "2-digit",
             month: "short",
             year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
+            // hour: "2-digit",
+            // minute: "2-digit",
+            // hour12: true,
         };
 
         return date.toLocaleString("en-US", options);
@@ -129,7 +129,7 @@ export default function Products() {
                             New experiment
                         </div>
                         <div>
-                            <ReactSVG src={filterIcon} />
+                            {/* <ReactSVG src={filterIcon} /> */}
                         </div>
                     </div>
                 </div>
@@ -186,7 +186,7 @@ export default function Products() {
                                             </div>
                                         </td>
                                         <td onClick={() => handleExpEdit(item.id)}>Washing</td>
-                                        <td className="text-center" onClick={() => handleExpEdit(item.id)}>{item?.date_modified ? formatDate(item.date_modified) : '-'}</td>
+                                        <td className="text-center" onClick={() => handleExpEdit(item.id)}>{item?.latest_updated ? formatDate(item.latest_updated) : '-'}</td>
                                         <td >
                                             <DropDownMenu
                                                 editHandle={() => handleExpEdit(item)}
