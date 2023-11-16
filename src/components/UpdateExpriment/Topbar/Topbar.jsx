@@ -56,7 +56,6 @@ export default function Topbar(props) {
     const currentExperiment = useSelector(state => state?.updateExperiment?.currentExperiment);
     const showFinal = useSelector(state => state?.updateExperiment?.showFinal)
     const step = showFinal ? 4 : currentSwatchStatus?.steps;
-    const currentExperiment = useSelector(state => state?.updateExperiment.currentExperiment)
     console.log(currentExperiment,"78");
     const handleClose = () => {
         if (typeof onClose === "function")
