@@ -15,7 +15,6 @@ import { bitesToMb } from "../../../../helpers";
 import config from "../../../../config";
 import Loader from "../../../common/Loader/Loader";
 import FinalResult from "../FinalResult/FinalResult";
-import { useEffect } from "react";
 
 const { apiBaseUrl } = config || {};
 
@@ -29,7 +28,7 @@ export default function ImageUpload() {
     const currentData = useSelector(state => state?.updateExperiment?.currentSwatchStatus)
     const isAddSwatchLoading = useSelector(state => state?.updateExperiment?.isAddSwatchLoading)
     const showFinal = useSelector(state => state?.updateExperiment?.showFinal)
-
+    const swatchList = useSelector(state => state?.updateExperiment?.swatchList)
 
     const step = currentSwatchStatus?.steps;
 
@@ -72,14 +71,15 @@ export default function ImageUpload() {
             {activeSwatch ? <div className={s.parent}>
                 {/* {true ? <div className={s.parent}> */}
                 <Loader show={isAddSwatchLoading}>
-                    <div className={s.main}>
+                    <div className={(s.main)}>
                         {((step != 4) && !showFinal) ? <>
                             {/* {false ? <> */}
-                            <div className={cx(s.title12, "pb-3")}>{activeSwatch?.swatch_name}</div>
-                            <div className="d-flex gap-5 pb-5">
+                            <div className={cx(s.title12, "pb-3 text-capitalize")}>{activeSwatch?.swatch_name}</div>
+                            <div className="d-flex gap-5 pb-5 justify-content-evenly">
                                 <div>
                                     <div className={cx(s.title2, s.fw500, "pb-2")}>Front image</div>
-                                    {(!frontImage?.preview && !currentSwatchStatus?.front_image_url?.includes("img")) ? <Dropzone className={s.dropzone} onChange={f => onImageChange(f, "front")}>
+                                    {/* */}
+                                    {((!frontImage?.preview && !currentSwatchStatus?.front_image_url?.includes("img")) || (step == 3 && !frontImage?.preview)) ? <Dropzone className={s.dropzone} onChange={f => onImageChange(f, "front")}>
                                         <ReactSVG src={uploadIcon} />
                                         <div>Upload image</div>
                                     </Dropzone> :
@@ -96,7 +96,7 @@ export default function ImageUpload() {
                                 </div>
                                 <div className="ms-3">
                                     <div className={cx(s.title2, s.fw500, "pb-2")}>Back image</div>
-                                    {(!backImage?.preview && !currentSwatchStatus?.back_image_url?.includes("img")) ? <Dropzone className={s.dropzone} onChange={f => onImageChange(f, "back")}>
+                                    {(!backImage?.preview && !currentSwatchStatus?.back_image_url?.includes("img") || (step == 3 && !backImage?.preview)) ? <Dropzone className={s.dropzone} onChange={f => onImageChange(f, "back")}>
                                         <ReactSVG src={uploadIcon} />
                                         <div>Upload image</div>
                                     </Dropzone> : <>
@@ -109,8 +109,9 @@ export default function ImageUpload() {
                                     </>}
                                 </div>
                             </div>
-                            {currentData ? <div>
-                                <table className={cx("table text-center")}>
+                            {step == 3 ? <div >
+                                {/* <h6>Wash - {item?.wash_count}</h6> */}
+                                <table className={cx("table table-responsive text-center", s.table)}>
                                     <thead>
                                         <tr>
                                             <th></th>
@@ -128,24 +129,58 @@ export default function ImageUpload() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>{activeSwatch?.swatch_name}</td>
-                                            <td>{currentData?.L_front}</td>
-                                            <td>{currentData?.A_front}</td>
-                                            <td>{currentData?.B_front}</td>
-                                            <td>{currentData?.L_back}</td>
-                                            <td>{currentData?.A_back}</td>
-                                            <td>{currentData?.B_back}</td>
-                                        </tr>
+                                        {swatchList?.map((item, i) => {
+                                            if (item?.steps == 3)
+                                                return <tr key={`TABLE_wash_${i}_row`}>
+                                                    <td className={cx("text-capitalize fw-bold")}>Wash - {item?.wash_count}</td>
+                                                    <td>{item?.L_front?.toFixed(2)}</td>
+                                                    <td>{item?.A_front?.toFixed(2)}</td>
+                                                    <td>{item?.B_front?.toFixed(2)}</td>
+                                                    <td>{item?.L_back?.toFixed(2)}</td>
+                                                    <td>{item?.A_back?.toFixed(2)}</td>
+                                                    <td>{item?.B_back?.toFixed(2)}</td>
+                                                </tr>
+                                        })}
                                     </tbody>
                                 </table>
-                            </div> : ""}
-                            <div className={cx(s.title12, "pb-3")}>Swatch name 2 activities</div>
-                            <div className={s.titleSmall1}>Swatch name 2 activities will be listed here...</div>
+                            </div>
+                                : currentData ? <div>
+                                    <table className={cx("table text-center")}>
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th colSpan={3}>Front</th>
+                                                <th colSpan={3}>Back</th>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th>L*</th>
+                                                <th>A*</th>
+                                                <th>B*</th>
+                                                <th>L*</th>
+                                                <th>A*</th>
+                                                <th>B*</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>{activeSwatch?.swatch_name}</td>
+                                                <td>{currentData?.L_front?.toFixed(2)}</td>
+                                                <td>{currentData?.A_front?.toFixed(2)}</td>
+                                                <td>{currentData?.B_front?.toFixed(2)}</td>
+                                                <td>{currentData?.L_back?.toFixed(2)}</td>
+                                                <td>{currentData?.A_back?.toFixed(2)}</td>
+                                                <td>{currentData?.B_back?.toFixed(2)}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div> : ""}
+                            {/* <div className={cx(s.title12, "pb-3")}>Swatch name 2 activities</div>
+                            <div className={s.titleSmall1}>Swatch name 2 activities will be listed here...</div> */}
                         </> : <FinalResult />}
                     </div>
                 </Loader>
-                <Bottombar />
+                {/* <Bottombar /> */}
             </div> : ""}
         </>
     )

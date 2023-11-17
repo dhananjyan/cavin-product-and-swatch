@@ -240,9 +240,11 @@ $colors in $myColors {
   color: inherit;
   box-shadow: none;
 
+
   button {
     border: 0;
     box-shadow: none;
+    padding: 0;
   }
 
   button::after {
@@ -250,8 +252,77 @@ $colors in $myColors {
   }
 }
 
+.table {
+  // margin-top: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.10);
+
+  tbody {
+    tr {
+      td {
+        border-top: 1px solid rgba(0, 0, 0, 0.10);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+
+
+        .userAvatarList {
+          display: flex;
+
+          .item {
+            aspect-ratio: 1;
+            width: 25px;
+            position: relative;
+
+            &::after {
+              position: absolute;
+              background-color: #FFCCBC;
+              border-radius: 50px;
+              border: 1px solid rgba(0, 0, 0, 0.05);
+              width: 30px;
+              height: 30px;
+              left: 0;
+              top: 0;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              content: attr(data);
+
+              color: var(--grey-grey-600, #44464C);
+              text-align: center;
+              font-family: Montserrat;
+              font-size: 11px;
+              font-style: normal;
+              font-weight: 500;
+              line-height: normal;
+
+            }
+          }
+        }
+
+      }
+    }
+
+    tr:nth-child(even) {
+      border: 1px solid rgba(0, 0, 0, 0.10);
+
+      td {
+        background: #FAFAFA;
+      }
+
+    }
+  }
+
+
+  thead th {
+    background-color: $blue-light;
+  }
+
+  th,
+  td {
+    padding: 15px 1.5rem !important
+  }
+}
 
 .verticalScroll {
+  height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
 

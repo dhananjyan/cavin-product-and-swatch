@@ -77,19 +77,19 @@
 
 
 
-        .table {
-            // margin-top: 20px;
-            border: 1px solid rgba(0, 0, 0, 0.10);
+        // .table {
+        //     // margin-top: 20px;
+        //     border: 1px solid rgba(0, 0, 0, 0.10);
 
-            tbody {
-                tr {
-                    td {
-                        border-top: 1px solid rgba(0, 0, 0, 0.10);
-                        border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+        //     tbody {
+        //         tr {
+        //             td {
+        //                 border-top: 1px solid rgba(0, 0, 0, 0.10);
+        //                 border-bottom: 1px solid rgba(0, 0, 0, 0.10);
 
                        
-                        .userAvatarList {
-                            display: flex;
+        //                 .userAvatarList {
+        //                     display: flex;
 
                             .item {
                                 aspect-ratio: 1;
@@ -122,30 +122,30 @@
 
                                 }
                             }
-                        }
+        //                 }
 
-                    }
-                }
+        //             }
+        //         }
 
-                tr:nth-child(even) {
-                    border: 1px solid rgba(0, 0, 0, 0.10);
+        //         tr:nth-child(even) {
+        //             border: 1px solid rgba(0, 0, 0, 0.10);
 
-                    td {
-                        background: #FAFAFA;
-                    }
+        //             td {
+        //                 background: #FAFAFA;
+        //             }
 
-                }
-            }
+        //         }
+        //     }
 
 
-            thead th {
-                background-color: $blue-light;
-            }
+        //     thead th {
+        //         background-color: $blue-light;
+        //     }
 
-            th,
-            td {
-                padding: 15px 1.5rem !important
-            }
-        }
+        //     th,
+        //     td {
+        //         padding: 15px 1.5rem !important
+        //     }
+        // }
     }
 }

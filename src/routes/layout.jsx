@@ -30,9 +30,13 @@ export default function Layout() {
         if (isModalOpen) mainRef.current.scrollTo({ top: 0 });
     }, [isModalOpen, isImageModalOpen])
 
+    const handleClose = () => {
+        
+    }
+
     return (
         <div className={cx(s.layout)}>
-            <Header />
+            <Header close={handleClose} />
             <div className={s.main} ref={mainRef}>
                 {(isModalOpen || isImageModalOpen) ? <Popup className={cx({ [s.imageCropContainer]: isImageModalOpen }, s.popupContainer)}>
                     <div className={s.popup}>

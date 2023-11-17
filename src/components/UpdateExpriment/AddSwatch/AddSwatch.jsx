@@ -58,9 +58,10 @@ export default function AddSwatch() {
             <div className={cx(s.lsidebar, s.verticalScroll, { [s.disabled]: isAddSwatchLoading })}>
                 <SwatchList />
             </div>
-            <div className={s.main}>
+            <div className={cx(s.main, s.verticalScroll)}>
                 <ImageUpload />
             </div>
+            <div className={s.bottomBar}><Bottombar /></div>
             <div className={cx(s.rsidebar1, s.verticalScroll)}>
                 {/* <ActivityList /> */}
             </div>

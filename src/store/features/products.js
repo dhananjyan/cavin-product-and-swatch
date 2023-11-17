@@ -153,7 +153,9 @@ export const initializeProductPage = () => async (dispatch, getState) => {
   await dispatch(getGroupData());
   const state = getState();
   const fristGroupId = state?.products?.groupList?.[0]?.group_id;
+  const groupName = state?.products?.groupList?.[0]?.group_name;
   dispatch(getExperimentsByGroupId(fristGroupId));
+  dispatch(updateSelectedGroupName(groupName))
 };
 
 export const getExperimentsByGroupId =
@@ -164,9 +166,9 @@ export const getExperimentsByGroupId =
       group_id: groupId,
       user_id: 1,
     });
-    dispatch(updateExperimentLoading(false));
     const experimentData = status ? data.results : [];
-    dispatch(updateExperimentData(experimentData));
+    await dispatch(updateExperimentData(experimentData));
+    dispatch(updateExperimentLoading(false));
   };
 
 export const deleteExpirement = (expId) => async (dispatch, getState) => {
@@ -193,8 +195,8 @@ export const createGroup = (group_name) => async (dispatch, getState) => {
     group_name,
     user_id: 1,
   });
+  await dispatch(getGroupData());
   dispatch(updateGroupLoading(false));
-  dispatch(getGroupData());
 };
 
 export const editGroup =

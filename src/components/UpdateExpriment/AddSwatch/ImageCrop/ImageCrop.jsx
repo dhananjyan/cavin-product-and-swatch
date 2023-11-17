@@ -258,7 +258,7 @@ export default function ImageCrop() {
 
     return (
         <>
-            <Topbar onClose={handleClose} />
+            <Topbar hideBtn />
             <div className={s.cropSection}>
                 <div className={cx(s.cropContainer, "p-5")}>
                     <div className={cx(s.title3, s["text-white"])}>Hair wig sample 587451.jpg</div>
