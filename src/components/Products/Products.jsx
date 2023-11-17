@@ -4,7 +4,6 @@ import plusIcon from "../../assets/svg/plus.svg";
 import { ReactSVG } from "react-svg";
 import GroupsSideBar from "./GroupsSideBar/GroupsSideBar";
 import SearchInput from "../common/SearchInput/SearchInput";
-import ActivityList from "./ActivityList/ActivityList";
 import NavLinkSideBar from "./NavLinkSideBar/NavLinkSideBar";
 import { useEffect } from "react";
 import {
@@ -14,8 +13,6 @@ import {
 } from "../../store/features/products";
 import { useDispatch, useSelector } from "react-redux";
 import { openAddPopup } from "../../store/features/expriment";
-import filterIcon from "../../assets/svg/filter.svg";
-import { Dropdown } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import DropDownMenu from "../common/DropDownMenu/DropDownMenu";
 import Loader from "../common/Loader/Loader";
@@ -58,10 +55,7 @@ export default function Products() {
         const options = {
             day: "2-digit",
             month: "short",
-            year: "numeric",
-            // hour: "2-digit",
-            // minute: "2-digit",
-            // hour12: true,
+            year: "numeric"
         };
 
         return date.toLocaleString("en-US", options);
@@ -81,8 +75,6 @@ export default function Products() {
 
     return (
         <div className={s.productSection}>
-            {/* <Filters /> */}
-            {/* <Pagination /> */}
             <div className={s.navLinkSidebar}>
                 <NavLinkSideBar />
             </div>
@@ -98,7 +90,7 @@ export default function Products() {
                     </div>
                 </div>
                 <div className={cx("pt-3")}>
-                    <SearchInput placeholder="Search group name" />
+                    {/* <SearchInput placeholder="Search group name" /> */}
                 </div>
             </div>
             <div
@@ -112,7 +104,7 @@ export default function Products() {
                         "d-flex align-items-center justify-content-between pb-3"
                     )}
                 >
-                    <div className={cx(s.title3, " d-flex align-items-center")}>
+                    <div className={cx(s.title3, " d-flex align-items-center text-capitalize")}>
                         {groupName}
                     </div>
                     <div className={cx("d-flex align-items-center gap-3")}>
@@ -134,8 +126,7 @@ export default function Products() {
                     </div>
                 </div>
                 <div className="d-flex gap-3 w-100">
-                    <SearchInput placeholder="Search experiment name, experiment ID, product name, status...."
-                    />
+                    {/* <SearchInput placeholder="Search experiment name, experiment ID, product name, status...." /> */}
                     {/* <SelectBox placeholder="Filters" className={s.filterSelect} /> */}
                 </div>
             </div>
@@ -164,7 +155,7 @@ export default function Products() {
                             {experimentData && experimentData.length > 0 ?
                                 (experimentData?.map((item, i) => (
                                     <tr key={`experiment_item_${i}`} role="button" >
-                                        <td onClick={() => handleExpEdit(item)}>{item.experiment_name}</td>
+                                        <td className={"text-capitalize"} onClick={() => handleExpEdit(item)}>{item.experiment_name}</td>
                                         <td onClick={() => handleExpEdit(item)}>{item.experiment_id}</td>
                                         <td onClick={() => handleExpEdit(item)}>{item.product_name}</td>
                                         <td onClick={() => handleExpEdit(item)}>

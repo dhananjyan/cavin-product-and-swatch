@@ -82,13 +82,13 @@ export default function Topbar({ hideBtn }) {
     const getTextByStep = step => {
         switch (step) {
             case 1:
-                return "Upload the swatch images"
+                return "Pre-measurement"
                 break;
             case 2:
-                return "Upload swatch images after coloring"
+                return "After Coloring"
                 break;
             case 3:
-                return "Upload the images with wash count"
+                return "After Washing"
                 break;
             case 4:
                 return "Final result"

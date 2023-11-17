@@ -240,9 +240,11 @@ $colors in $myColors {
   color: inherit;
   box-shadow: none;
 
+
   button {
     border: 0;
     box-shadow: none;
+    padding: 0;
   }
 
   button::after {

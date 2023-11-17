@@ -60,7 +60,7 @@ export default function GroupsSideBar() {
                                             {/* <button >Save</button> */}
                                         </div>
 
-                                    ) : (<div className={cx(s.titleBold, "pb-2")}>{item.group_name}</div>)}
+                                    ) : (<div className={cx(s.titleBold, "pb-2 text-capitalize")}>{item.group_name}</div>)}
                                     <div className={cx(s.titleSmall1, "pb-1")}>
                                         Total no. of experiments&nbsp;&nbsp;<b>{item?.total_experiments}</b>
                                     </div>
