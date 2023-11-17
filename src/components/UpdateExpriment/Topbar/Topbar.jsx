@@ -7,6 +7,7 @@ import closeIcon from "../../../assets/svg/close.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { showFinalStep } from "../../../store/features/updateExpriment";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 // import {
 //     Chart as ChartJS,
@@ -49,13 +50,13 @@ import { useNavigate } from "react-router-dom";
 // const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
 
-export default function Topbar(props) {
+export default function Topbar({ hideBtn }) {
     const navigate = useNavigate();
     const currentSwatchStatus = useSelector(state => state?.updateExperiment?.currentSwatchStatus);
     const currentExperiment = useSelector(state => state?.updateExperiment?.currentExperiment);
     const showFinal = useSelector(state => state?.updateExperiment?.showFinal)
     const step = showFinal ? 4 : currentSwatchStatus?.steps;
-    console.log(currentExperiment,"78");
+    const [stepText, setStepText] = useState(null)
     const handleClose = () => {
         if (typeof onClose === "function")
             onClose();
@@ -71,15 +72,43 @@ export default function Topbar(props) {
         navigate("/");
     }
 
+    useEffect(() => {
+
+        const text = getTextByStep(step);
+        setStepText(text)
+    }, [step])
+
+
+    const getTextByStep = step => {
+        switch (step) {
+            case 1:
+                return "Upload the swatch images"
+                break;
+            case 2:
+                return "Upload swatch images after coloring"
+                break;
+            case 3:
+                return "Upload the images with wash count"
+                break;
+            case 4:
+                return "Final result"
+                break;
+
+            default:
+                return "Upload the swatch images"
+                break;
+        }
+    }
+
     return (
         <div className={s.topbar}>
             {/* <Line options={options} data={data} /> */}
             <div className={cx(s.container, s.section)}>
                 <div className="d-flex gap-2">
-                    <ReactSVG src={leftArrowIcon} role="button" onClick={handleBack} />
+                    {hideBtn ? "" : <ReactSVG src={leftArrowIcon} role="button" onClick={handleBack} />}
                     <div>
                         <div className={s.step}>{currentExperiment?.experiment_id} - {currentExperiment?.experiment_name}</div>
-                        <div className={cx(s.stepDesc, "pt-2")}>Step 1 - Upload the swatch images</div>
+                        <div className={cx(s.stepDesc, "pt-2")}>Step {step || 1} - {stepText}</div>
                     </div>
                 </div>
                 <div className={cx("d-flex align-items-center gap-4")}>
@@ -105,7 +134,7 @@ export default function Topbar(props) {
                         </div> */}
                     </div>
                     <div >
-                        <ReactSVG role="button" onClick={handleBack} src={closeIcon} />
+                        {hideBtn ? "" : <ReactSVG role="button" onClick={handleBack} src={closeIcon} />}
                     </div>
                 </div>
             </div>

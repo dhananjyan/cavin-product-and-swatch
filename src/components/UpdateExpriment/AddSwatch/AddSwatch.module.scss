@@ -21,6 +21,11 @@
         grid-column: span 2;
         grid-area: "middlebar";
 
+
+        border-bottom: 1px solid rgba(0, 0, 0, 0.20);
+        background: #FFF;
+        box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.03);
+
     }
 
     .bottomBar {

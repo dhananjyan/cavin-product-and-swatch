@@ -94,11 +94,7 @@ export default function FinalResult() {
                                     {headerList?.map((headItem, ind) => {
                                         if (headItem?.steps == 3) {
                                             let data = finalResult?.swatches?.[0]?.[item]?.find(item => item?.wash_count == headItem?.wash_count)
-                                            console.log("finalResult", data)
-                                            console.table({
-                                                item,
-                                                washCount: headItem?.wash_count
-                                            })
+
                                             return <>
                                                 <td key={`front_DYNAMIC_HEADER_ITEM_${i}_wash_value_${ind}`}>{data?.front?.[`wash_${headItem?.wash_count}`]}</td>
                                                 <td key={`front_DYNAMIC_HEADER_ITEM_${i}_percent_value_${ind}`}>{data?.front?.[`wash_${headItem?.wash_count}_percentage`]}</td>
@@ -123,9 +119,11 @@ export default function FinalResult() {
                             </tr>
                         </tfoot>
                     </table>
-                    {front?.x ? <LineChart x={front.x} y={front.y} /> : ""}
+                    <div className={s.chartContainer}>
+                        {front?.x ? <LineChart x={front.x} y={front.y} /> : ""}
+                    </div>
 
-                    <h4>Back</h4>
+                    <h4 className='mt-5'>Back</h4>
                     <table className={cx("table text-center")}>
                         <thead>
                             <tr>
@@ -172,7 +170,10 @@ export default function FinalResult() {
                             </tr>
                         </tfoot>
                     </table>
-                    {(back?.x && back?.y) ? <LineChart x={back.x} y={back.y} /> : ""}
+                    <div className={s.chartContainer}>
+                        {(back?.x && back?.y) ? <LineChart x={back.x} y={back.y} /> : ""}
+                    </div>
+
                 </>
                     : ""
             }
