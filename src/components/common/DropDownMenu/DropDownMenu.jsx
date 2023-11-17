@@ -1,15 +1,16 @@
 import { Dropdown } from 'react-bootstrap';
 import s from './DropDownMenu.module.scss';
 import { ReactSVG } from 'react-svg';
+import cx from "classnames";
 
 import dotMenuIcon from "../../../assets/svg/dotsMenu.svg";
 import pencilIcon from "../../../assets/svg/pencil.svg";
 import binIcon from "../../../assets/svg/bin.svg";
 
 export default function DropDownMenu(props) {
-    const { editHandle, deleteHandle } = props;
+    const { editHandle, deleteHandle, className } = props;
     return (
-        <Dropdown className={s.dropdown}>
+        <Dropdown className={cx(className, s.dropdown)}>
             <Dropdown.Toggle variant="" >
                 <ReactSVG role="button" src={dotMenuIcon} />
             </Dropdown.Toggle>

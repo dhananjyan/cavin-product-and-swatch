@@ -3,11 +3,9 @@
 .parent {
   height: 100%;
   border-right: 2px solid var(--grey-grey-200, #dcdcde);
-  background: radial-gradient(
-      87.5% 87.5% at 51.11% 50%,
+  background: radial-gradient(87.5% 87.5% at 51.11% 50%,
       rgba(255, 255, 255, 0.4) 0%,
-      #fff 100%
-    ),
+      #fff 100%),
     url("../../../../assets/svg/side-nav-bg.svg"),
     lightgray 50% / cover no-repeat, #fff;
   background-image: url("../../../../assets/svg/side-nav-bg.svg");
@@ -26,8 +24,14 @@
   // height: 100%;
 }
 
+.AddswatchItem {
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+}
+
 .swatchItem {
-  padding: 5px 23px;
+  // padding: 5px 23px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   background: rgba(255, 255, 255, 0.05);
 
@@ -39,7 +43,7 @@
   line-height: normal;
   cursor: grab;
   display: flex;
-  justify-content: space-between;
+  // justify-content: space-between;
   align-items: center;
 
   &.active {
@@ -47,6 +51,16 @@
     background: #3167b1;
     color: white;
   }
+
+  .swatchName {
+
+    padding: 10px 23px;
+  }
+
+  .swatchMenu {
+    padding-right: 23px;
+  }
+
   .swatchEdit {
     display: flex;
     justify-content: space-between;
@@ -64,6 +78,7 @@
       border-radius: 3px;
       width: 160px;
     }
+
     button {
       font-family: Montserrat;
       font-size: 16px;

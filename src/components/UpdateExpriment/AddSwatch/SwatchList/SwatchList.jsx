@@ -73,7 +73,7 @@ export default function SwatchList() {
                 <div className={s.title2}>Swatches</div>
                 <div className={s.linkTextPrimary} onClick={handleNewSwatchClick} role="button"><ReactSVG src={addFileIcon} />New swatch</div>
             </div>
-            {isAddingSwatch ? <div>
+            {isAddingSwatch ? <div className={s.AddswatchItem}>
                 <AddSwatch />
             </div> : ""}
             <Loader show={isSwatchesLoading}>
@@ -95,7 +95,7 @@ export default function SwatchList() {
                             >
                                 <div
                                     className={cx(s.swatchItem, { [s.active]: activeSwatch === swatch?.swatch_id })}
-                                    onClick={() => handleSwatchClick(swatch)}
+
                                 >
                                     {activeSwatch === swatch.swatch_id && editingSwatchId === swatch.swatch_id ? (
                                         <div className={s.swatchEdit}>
@@ -110,8 +110,9 @@ export default function SwatchList() {
 
                                     ) : (
                                         <>
-                                            {swatch.swatch_name}
+                                            <div role="button" className={cx(s.swatchName, "flex-fill")} onClick={() => handleSwatchClick(swatch)}>{swatch.swatch_name}</div>
                                             <DropDownMenu
+                                                className={s.swatchMenu}
                                                 deleteHandle={() => handleSwatchDelete(swatch?.swatch_id)}
                                                 editHandle={() => setEditingSwatchId(swatch?.swatch_id)}
                                             />
