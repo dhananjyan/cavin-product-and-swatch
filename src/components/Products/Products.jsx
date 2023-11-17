@@ -77,6 +77,15 @@ export default function Products() {
             return "";
         }
     }
+
+    function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+      }
     
 
     return (
@@ -173,8 +182,7 @@ export default function Products() {
                                                     {item?.contributors && item?.contributors?.length > 0 ? (
                                                         <div className={s.userAvatarList}>
                                                             {item?.contributors.slice(0, 3).map((id, index) => (
-                                                                <div key={index} className={s.item} data={getInitials(id.cont_name)} />
-                                                                // console.log(id,"176")
+                                                                <div key={index} className={s.item}  style={{ backgroundColor: getRandomColor() }} data={getInitials(id.cont_name)} />
                                                             ))}
                                                             {item.contributors.length > 3 && (
                                                                 <div className="ms-1 mt-1">{`+${item.contributors.length - 3}`}</div>

@@ -67,6 +67,21 @@
         }
 
     }
+    .contDropDown {
+        height: 30px;
+        width: 100%;
+        // background-color: aqua;
+        display: flex;
+        justify-content: end;
+        align-items: end;
+        cursor: pointer;
+        border: transparent;
+    
+        .manageText {
+            background-color: rgb(224, 221, 221);
+            padding: 3px 7px;
+        }
+    }
 }
 
 /* 48px */

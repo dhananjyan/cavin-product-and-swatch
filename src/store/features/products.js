@@ -16,7 +16,9 @@ export const counterSlice = createSlice({
     isExperimentLoading: false,
     isGroupDataLoading: false,
     redirectTo: null,
-    isEditContributor:false,
+    isEditContributor: false,
+    isAddContributor: false,
+    selectedContributor: null,
   },
   reducers: {
     increment: (state) => {
@@ -82,18 +84,29 @@ export const counterSlice = createSlice({
       state.redirectTo = action.payload;
     },
     updateOpenEdit: (state) => {
-      state.isEditContributor = true
+      state.isEditContributor = true;
     },
     updateCloseEdit: (state) => {
-      state.isEditContributor = false
+      state.isEditContributor = false;
+    },
+    updateOpenAdd: (state) => {
+      state.isAddContributor = true;
+    },
+    updateCloseAdd: (state) => {
+      state.isAddContributor = false;
     },
     updateGroupName: (state, action) => {
       const { groupId, newName } = action.payload;
-      const groupToUpdate = state.groupList?.find(group => group.group_id === groupId);
+      const groupToUpdate = state.groupList?.find(
+        (group) => group.group_id === groupId
+      );
       if (groupToUpdate) {
         groupToUpdate.group_name = newName;
       }
-  },
+    },
+    updateSelectedContributor: (state, action) => {
+      state.selectedContributor = action.payload;
+    },
   },
 });
 
@@ -113,7 +126,10 @@ export const {
   updateNavigateTo,
   updateOpenEdit,
   updateCloseEdit,
+  updateOpenAdd,
+  updateCloseAdd,
   updateGroupName,
+  updateSelectedContributor,
 } = counterSlice.actions;
 
 export default counterSlice.reducer;
@@ -141,7 +157,7 @@ export const initializeProductPage = () => async (dispatch, getState) => {
 };
 
 export const getExperimentsByGroupId =
-  (groupId) => async (dispatch, getState) => { 
+  (groupId) => async (dispatch, getState) => {
     dispatch(updateExperimentLoading(true));
     dispatch(updateSelectedGroup(groupId));
     const { status, data } = await client.post("/get_experiments_by_group_id", {
@@ -181,33 +197,34 @@ export const createGroup = (group_name) => async (dispatch, getState) => {
   dispatch(getGroupData());
 };
 
-export const editGroup = ({ groupId, groupName }) => async (dispatch, getState) => {
-  const { status, data } = await client.post("/update_groups", {
+export const editGroup =
+  ({ groupId, groupName }) =>
+  async (dispatch, getState) => {
+    const { status, data } = await client.post("/update_groups", {
       user_id: 1,
       group_id: groupId,
-      group_name: groupName
-  });
+      group_name: groupName,
+    });
 
-  if (status) {
-      dispatch(updateGroupName({ groupId, newName:  groupName}));
-  }
-};
+    if (status) {
+      dispatch(updateGroupName({ groupId, newName: groupName }));
+    }
+  };
 
 export const deleteGroup = (groupId) => async (dispatch, getState) => {
   dispatch(updateGroupLoading(true));
-  const {status, data} = await client.delete("delete_group", {
+  const { status, data } = await client.delete("delete_group", {
     user_id: 1,
-    group_id: groupId
-  })
+    group_id: groupId,
+  });
   if (status) {
     dispatch(updateGroupLoading(false));
     dispatch(getGroupData());
-    toastr(data?.message)
+    toastr(data?.message);
+  } else {
+    toastr("Error deleting group");
   }
-  else {
-    toastr("Error deleting group")
-  }
-}
+};
 
 export const getContributorsList = () => async (dispatch, getState) => {
   const { status, data } = await client.post("/get_contributors");
@@ -216,23 +233,42 @@ export const getContributorsList = () => async (dispatch, getState) => {
 };
 
 export const deleteContributor = (conId) => async (dispatch, getState) => {
-  const {status, data} = await client.delete("/delete_contributors", {
-    contributor_id : conId,
-    user_id: 1
-  })
+  const { status, data } = await client.delete("/delete_contributors", {
+    contributor_id: conId,
+    user_id: 1,
+  });
   if (status) {
     dispatch(getContributorsList());
   }
 };
 
-export const editContributor = (contData) => async (dispatch, getState) => {
-  const {status, data} = await client.post("/update_contributors", {
-    user_id: 1,
-    contributor_id: contData.contributor_id,
-    contributor_name: contData.contributor_name,
-    email_id: contData.email_id
-  })
-  if (status) {
+export const editContributor =
+  ({ contName, contEmail }) =>
+  async (dispatch, getState) => {
+    const contId = getState()?.products?.selectedContributor?.contributor_id;
+    const { status, data } = await client.put("/update_contributors", {
+      user_id: 1,
+      contributor_id: contId,
+      contributor_name: contName,
+      email_id: contEmail,
+    });
+    if (status) {
+      dispatch(getContributorsList());
+      dispatch(updateCloseEdit());
+    }
+  };
+
+export const createContributor =
+  ({ contName, contEmail }) =>
+  async (dispatch, getState) => {
+    dispatch(updateAddGroupPopupStatus(false));
+    const { status, data } = await client.post("/add_contributors", {
+      contributor_name: contName,
+      email_id: contEmail,
+      user_id: 1,
+    });
+    if (data) {
+      dispatch(updateCloseAdd());
+    }
     dispatch(getContributorsList());
-  }
-}
+  };

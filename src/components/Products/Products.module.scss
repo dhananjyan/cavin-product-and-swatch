@@ -93,12 +93,14 @@
 
                             .item {
                                 aspect-ratio: 1;
-                                width: 25px;
+                                width: 30px;
                                 position: relative;
+                                border-radius: 50px;
+                                color: white;
 
                                 &::after {
                                     position: absolute;
-                                    background-color: #FFCCBC;
+                                    // background-color: #FFCCBC;
                                     border-radius: 50px;
                                     border: 1px solid rgba(0, 0, 0, 0.05);
                                     width: 30px;
@@ -110,12 +112,12 @@
                                     justify-content: center;
                                     content: attr(data);
 
-                                    color: var(--grey-grey-600, #44464C);
+                                    // color: var(--grey-grey-600, #44464C);
                                     text-align: center;
                                     font-family: Montserrat;
                                     font-size: 11px;
                                     font-style: normal;
-                                    font-weight: 500;
+                                    font-weight: 900;
                                     line-height: normal;
 
                                 }

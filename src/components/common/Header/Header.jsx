@@ -11,15 +11,21 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { openAddPopup } from "../../../store/features/expriment";
 import { updateNavigateTo } from "../../../store/features/products";
+import { useState } from "react";
+import ProfileMenu from "../ProfileMenu/ProfileMenu";
 
 export default function Header() {
+
+    const [showDropDown, setShowDropDown] = useState(false);
+
     const isModalOpen = useSelector(state => state.experiment.isModalOpen);
     const dispatch = useDispatch();
     const openModal = () => dispatch(openAddPopup())
 
 
     const handleContributors = () => {
-        // dispatch(updateNavigateTo("/manage-contributors"))
+        dispatch(updateNavigateTo("/manage-contributors"))
+        setShowDropDown(true);
     }
 
     return (
@@ -50,7 +56,10 @@ export default function Header() {
                                 <ReactSVG src={bellNotifySvg} />
                             </li>
                             <li>
-                                <ReactSVG src={avatarSvg} onClick={handleContributors} />
+                                {/* <ReactSVG src={avatarSvg} onClick={() => setShowDropDown(prevState => !prevState)} />
+                                 */}
+                                 <ProfileMenu handleContributors ={handleContributors}/>
+                               
                             </li>
                         </ul>
                     </div>

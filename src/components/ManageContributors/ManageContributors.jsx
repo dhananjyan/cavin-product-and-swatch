@@ -1,12 +1,11 @@
 import cx from "classnames";
 import s from "./ManageContributors.module.scss";
-import { deleteContributor, getContributorsList, updateCloseEdit, updateNavigateTo, updateOpenEdit } from '../../store/features/products';
+import { deleteContributor, getContributorsList, updateCloseAdd, updateCloseEdit, updateOpenAdd, updateOpenEdit, updateSelectedContributor } from '../../store/features/products';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { ReactSVG } from "react-svg";
 import plusIcon from "../../assets/svg/plus.svg";
 import filterIcon from "../../assets/svg/filter.svg"
-import SearchInput from "../common/SearchInput/SearchInput";
 import DropDownMenu from "../common/DropDownMenu/DropDownMenu";
 import AddEditContributor from "../AddEditContributors/AddEditContributors";
 
@@ -21,25 +20,26 @@ const ManageContributors = () => {
     }, [])
 
     const contributorsData = useSelector((state) => state.products.contributorsData);
-    const isEditContributor = useSelector((state) => state?.products?.isEditContributor)
+    const isEditContributor = useSelector((state) => state?.products?.isEditContributor);
+    const isAddContributor = useSelector((state)=> state?.products?.isAddContributor);
 
-    console.log(isEditContributor, "isEditContributor");
 
     const handleContDelete = (contId) => {
         dispatch(deleteContributor(contId));
     }
 
     const handleContEdit = (contId) => {
-        // updateNavigateTo(`/manage-contributors/${contId}`)
-        openModal()
-    }
+        const selectedContributor = contributorsData.find(item => item.contributor_id === contId);
+        openModalForEdit();
+        dispatch(updateSelectedContributor(selectedContributor));
+    };
+    
 
-    const handleEditSave = () => {
-        // closeMoadal()
-    }
+    const openModalForEdit = () => dispatch(updateOpenEdit());
+    const closeMoadalForEdit = () => dispatch(updateCloseEdit());
 
-    const openModal = () => dispatch(updateOpenEdit());
-    const closeMoadal = () => dispatch(updateCloseEdit());
+    const openModalForAdd = () => dispatch(updateOpenAdd());
+    const closeModalForAdd = () => dispatch(updateCloseAdd());
 
     return (
         <div>
@@ -60,9 +60,8 @@ const ManageContributors = () => {
                     <div className={cx("d-flex align-items-center gap-3")}>
                         <div
                             role="button"
-                            onClick={openModal}
+                            onClick={openModalForAdd}
                             className={cx(
-                                // { [s.disabled]: isModalOpen },
                                 s.newExpBtn,
                                 s.btnPrimary
                             )}
@@ -70,25 +69,19 @@ const ManageContributors = () => {
                             <ReactSVG src={plusIcon} />
                             New Contributor
                         </div>
-                        <div>
+                        {/* <div>
                             <ReactSVG src={filterIcon} />
-                        </div>
+                        </div> */}
                     </div>
                 </div>
-                <div className="d-flex gap-3 w-100">
-                    <SearchInput placeholder="Search contributor name, contributor ID, email ID...."
-                    />
-                    {/* <SelectBox placeholder="Filters" className={s.filterSelect} /> */}
-                </div>
+               
             </div>
             <table className={cx("table table-responsive", s.table)} >
                 <thead>
                     <tr>
-                        <th>Group ID</th>
                         <th>Contributor ID</th>
                         <th>Contributor Name</th>
-                        <th>Email ID</th>
-                        <th>Last updated</th>
+                        <th>Email ID</th>              
                         <th></th>
                     </tr>
                 </thead>
@@ -97,11 +90,9 @@ const ManageContributors = () => {
                     {contributorsData && contributorsData.length > 0 ?
                         contributorsData.map((item, index) => (
                             <tr key={index}>
-                                <th>{item?.added_by}</th>
                                 <td>{item?.contributor_id}</td>
                                 <td>{item?.contributor_name}</td>
                                 <td>{item?.email_id}</td>
-                                <td>{item?.date_modified ? item?.date_modified : '-'}</td>
                                 <td>
                                     <DropDownMenu
                                         editHandle={() => handleContEdit(item?.contributor_id)}
@@ -117,9 +108,9 @@ const ManageContributors = () => {
 
                 </tbody>
             </table>
-            {isEditContributor && <>
-                <AddEditContributor/>
-            </>
+            {isEditContributor || isAddContributor ? <>
+                <AddEditContributor closeMoadalForEdit={closeMoadalForEdit} closeModalForAdd={closeModalForAdd}/>
+            </> : ""
             }
         </div>
     )
