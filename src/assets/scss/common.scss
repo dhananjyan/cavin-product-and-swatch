@@ -268,12 +268,13 @@ $colors in $myColors {
 
           .item {
             aspect-ratio: 1;
-            width: 25px;
+            width: 30px;
             position: relative;
+            border-radius: 50px;
 
             &::after {
               position: absolute;
-              background-color: #FFCCBC;
+              // background-color: #FFCCBC;
               border-radius: 50px;
               border: 1px solid rgba(0, 0, 0, 0.05);
               width: 30px;
@@ -285,7 +286,8 @@ $colors in $myColors {
               justify-content: center;
               content: attr(data);
 
-              color: var(--grey-grey-600, #44464C);
+              // color: var(--grey-grey-600, #44464C);
+              color:white;
               text-align: center;
               font-family: Montserrat;
               font-size: 11px;

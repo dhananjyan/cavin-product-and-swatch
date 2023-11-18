@@ -61,7 +61,7 @@ export default function GroupsSideBar() {
                                         </div>
 
                                     ) : (<div className={cx(s.titleBold, "pb-2 text-capitalize")}>{item.group_name}</div>)}
-                                    <div className={cx(s.titleSmall1, "pb-1")}>
+                                    <div className={cx(s.titleSmall1, "py-1")}>
                                         Total no. of experiments&nbsp;&nbsp;<b>{item?.total_experiments}</b>
                                     </div>
                                     <div className={cx("d-flex align-items-center gap-2")}>
@@ -73,9 +73,11 @@ export default function GroupsSideBar() {
 
                                 <div>
                                     {editingGroupId === item?.group_id ?
-                                        <div className={s.actionIcons}>
-                                            <ReactSVG src={tickIcon} onClick={() => handleGroupSave(item.group_id, item.group_name)} className={s.icon} />
-                                            <ReactSVG src={closeIcon} onClick={() => setEditingGroupId(null)} className={s.icon}/>
+                                        <div className={cx(s.actionIcons,)}>
+                                            <ReactSVG src={tickIcon} onClick={() => handleGroupSave(item.group_id, item.group_name)} 
+                                             className={cx(s.icon,{[s.selected] : selectedGroup === editingGroupId})} />
+                                            <ReactSVG src={closeIcon} onClick={() => setEditingGroupId(null)} 
+                                             className={cx(s.icon,s.closeIcon, {[s.selected] : selectedGroup === editingGroupId})} />
                                         </div> 
                                         : 
                                         <DropDownMenu

@@ -1,65 +1,77 @@
 @import "../../../assets/scss/abstracts";
 
 .item {
-    padding: 12px 15px;
-    border: 1px solid rgba(0, 0, 0, 0.10);
-    background: rgba(255, 255, 255, 0.05);
-    // cursor: pointer;
+  padding: 12px 15px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  // cursor: pointer;
 
-    &.active {
-        border: 1px solid rgba(0, 0, 0, 0.10);
-        background: #3167B1;
+  &.active {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: #3167b1;
 
-        div {
-
-            color: white ;
-        }
+    div {
+      color: white;
     }
+  }
 
-    .avatar {
-        height: 35px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        aspect-ratio: 1;
-        border-radius: 50px;
-        color: black !important;
-        background-color: #F8BBD0;
-        border: 1px solid rgba(0, 0, 0, 0.05);
+  .avatar {
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+    border-radius: 50px;
+    color: black !important;
+    background-color: #f8bbd0;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  .groupEdit {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+    input {
+      font-family: Montserrat;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+      //   border: transparent;
+      padding: 6px 8px;
+      border-radius: 25px;
+      width: 160px;
+      border: 1px solid #6e7078;
     }
-    .groupEdit {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 20px;
-    
-        input {
-          font-family: Montserrat;
-          font-size: 16px;
-          font-style: normal;
-          font-weight: 600;
-          line-height: normal;
-        //   border: transparent;
-          padding: 6px 8px;
-          border-radius: 3px;
-          width: 160px;
-        }
-        
+  }
+  .actionIcons {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+  }
+  .icon {
+    border: 1px solid #6e7078;
+    border-radius: 25px;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+    background-color: #ffff;
+    cursor: pointer;
+    padding: 14px 15px;
+    border: 1px solid #6e7078;
+    background-color: #3771c3;
+    svg {
+      fill: rgb(165, 223, 165);
+    }
+    &.selected {
+      background-color: white;
+      svg {
+        fill: rgb(79, 161, 79);
       }
-      .actionIcons {
-        display: flex;
-        justify-content: end;
-        align-items: center;
-      }
-      .icon {
-        border: 1px solid black;
-        height: 30px;
-        width: 30px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 5px;
-        background-color: #FFFF;
-         
-      }
+    }
+  }
 }
