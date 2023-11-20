@@ -9,6 +9,8 @@ import { updateCurrentSwatch, updateSwatchAdd, updateSwatchPosition, deleteSwatc
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../common/Loader/Loader"
 import DropDownMenu from "../../../common/DropDownMenu/DropDownMenu";
+import TickIcon from "../../../../assets/svg/tickIcon.svg"
+import closeIcon from "../../../../assets/svg/close.svg"
 export default function SwatchList() {
 
 
@@ -97,7 +99,7 @@ export default function SwatchList() {
                                     className={cx(s.swatchItem, { [s.active]: activeSwatch === swatch?.swatch_id })}
 
                                 >
-                                    {activeSwatch === swatch.swatch_id && editingSwatchId === swatch.swatch_id ? (
+                                    {editingSwatchId === swatch.swatch_id ? (
                                         <div className={s.swatchEdit}>
                                             <input
                                                 className={cx()}
@@ -106,6 +108,8 @@ export default function SwatchList() {
                                                 onChange={(e) => dispatch(updateSwatchName({ swatchId: swatch.swatch_id, newName: e.target.value }))}
                                             />
                                             <button onClick={() => handleSwatchSave(swatch.swatch_id, swatch.swatch_name)}>Save</button>
+                                            {/* <ReactSVG src={TickIcon}  onClick={() => handleSwatchSave(swatch.swatch_id, swatch.swatch_name)} />
+                                            <ReactSVG src={closeIcon} onClick={()=>setEditingSwatchId(null)}/> */}
                                         </div>
 
                                     ) : (
