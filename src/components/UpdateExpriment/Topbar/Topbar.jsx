@@ -5,7 +5,7 @@ import cx from "classnames";
 import leftArrowIcon from "../../../assets/svg/leftArrow.svg";
 import closeIcon from "../../../assets/svg/close.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { showFinalStep } from "../../../store/features/updateExpriment";
+import { closeImageModal, showFinalStep } from "../../../store/features/updateExpriment";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -65,6 +65,7 @@ export default function Topbar({ hideBtn }) {
     const dispatch = useDispatch();
 
     const handleStepFourClick = () => {
+        dispatch(closeImageModal())
         dispatch(showFinalStep(true));
     }
 

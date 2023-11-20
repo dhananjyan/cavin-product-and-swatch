@@ -48,7 +48,7 @@ export default function AddContributors(props) {
     }
 
     const filteredContributors = contributorsData.filter((item) =>
-        item.contributor_name?.toLowerCase().includes(search.toLowerCase())
+        item.contributor_name?.toLowerCase()?.includes(search.toLowerCase())
     );
 
     const handleCheckboxChange = (contributorId) => {

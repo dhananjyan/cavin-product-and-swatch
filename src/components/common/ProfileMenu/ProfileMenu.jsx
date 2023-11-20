@@ -14,7 +14,7 @@ export default function ProfileMenu(props) {
             <Dropdown.Toggle variant="" >
                 <ReactSVG role="button" src={avatarSvg} />
             </Dropdown.Toggle>
-            <Dropdown.Menu>
+            <Dropdown.Menu align={'start'} className={"dropDownHeader"} style={{ transform: "translate(-10px, 42.1111px) !important;" }}>
                 <Dropdown.Item onClick={handleContributors} className={"d-flex gap-2 align-items-center"}>
                     Manage Contributors
                 </Dropdown.Item>

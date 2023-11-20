@@ -24,7 +24,7 @@ export default function Bottombar() {
     return (
         <div className={cx(s.bottomBar, "")}>
             {(currentSwatchStatus?.steps > 3) ? "" : <button style={{ color: "#3771C3" }} className={cx(s.saveAsDraft, { [s.disabled]: !(havingFrontImage && havingBackImage) })} onClick={() => handleContinue({ isSameStep: true })}> <ReactSVG src={editArrowIcon} /> Save as draft</button>}
-            <button className={cx(s.btnPrimary, s.disabled)}><ReactSVG src={leftArrowIcon} />&nbsp;  Back</button>
+            {/* <button className={cx(s.btnPrimary, s.disabled)}><ReactSVG src={leftArrowIcon} />&nbsp;  Back</button> */}
             <button className={cx(s.btnPrimary, { [s.disabled]: !(havingFrontImage && havingBackImage) })} onClick={() => handleContinue({ isSameStep: false })} >Continue<ReactSVG src={rightArrowIcon} /></button>
         </div >
     )

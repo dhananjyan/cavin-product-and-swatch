@@ -47,8 +47,8 @@ export default function GroupsSideBar() {
                 {list.map((item, index) => {
                     return (
                         <>
-                            <div className={cx(s.item, { [s.active]: selectedGroup === item?.group_id }, "d-flex justify-content-between")} key={index}>
-                                <div role="button" onClick={() => handleGroupClick({ id: item?.group_id, groupName: item?.group_name })}  >
+                            <div className={cx(s.item, { [s.active]: selectedGroup === item?.group_id }, "d-flex ")} key={index}>
+                                <div role="button" className="flex-grow-1" onClick={() => handleGroupClick({ id: item?.group_id, groupName: item?.group_name })}  >
                                     {editingGroupId === item?.group_id ? (
                                         <div className={s.groupEdit}>
                                             <input
@@ -65,8 +65,8 @@ export default function GroupsSideBar() {
                                         Total no. of experiments&nbsp;&nbsp;<b>{item?.total_experiments}</b>
                                     </div>
                                     <div className={cx("d-flex align-items-center gap-2")}>
-                                        <div className={s.avatar}>AH</div>
-                                        <div className={s.smallText}>Allison Herwitz</div>
+                                        <div className={cx(s.avatar, "text-uppercase")}>{item?.user_name?.[0]}</div>
+                                        <div className={cx(s.smallText, "text-capitalize")}>{item?.user_name}</div>
                                     </div>
 
                                 </div>

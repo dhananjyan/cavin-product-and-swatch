@@ -199,7 +199,7 @@ export const updateSwatchPosition =
             let existingDataIndex = updatedSwatches.findIndex(
                 (d) => d.currentPosition === newPriority
             );
-            dispatch(updateSwatchRank({ swatch_id: updatedSwatches[existingDataIndex]?.swatch_id, new_rank: newPriority }))
+            dispatch(updateSwatchRank({ swatch_id: updatedSwatches[index]?.swatch_id, new_rank: newPriority }))
 
             updatedSwatches[existingDataIndex] = {
                 ...updatedSwatches[existingDataIndex],

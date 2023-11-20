@@ -201,17 +201,17 @@ export const createGroup = (group_name) => async (dispatch, getState) => {
 
 export const editGroup =
   ({ groupId, groupName }) =>
-  async (dispatch, getState) => {
-    const { status, data } = await client.post("/update_groups", {
-      user_id: 1,
-      group_id: groupId,
-      group_name: groupName,
-    });
+    async (dispatch, getState) => {
+      const { status, data } = await client.post("/update_groups", {
+        user_id: 1,
+        group_id: groupId,
+        group_name: groupName,
+      });
 
-    if (status) {
-      dispatch(updateGroupName({ groupId, newName: groupName }));
-    }
-  };
+      if (status) {
+        dispatch(updateGroupName({ groupId, newName: groupName }));
+      }
+    };
 
 export const deleteGroup = (groupId) => async (dispatch, getState) => {
   dispatch(updateGroupLoading(true));
@@ -219,12 +219,13 @@ export const deleteGroup = (groupId) => async (dispatch, getState) => {
     user_id: 1,
     group_id: groupId,
   });
+  console.log("data", data)
   if (status) {
     dispatch(updateGroupLoading(false));
     dispatch(getGroupData());
-    toastr(data?.message);
+    toastr.success(data?.message);
   } else {
-    toastr("Error deleting group");
+    toastr.error("Error deleting group");
   }
 };
 
@@ -246,31 +247,31 @@ export const deleteContributor = (conId) => async (dispatch, getState) => {
 
 export const editContributor =
   ({ contName, contEmail }) =>
-  async (dispatch, getState) => {
-    const contId = getState()?.products?.selectedContributor?.contributor_id;
-    const { status, data } = await client.put("/update_contributors", {
-      user_id: 1,
-      contributor_id: contId,
-      contributor_name: contName,
-      email_id: contEmail,
-    });
-    if (status) {
-      dispatch(getContributorsList());
-      dispatch(updateCloseEdit());
-    }
-  };
+    async (dispatch, getState) => {
+      const contId = getState()?.products?.selectedContributor?.contributor_id;
+      const { status, data } = await client.put("/update_contributors", {
+        user_id: 1,
+        contributor_id: contId,
+        contributor_name: contName,
+        email_id: contEmail,
+      });
+      if (status) {
+        dispatch(getContributorsList());
+        dispatch(updateCloseEdit());
+      }
+    };
 
 export const createContributor =
   ({ contName, contEmail }) =>
-  async (dispatch, getState) => {
-    dispatch(updateAddGroupPopupStatus(false));
-    const { status, data } = await client.post("/add_contributors", {
-      contributor_name: contName,
-      email_id: contEmail,
-      user_id: 1,
-    });
-    if (data) {
-      dispatch(updateCloseAdd());
-    }
-    dispatch(getContributorsList());
-  };
+    async (dispatch, getState) => {
+      dispatch(updateAddGroupPopupStatus(false));
+      const { status, data } = await client.post("/add_contributors", {
+        contributor_name: contName,
+        email_id: contEmail,
+        user_id: 1,
+      });
+      if (data) {
+        dispatch(updateCloseAdd());
+      }
+      dispatch(getContributorsList());
+    };
