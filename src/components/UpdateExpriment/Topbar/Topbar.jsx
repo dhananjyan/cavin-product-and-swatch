@@ -5,7 +5,7 @@ import cx from "classnames";
 import leftArrowIcon from "../../../assets/svg/leftArrow.svg";
 import closeIcon from "../../../assets/svg/close.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { closeImageModal, showFinalStep } from "../../../store/features/updateExpriment";
+import { closeImageModal, showFinalStep, updateBackImage, updateCurrentStep, updateFrontImage } from "../../../store/features/updateExpriment";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -52,16 +52,12 @@ import { useEffect, useState } from "react";
 
 export default function Topbar({ hideBtn }) {
     const navigate = useNavigate();
-    const currentSwatchStatus = useSelector(state => state?.updateExperiment?.currentSwatchStatus);
     const currentExperiment = useSelector(state => state?.updateExperiment?.currentExperiment);
-    const showFinal = useSelector(state => state?.updateExperiment?.showFinal)
-    const step = showFinal ? 4 : currentSwatchStatus?.steps;
+    const currentStep = useSelector(state => state?.updateExperiment?.currentStep)
+    const frontImage = useSelector(state => state?.updateExperiment?.frontImage);
+    const backImage = useSelector(state => state?.updateExperiment?.backImage);
+    const swatchList = useSelector(state => state?.updateExperiment?.swatchList);
     const [stepText, setStepText] = useState(null)
-    const handleClose = () => {
-        if (typeof onClose === "function")
-            onClose();
-    }
-
     const dispatch = useDispatch();
 
     const handleStepFourClick = () => {
@@ -75,9 +71,9 @@ export default function Topbar({ hideBtn }) {
 
     useEffect(() => {
 
-        const text = getTextByStep(step);
+        const text = getTextByStep(currentStep);
         setStepText(text)
-    }, [step])
+    }, [currentStep])
 
 
     const getTextByStep = step => {
@@ -96,11 +92,28 @@ export default function Topbar({ hideBtn }) {
                 break;
 
             default:
-                return "Upload the swatch images"
+                return "Pre-measurement"
                 break;
         }
     }
 
+    const handleStepClick = (step) => {
+        if (frontImage || backImage) {
+            if (window.confirm("Are you sure to discard the image?")) {
+
+                dispatch(updateBackImage(null));
+                dispatch(updateFrontImage(null));
+                dispatch(updateCurrentStep(step))
+            }
+        } else
+            dispatch(updateCurrentStep(step))
+    }
+    const isDisabled = step => {
+        let lastItemStep = (swatchList?.[swatchList?.length - 1]?.steps || 0) + 1;
+        if (step == 4 && lastItemStep >= 2)
+            return false;
+        return !(step <= lastItemStep);
+    }
     return (
         <div className={s.topbar}>
             {/* <Line options={options} data={data} /> */}
@@ -109,23 +122,23 @@ export default function Topbar({ hideBtn }) {
                     {hideBtn ? "" : <ReactSVG src={leftArrowIcon} role="button" onClick={handleBack} />}
                     <div>
                         <div className={s.step}>{currentExperiment?.experiment_id} - {currentExperiment?.experiment_name}</div>
-                        <div className={cx(s.stepDesc, "pt-2")}>Step {step || 1} - {stepText}</div>
+                        <div className={cx(s.stepDesc, "pt-2")}>Step {currentStep || 1} - {stepText}</div>
                     </div>
                 </div>
                 <div className={cx("d-flex align-items-center gap-4")}>
                     <div className={cx("d-flex align-items-center gap-5", s.linkSection)}>
                         <div className={s.multiStepHorizontal}>
                             <div className={s.horizontalLine}></div>
-                            <div className={cx(s.multiStepItem, { [s.active]: (![2, 3, 4].includes(step)) })}>
+                            <div className={cx(s.multiStepItem, { [s.active]: (currentStep === 1), [s.disabled]: false })} onClick={() => handleStepClick(1)} role="button">
                                 <span>1</span>
                             </div>
-                            <div className={cx(s.multiStepItem, { [s.active]: (step === 2) })}>
+                            <div className={cx(s.multiStepItem, { [s.active]: (currentStep === 2), [s.disabled]: isDisabled(2) })} onClick={() => handleStepClick(2)} role="button">
                                 <span>2</span>
                             </div>
-                            <div className={cx(s.multiStepItem, { [s.active]: (step === 3) })}>
+                            <div className={cx(s.multiStepItem, { [s.active]: (currentStep === 3), [s.disabled]: isDisabled(3) })} onClick={() => handleStepClick(3)} role="button">
                                 <span>3</span>
                             </div>
-                            <div className={cx(s.multiStepItem, { [s.active]: (step === 4) })} onClick={handleStepFourClick} role="button">
+                            <div className={cx(s.multiStepItem, { [s.active]: (currentStep === 4), [s.disabled]: isDisabled(4) })} onClick={() => handleStepClick(4)} role="button">
                                 <span>4</span>
                             </div>
                         </div>

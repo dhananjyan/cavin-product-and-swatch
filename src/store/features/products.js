@@ -179,7 +179,6 @@ export const deleteExpirement = (expId) => async (dispatch, getState) => {
   // dispatch(updateExperimentLoading(true));
   if (status) {
     const currentGroup = getState()?.products?.selectedGroup;
-    console.log(currentGroup, "currentGroup");
     dispatch(getExperimentsByGroupId(currentGroup));
     dispatch(updateExperimentLoading(false));
     toastr.success("Experiment deleted successfully");
@@ -219,7 +218,6 @@ export const deleteGroup = (groupId) => async (dispatch, getState) => {
     user_id: 1,
     group_id: groupId,
   });
-  console.log("data", data)
   if (status) {
     dispatch(updateGroupLoading(false));
     dispatch(getGroupData());

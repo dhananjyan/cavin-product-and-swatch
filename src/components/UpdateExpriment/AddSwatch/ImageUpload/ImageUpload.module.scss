@@ -9,11 +9,15 @@
     .main {
         padding: 30px 40px;
     }
+} 
+.activeWash {
+    color: $blue;
 }
 
 .dropzone {
-    width: 350px;
-    height: 200px;
+    // width: 350px;
+    max-height: 400px;
+    aspect-ratio: 3.8/2;
     background-color: $blue-light-2;
     color: $blue;
     display: flex;
@@ -27,8 +31,8 @@
 }
 
 .imgContainer {
-    width: 350px;
-    height: 200px;
+    max-height: 400px;
+    aspect-ratio: 3.8/2;
     position: relative;
     border: 1px solid rgba(55, 113, 195, 0.20);
     background-color: white;

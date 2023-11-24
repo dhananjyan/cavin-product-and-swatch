@@ -23,7 +23,6 @@ export default function GroupsSideBar() {
         dispatch(updateSelectedGroupName(groupName));
     }
 
-    console.log("addFormStatus", addFormStatus)
 
     const [editingGroupId, setEditingGroupId] = useState(null);
 

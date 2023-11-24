@@ -5,14 +5,13 @@ import cx from "classnames"
 import Draggable from "react-draggable";
 import { useState } from "react";
 import AddSwatch from "./AddSwatch/AddSwatch";
-import { updateCurrentSwatch, updateSwatchAdd, updateSwatchPosition, deleteSwatch, updateSwatches, updateSwatch, editSwatch, updateSwatchName } from "../../../../store/features/updateExpriment";
+import { updateCurrentSwatch, updateSwatchAdd, updateSwatchPosition, deleteSwatch, updateSwatches, updateSwatch, editSwatch, updateSwatchName, updateCurrentStep, updateIsAddSwatchLoading } from "../../../../store/features/updateExpriment";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../common/Loader/Loader"
 import DropDownMenu from "../../../common/DropDownMenu/DropDownMenu";
 import TickIcon from "../../../../assets/svg/tickIcon.svg"
 import closeIcon from "../../../../assets/svg/close.svg"
 export default function SwatchList() {
-
 
     const dispatch = useDispatch();
 
@@ -21,10 +20,7 @@ export default function SwatchList() {
     const isSwatchesLoading = useSelector((state) => state?.updateExperiment?.isSwatchesLoading);
     const activeSwatch = useSelector((state) => state?.updateExperiment?.activeSwatch?.swatch_id);
 
-
     const [editingSwatchId, setEditingSwatchId] = useState(null);
-
-
 
     const handleDrag = (index, newPriority) => {
         dispatch(updateSwatchPosition({ index, newPriority }))
@@ -59,9 +55,12 @@ export default function SwatchList() {
     }
 
 
-    const handleSwatchClick = (swatch) => {
-        console.log("dddddkfajdsfjladsf");
-        dispatch(updateSwatch(swatch));
+    const handleSwatchClick = async (swatch) => {
+        dispatch(updateIsAddSwatchLoading(true))
+        const result = await dispatch(updateSwatch(swatch));
+        await dispatch(updateCurrentStep(+result?.[result?.length - 1]?.steps || 1))
+        dispatch(updateIsAddSwatchLoading(false))
+
     }
 
     const handleSwatchSave = (swatchId, newSwatchName) => {

@@ -1,3 +1,7 @@
+html {
+    font-size: .8rem;
+}
+
 .ReactCrop {
     max-height: 500px;
 }

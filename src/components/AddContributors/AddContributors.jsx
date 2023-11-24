@@ -37,7 +37,7 @@ export default function AddContributors(props) {
     const contributorsData = useSelector((state) => state.products.contributorsData);
 
     function getInitials(fullName) {
-        const name = fullName.split(" ");
+        const name = fullName?.split(" ");
         if (name.length >= 2) {
             return name[0][0].toUpperCase() + name[1][0].toUpperCase();
         } else if (name.length === 1) {
@@ -63,14 +63,12 @@ export default function AddContributors(props) {
     };
 
     const selectedContributorNames = contributorsData
-    .filter(item => contributors.includes(item.contributor_id))
-    .map(selected => getInitials(selected.contributor_name));
+        .filter(item => contributors.includes(item.contributor_id))
+        .map(selected => getInitials(selected.contributor_name));
 
     const handleApplyClick = () => {
-        // console.log("Selected Contributors:", selectedContributors);
         onChange(selectedContributors)
         setAddContributors(false);
-        // setShowContributors(true);
     };
 
     return (
@@ -99,7 +97,6 @@ export default function AddContributors(props) {
                             {filteredContributors?.length > 0 &&
                                 filteredContributors?.map((item) => (
                                     <div key={item.id} className="d-flex pt-3 ps-2 align-items-center">
-                                        {console.log(item,"items")}
                                         <div>
                                             <input
                                                 type="checkbox"

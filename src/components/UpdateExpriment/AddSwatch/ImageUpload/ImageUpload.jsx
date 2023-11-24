@@ -6,7 +6,7 @@ import { ReactSVG } from "react-svg";
 
 import uploadIcon from "../../../../assets/svg/upload.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteSwatchImage, openImagePopup, showFinalStep, updateBackImage, updateCurrentImage, updateFrontImage } from "../../../../store/features/updateExpriment";
+import { deleteSwatchImage, openImagePopup, showFinalStep, updateBackImage, updateCurrentImage, updateCurrentSwatch, updateCurrentSwatchStatus, updateFrontImage, updateWashCount } from "../../../../store/features/updateExpriment";
 import Bottombar from "../../Bottombar/Bottombar";
 import convertFileToBase64 from "../../../../helpers/convertFileToBase64";
 
@@ -27,17 +27,15 @@ export default function ImageUpload() {
     const currentSwatchStatus = useSelector(state => state?.updateExperiment?.currentSwatchStatus)
     const currentData = useSelector(state => state?.updateExperiment?.currentSwatchStatus)
     const isAddSwatchLoading = useSelector(state => state?.updateExperiment?.isAddSwatchLoading)
-    const showFinal = useSelector(state => state?.updateExperiment?.showFinal)
+    const currentStep = useSelector(state => state?.updateExperiment?.currentStep)
     const swatchList = useSelector(state => state?.updateExperiment?.swatchList)
 
-    const step = currentSwatchStatus?.steps;
+    const step = currentStep;
 
     const onImageChange = async (f, from) => {
         const file = Object.assign(f[0], {
             preview: URL.createObjectURL(f[0])
         })
-        // console.log("check this", from, f, file);
-        // console.log(f[0],file,"line 35");
         dispatch(updateCurrentImage({ file: file?.preview, from }));
         dispatch(openImagePopup());
         //     const base64File = await convertFileToBase64(f[0]);
@@ -63,8 +61,10 @@ export default function ImageUpload() {
         dispatch(deleteSwatchImage(type))
     }
 
-
-
+    const updateCurrentWash = (item) => {
+        dispatch(updateCurrentSwatchStatus(item))
+        dispatch(updateWashCount(item?.wash_count));
+    }
 
     return (
         <>
@@ -72,14 +72,14 @@ export default function ImageUpload() {
                 {/* {true ? <div className={s.parent}> */}
                 <Loader show={isAddSwatchLoading}>
                     <div className={(s.main)}>
-                        {((step != 4) && !showFinal) ? <>
+                        {(step != 4) ? <>
                             {/* {false ? <> */}
                             <div className={cx(s.title12, "pb-3 text-capitalize")}>{activeSwatch?.swatch_name}</div>
-                            <div className="d-flex gap-5 pb-5 justify-content-evenly">
-                                <div>
+                            <div className="d-flex gap-5 pb-5 ">
+                                <div className="flex-grow-1">
                                     <div className={cx(s.title2, s.fw500, "pb-2")}>Front image</div>
                                     {/* */}
-                                    {((!frontImage?.preview && !currentSwatchStatus?.front_image_url?.includes("img")) || (step == 3 && !frontImage?.preview)) ? <Dropzone className={s.dropzone} onChange={f => onImageChange(f, "front")}>
+                                    {((!frontImage?.preview && !currentSwatchStatus?.front_image_url?.includes("img"))) ? <Dropzone className={s.dropzone} onChange={f => onImageChange(f, "front")}>
                                         <ReactSVG src={uploadIcon} />
                                         <div>Upload image</div>
                                     </Dropzone> :
@@ -94,9 +94,9 @@ export default function ImageUpload() {
                                             <div>{bitesToMb(frontImage?.size)}</div>
                                         </>}
                                 </div>
-                                <div className="ms-3">
+                                <div className="ms-3 flex-grow-1">
                                     <div className={cx(s.title2, s.fw500, "pb-2")}>Back image</div>
-                                    {(!backImage?.preview && !currentSwatchStatus?.back_image_url?.includes("img") || (step == 3 && !backImage?.preview)) ? <Dropzone className={s.dropzone} onChange={f => onImageChange(f, "back")}>
+                                    {(!backImage?.preview && !currentSwatchStatus?.back_image_url?.includes("img")) ? <Dropzone className={s.dropzone} onChange={f => onImageChange(f, "back")}>
                                         <ReactSVG src={uploadIcon} />
                                         <div>Upload image</div>
                                     </Dropzone> : <>
@@ -132,7 +132,7 @@ export default function ImageUpload() {
                                         {swatchList?.map((item, i) => {
                                             if (item?.steps == 3)
                                                 return <tr key={`TABLE_wash_${i}_row`}>
-                                                    <td className={cx("text-capitalize fw-bold")}>Wash - {item?.wash_count}</td>
+                                                    <td className={cx("text-capitalize fw-bold")}><div role="button" className={cx({ [s.activeWash]: (currentSwatchStatus?.wash_count === item?.wash_count) })} onClick={() => updateCurrentWash(item)}>Wash - {item?.wash_count}</div></td>
                                                     <td>{item?.L_front?.toFixed(2)}</td>
                                                     <td>{item?.A_front?.toFixed(2)}</td>
                                                     <td>{item?.B_front?.toFixed(2)}</td>

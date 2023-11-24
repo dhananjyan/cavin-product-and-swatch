@@ -53,7 +53,6 @@ export default function AddExpriment() {
     }, [groupList]);
 
     const handleGroupNameChange = ({ filed, value, item, label }) => {
-        console.log(item?.label, "label");
         setValue("groupName", item?.label);
         setSelectedGroup({ label: item?.label, value: value[0] });
         clearErrors("groupName")

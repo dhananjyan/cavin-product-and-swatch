@@ -10,9 +10,8 @@ const UserAvatar = ({ item }) => {
           {item?.map((id, index) => {
             const randomIndex = Math.floor(Math.random() * backgroundColors.length);
             const backgroundColor = backgroundColors[randomIndex];
-            console.log(id,"id");
             return (
-              <div key={index} className={s.item} data={id} style={{ backgroundColor }}/>
+              <div key={index} className={s.item} data={id} style={{ backgroundColor }} />
             );
           })}
           {/* {item?.length > 4 && (

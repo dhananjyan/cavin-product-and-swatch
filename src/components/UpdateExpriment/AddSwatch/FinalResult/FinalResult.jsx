@@ -6,6 +6,7 @@ import { getFinalResult } from '../../../../store/features/updateExpriment';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import LineChart from '../../../common/LineChart/LineChart';
+import Loader from '../../../common/Loader/Loader';
 
 export default function FinalResult() {
 
@@ -24,6 +25,7 @@ export default function FinalResult() {
     const dispatch = useDispatch();
 
     const finalResult = useSelector(state => state?.updateExperiment?.finalResult);
+    const isLoadingFinalResult = useSelector(state => state?.updateExperiment?.isLoadingFinalResult);
 
     useEffect(() => {
         dispatch(getFinalResult())
@@ -36,7 +38,6 @@ export default function FinalResult() {
             let crtIndex = Object.keys(finalResult?.swatches?.[0])?.[headerList.findIndex(item => item == longIndex)]
             const longHeaderList = finalResult?.swatches?.[0]?.[crtIndex];
 
-            console.log("longHeaderList", longHeaderList)
 
             const back = {
                 x: [],
@@ -49,7 +50,6 @@ export default function FinalResult() {
             Object.keys(finalResult?.swatches_avg_stdev?.[0]?.Avg)?.flatMap((item, i) => {
                 if (item?.includes("wash") && !item?.includes("percentage")) {
                     let washCount = item?.split("_")?.[1];
-                    console.log("item", item, washCount, finalResult?.swatches_avg_stdev?.[0]?.Avg?.[`${item}_percentage`])
 
                     back.x.push(+washCount)
                     front.x.push(+washCount)
@@ -60,15 +60,12 @@ export default function FinalResult() {
             });
             setBack(back);
             setFront(front);
-            console.log(back, front)
             setHeaderList(longHeaderList)
         }
     }, [finalResult])
 
-
-
     return (
-        <div>
+        <Loader show={isLoadingFinalResult}>
             {
                 finalResult?.swatches?.length ? <>
                     <h4>Front</h4>
@@ -177,6 +174,6 @@ export default function FinalResult() {
                 </>
                     : ""
             }
-        </div>
+        </Loader>
     )
 }

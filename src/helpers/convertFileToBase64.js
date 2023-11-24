@@ -9,7 +9,7 @@ export default (file) => {
             });
 
             // Now you can use fileWithBase64 as needed
-            console.log(fileWithBase64);
+            // console.log(fileWithBase64);
 
             resolve(fileWithBase64)
         };
@@ -19,7 +19,7 @@ export default (file) => {
 }
 
 export function dataURLtoFile(dataurl, filename = "image") {
-    const arr = dataurl.split(',');
+    const arr = dataurl?.split(',');
     const mime = arr[0].match(/:(.*?);/)[1];
     const bstr = atob(arr[1]);
     let n = bstr.length;

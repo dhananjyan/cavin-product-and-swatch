@@ -40,6 +40,11 @@
                 align-items: center;
                 gap: 20px;
 
+                .disabled {
+                    opacity: 1;
+                    cursor: grab !important;
+                }
+
                 .horizontalLine {
                     position: absolute;
                     width: 100%;

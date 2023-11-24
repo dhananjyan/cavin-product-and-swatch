@@ -58,19 +58,16 @@ export default function ImageCrop() {
     }
 
     const handleContinue = async () => {
-        console.log("crop", crop, imgRef)
         if (imgRef?.current && crop.width && crop.height) {
             const croppedImageUrl = await getCroppedImg(
                 imgRef?.current,
                 crop,
                 "newFile.jpeg"
             );
-            console.log("croppedImageUrl", croppedImageUrl)
             const croppedImage = new Image;
             croppedImage.src = croppedImageUrl;
             // cn
             const base64File = await convertFileToBase64(dataURLtoFile(croppedImageUrl));
-            console.log("base64File", base64File, croppedImage, croppedImageUrl);
             // dispatch(updateCurrentImage(croppedImageUrl));
             // this.setState({ croppedImageUrl });
             if (currentImageType === "front")
@@ -87,19 +84,10 @@ export default function ImageCrop() {
                 }))
         }
         dispatch(closeImageModal());
-        console.log(croppedImage, "croppedImage");
     }
 
     const getCroppedImg = (image, crop, fileName) => {
         const canvas = document.createElement("canvas");
-
-        // console.log("dddddddddddddddd", image, image.naturalHeight, image?.height);
-        // console.table({
-        //     height: image.height,
-        //     width: image.width,
-        //     naturalHeight: image.naturalHeight,
-        //     naturalWidth: image.naturalWidth
-        // })
         const scaleX = image.naturalWidth / image.width;
         const scaleY = image.naturalHeight / image.height;
         canvas.width = crop.width;
@@ -120,23 +108,9 @@ export default function ImageCrop() {
 
         return new Promise((resolve, reject) => {
             const base64Image = canvas.toDataURL('image/jpeg');
-            console.log("base64", base64Image)
 
             resolve(base64Image)
-            // let fileUrl;
-            // canvas.toBlob(blob => {
-            //     if (!blob) {
-            //         //reject(new Error('Canvas is empty'));
-            //         console.error("Canvas is empty");
-            //         return;
-            //     }
-            //     blob.name = fileName;
-            //     window.URL.revokeObjectURL(fileUrl);
-            //     fileUrl = window.URL.createObjectURL(blob);
-            //     resolve(fileUrl);
-            // }, "image/jpeg");
 
-            console.log(fileUrl, "fileUrl");
         });
     }
 

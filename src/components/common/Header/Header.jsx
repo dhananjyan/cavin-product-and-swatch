@@ -50,12 +50,12 @@ export default function Header() {
                     <div className="d-flex align-items-center">
 
                         <ul className={cx(s.headerList)}>
-                            <li>
+                            {/* <li>
                                 <ReactSVG src={questionSvg} />
                             </li>
                             <li>
                                 <ReactSVG src={bellNotifySvg} />
-                            </li>
+                            </li> */}
                             <li>
                                 {/* <ReactSVG src={avatarSvg} onClick={() => setShowDropDown(prevState => !prevState)} />
                                  */}
