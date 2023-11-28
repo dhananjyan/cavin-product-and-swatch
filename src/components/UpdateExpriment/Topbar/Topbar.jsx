@@ -109,8 +109,8 @@ export default function Topbar({ hideBtn }) {
             dispatch(updateCurrentStep(step))
     }
     const isDisabled = step => {
-        let lastItemStep = (swatchList?.[swatchList?.length - 1]?.steps || 0) + 1;
-        if (step == 4 && lastItemStep >= 2)
+        let lastItemStep = (swatchList?.[swatchList?.length - 1]?.steps || 0);
+        if (step == 4 && lastItemStep >= 1)
             return false;
         return !(step <= lastItemStep);
     }

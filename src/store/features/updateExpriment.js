@@ -270,29 +270,18 @@ export const deleteSwatchImage = (image_type) => async (dispatch, getState) => {
 
     dispatch(updateIsAddSwatchLoading(true))
     const { status, data } = await client.delete("/delete_image_for_swatch", bodyFormData, { contentType: "multipart/form-data" });
+    const list = await dispatch(getSwatchList());
+    const updatedSwatch = list?.find(item => item?.id == currentSwatch?.id)
+    dispatch(updateCurrentSwatchStatus(updatedSwatch))
     if (image_type === "front") {
         dispatch(updateFrontImage(null))
 
-        dispatch(updateCurrentSwatchStatus({
-            ...currentSwatch,
-            front_image_url: null
-        }))
     } else {
         dispatch(updateBackImage(null))
 
-        dispatch(updateCurrentSwatchStatus({
-            ...currentSwatch,
-            back_image_url: null
-        }))
     }
 
     dispatch(updateIsAddSwatchLoading(false))
-    // if (status) {
-    //     dispatch(getSwatchList());
-    //     toastr.success("Swatch Image deleted successfully");
-    // } else {
-    //     toastr.error("Error deleting swatch");
-    // }
 };
 
 export const editSwatch = ({ swatchId, swatchName }) => async (dispatch, getState) => {
@@ -340,7 +329,7 @@ export const addSwatchImage = ({ isSameStep }) => async (dispatch, getState) => 
 
     const currentSwatchStatus = getState()?.updateExperiment?.currentSwatchStatus;
 
-    dispatch(updateIsAddSwatchLoading(true)); 
+    dispatch(updateIsAddSwatchLoading(true));
     const currentStep = +(currentSwatchStatus?.steps || 1);
     if (currentStep === 1 || (currentSwatchStatus?.wash_count !== washCount)) {
         const bodyFormData = new FormData();
@@ -375,6 +364,10 @@ export const addSwatchImage = ({ isSameStep }) => async (dispatch, getState) => 
     if (!isSameStep && ((currentSwatchStatus?.steps || 1) == 3)) {
 
         dispatch(updateIsAddSwatchLoading(false))
+
+        const swatches = getState()?.updateExperiment?.swatches;
+        let current = swatches.find(item => item?.swatch_id == currentSwatch?.swatch_id)
+        dispatch(updateSwatch(current))
         return dispatch(updateCurrentStep(4))
     }
     if (!isSameStep && ((currentSwatchStatus?.steps || 1) < 3)) {
