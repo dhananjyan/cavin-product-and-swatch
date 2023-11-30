@@ -32,6 +32,13 @@ export default function ImageUpload() {
 
     const step = currentStep;
 
+
+    const backMean = currentData?.back?.mean;
+    const frontMean = currentData?.front?.mean
+
+    const backStd = currentData?.back?.std;
+    const frontStd = currentData?.front?.std;
+
     const onImageChange = async (f, from) => {
         const file = Object.assign(f[0], {
             preview: URL.createObjectURL(f[0])
@@ -119,6 +126,55 @@ export default function ImageUpload() {
                                             <th colSpan={3}>Back</th>
                                         </tr>
                                         <tr>
+                                        <th></th>
+                                                <th></th>
+                                                <th>L*</th>
+                                                <th>A*</th>
+                                                <th>B*</th>
+                                                <th>C*</th>
+                                                <th>Hue</th>
+                                                <th>L*</th>
+                                                <th>A*</th>
+                                                <th>B*</th>
+                                                <th>C*</th>
+                                                <th>Hue</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {swatchList?.map((item, i) => {
+                                            if (item?.steps == 3)
+                                                return <>
+                                                <tr>
+                                                <td className={cx("text-capitalize fw-bold text-center align-middle") } rowSpan={3}><div role="button" className={cx({ [s.activeWash]: (currentSwatchStatus?.wash_count === item?.wash_count) })} onClick={() => updateCurrentWash(item)}>Wash - {item?.wash_count}</div></td>
+                                            </tr>
+                                            <tr key={`TABLE_wash_${i}_row`}>
+                                                    <td className={cx("text-capitalize fw-bold")}><div role="button" className={cx({ [s.activeWash]: (currentSwatchStatus?.wash_count === item?.wash_count) })}>Mean</div></td>
+                                                    <td>{item?.L_front?.toFixed(2)}</td>
+                                                    <td>{item?.A_front?.toFixed(2)}</td>
+                                                    <td>{item?.B_front?.toFixed(2)}</td>
+                                                    <td>{item?.L_back?.toFixed(2)}</td>
+                                                    <td>{item?.A_back?.toFixed(2)}</td>
+                                                    <td>{item?.B_back?.toFixed(2)}</td>
+                                                </tr>
+                                                <tr key={`TABLE_wash_${i}_row`}>
+                                                    <td className={cx("text-capitalize fw-bold")}><div role="button" className={cx({ [s.activeWash]: (currentSwatchStatus?.wash_count === item?.wash_count) })}>SD</div></td>
+                                                    <td>{item?.L_front?.toFixed(2)}</td>
+                                                    <td>{item?.A_front?.toFixed(2)}</td>
+                                                    <td>{item?.B_front?.toFixed(2)}</td>
+                                                    <td>{item?.L_back?.toFixed(2)}</td>
+                                                    <td>{item?.A_back?.toFixed(2)}</td>
+                                                    <td>{item?.B_back?.toFixed(2)}</td>
+                                                </tr>
+                                                </>
+                                        })}
+                                    </tbody>
+                                </table>
+                                <table className={cx("table table-responsive text-center", s.table)}>
+                                    <thead>
+                                        <tr>
+                                            <th colSpan={8}>Average</th>
+                                        </tr>
+                                        <tr>
                                             <th></th>
                                             <th>L*</th>
                                             <th>A*</th>
@@ -149,31 +205,96 @@ export default function ImageUpload() {
                                         <thead>
                                             <tr>
                                                 <th></th>
-                                                <th colSpan={3}>Front</th>
-                                                <th colSpan={3}>Back</th>
+                                                <th colSpan={6}>Front</th>
+                                                <th colSpan={6}>Back</th>
                                             </tr>
                                             <tr>
+                                                <th></th>
                                                 <th></th>
                                                 <th>L*</th>
                                                 <th>A*</th>
                                                 <th>B*</th>
+                                                <th>C*</th>
+                                                <th>Hue</th>
                                                 <th>L*</th>
                                                 <th>A*</th>
                                                 <th>B*</th>
+                                                <th>C*</th>
+                                                <th>Hue</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>{activeSwatch?.swatch_name}</td>
+                                                <td rowSpan={3} className="text-center align-middle fw-bold border-end ">{activeSwatch?.swatch_name}</td>
+                                            </tr>
+                                            <tr>
+
+                                                <td className="fw-semibold">Mean</td>
+                                                <td>{frontMean?.L?.toFixed(2)}</td>
+                                                <td>{frontMean?.A?.toFixed(2)}</td>
+                                                <td>{frontMean?.B?.toFixed(2)}</td>
+                                                <td>{frontMean?.Chroma_c !== null ? frontMean?.Chroma_c?.toFixed(2) : "-"}</td>
+                                                <td>{frontMean?.Hue_angle !== null ? frontMean?.Hue_angle?.toFixed(2) : "-"}</td>
+                                                <td>{backMean?.L?.toFixed(2)}</td>
+                                                <td>{backMean?.A?.toFixed(2)}</td>
+                                                <td>{backMean?.B?.toFixed(2)}</td>
+                                                <td>{backMean?.Chroma_c?.toFixed(2)}</td>
+                                                <td>{backMean?.Hue_angle !== null ? backMean?.Hue_angle?.toFixed(2) : "-"}</td>
+
+                                            </tr>
+                                            <tr>
+
+                                                <td className="fw-semibold">SD</td>
+                                                <td>{frontStd?.L?.toFixed(2)}</td>
+                                                <td>{frontStd?.A?.toFixed(2)}</td>
+                                                <td>{frontStd?.B?.toFixed(2)}</td>
+                                                <td>{frontStd?.Chroma_c !== null ? frontStd?.Chroma_c?.toFixed(2) : "-"}</td>
+                                                <td>{frontStd?.Chroma_c !== null ? frontStd?.Chroma_c?.toFixed(2) : "-"}</td>
+                                                <td>{backStd?.L?.toFixed(2)}</td>
+                                                <td>{backStd?.A?.toFixed(2)}</td>
+                                                <td>{backStd?.B?.toFixed(2)}</td>
+                                                <td>{backStd?.Chroma_c !== null ? backStd?.Chroma_c?.toFixed(2) : '-'}</td>
+                                                <td>{backStd?.Chroma_c !== null ? backStd?.Chroma_c?.toFixed(2) : "-"}</td>
+                                            </tr>
+
+
+                                        </tbody>
+                                    </table>
+                                    <table className={cx("table text-center mt-5")}>
+                                        <thead>
+                                            <tr>
+                                                <th colSpan={12}>Average</th>
+
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th>L*</th>
+                                                <th>A*</th>
+                                                <th>B*</th>
+                                                <th>C*</th>
+                                                <th>Hue</th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td rowSpan={2} className="text-center align-middle fw-bold  ">{activeSwatch?.swatch_name}</td>
+                                            </tr>
+                                            <tr>
                                                 <td>{currentData?.L_front?.toFixed(2)}</td>
                                                 <td>{currentData?.A_front?.toFixed(2)}</td>
                                                 <td>{currentData?.B_front?.toFixed(2)}</td>
                                                 <td>{currentData?.L_back?.toFixed(2)}</td>
                                                 <td>{currentData?.A_back?.toFixed(2)}</td>
                                                 <td>{currentData?.B_back?.toFixed(2)}</td>
+                                                <td>{currentData?.B_back?.toFixed(2)}</td>
+                                                <td>{currentData?.B_back?.toFixed(2)}</td>
                                             </tr>
                                         </tbody>
                                     </table>
+
                                 </div> : ""}
                             {/* <div className={cx(s.title12, "pb-3")}>Swatch name 2 activities</div>
                             <div className={s.titleSmall1}>Swatch name 2 activities will be listed here...</div> */}

@@ -68,7 +68,7 @@ export default function FinalResult() {
         <Loader show={isLoadingFinalResult}>
             {
                 finalResult?.swatches?.length ? <>
-                    <h4>Front</h4>
+                    {/* <h4>Front</h4>
                     <table className={cx("table text-center")}>
                         <thead>
                             <tr>
@@ -169,7 +169,151 @@ export default function FinalResult() {
                     </table>
                     <div className={s.chartContainer}>
                         {(back?.x && back?.y) ? <LineChart x={back.x} y={back.y} /> : ""}
-                    </div>
+                    </div> */}
+                    <p className='text-center fw-bold'>Color Difference (DelE1976)</p>
+                    <table className={cx("table text-center")}>
+                        <thead>
+                            <tr>
+                                <th>Tress No</th>
+                                <th>DE after coloring</th>
+                                {headerList?.map((item, i) => {
+                                    if (item?.steps == 3)
+                                        return <>
+                                            <th key={`front_DYNAMIC_HEADER_ITEM_${i}_wash`}>DE Wash {item?.wash_count}</th>
+                                            <th key={`front_DYNAMIC_HEADER_ITEM_${i}_percent`}>% Change</th>
+                                        </>
+                                })}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {Object.keys(finalResult?.swatches?.[0])?.map((item, i) => {
+                                return <tr>
+                                    <td>{finalResult?.swatches?.[0]?.[item]?.[0]?.swatch_name}</td>
+                                    <td>{finalResult?.swatches?.[0]?.[item]?.[1]?.front?.DE_after_coloring}</td>
+                                    {headerList?.map((headItem, ind) => {
+                                        if (headItem?.steps == 3) {
+                                            let data = finalResult?.swatches?.[0]?.[item]?.find(item => item?.wash_count == headItem?.wash_count)
+
+                                            return <>
+                                                <td key={`front_DYNAMIC_HEADER_ITEM_${i}_wash_value_${ind}`}>{data?.front?.[`wash_${headItem?.wash_count}`]}</td>
+                                                <td key={`front_DYNAMIC_HEADER_ITEM_${i}_percent_value_${ind}`}>{data?.front?.[`wash_${headItem?.wash_count}_percentage`]}</td>
+                                            </>
+                                        }
+                                    })}
+                                </tr>
+                            })}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>AVG</th>
+                                {Object.keys(finalResult?.swatches_avg_stdev?.[0]?.Avg)?.map((item, i) => {
+                                    return <th key={`FRONT_FOOTER_ITEM_${i}`}>{finalResult?.swatches_avg_stdev?.[0]?.Avg?.[item]?.front}</th>
+                                })}
+                            </tr>
+                            <tr>
+                                <th>SD</th>
+                                {Object.keys(finalResult?.swatches_avg_stdev?.[0]?.Stdev)?.map((item, i) => {
+                                    return <th key={`FRONT_FOOTER_ITEM_${i}`}>{finalResult?.swatches_avg_stdev?.[0]?.Stdev?.[item]?.front}</th>
+                                })}
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <p className='text-center fw-bold'>Color Difference (DelE2000)</p>
+                    <table className={cx("table text-center")}>
+                        <thead>
+                            <tr>
+                                <th>Tress No</th>
+                                <th>DE after coloring</th>
+                                {headerList?.map((item, i) => {
+                                    if (item?.steps == 3)
+                                        return <>
+                                            <th key={`front_DYNAMIC_HEADER_ITEM_${i}_wash`}>DE Wash {item?.wash_count}</th>
+                                            <th key={`front_DYNAMIC_HEADER_ITEM_${i}_percent`}>% Change</th>
+                                        </>
+                                })}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {Object.keys(finalResult?.swatches?.[0])?.map((item, i) => {
+                                return <tr>
+                                    <td>{finalResult?.swatches?.[0]?.[item]?.[0]?.swatch_name}</td>
+                                    <td>{finalResult?.swatches?.[0]?.[item]?.[1]?.front?.DE_after_coloring}</td>
+                                    {headerList?.map((headItem, ind) => {
+                                        if (headItem?.steps == 3) {
+                                            let data = finalResult?.swatches?.[0]?.[item]?.find(item => item?.wash_count == headItem?.wash_count)
+
+                                            return <>
+                                                <td key={`front_DYNAMIC_HEADER_ITEM_${i}_wash_value_${ind}`}>{data?.front?.[`wash_${headItem?.wash_count}`]}</td>
+                                                <td key={`front_DYNAMIC_HEADER_ITEM_${i}_percent_value_${ind}`}>{data?.front?.[`wash_${headItem?.wash_count}_percentage`]}</td>
+                                            </>
+                                        }
+                                    })}
+                                </tr>
+                            })}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>AVG</th>
+                                {Object.keys(finalResult?.swatches_avg_stdev?.[0]?.Avg)?.map((item, i) => {
+                                    return <th key={`FRONT_FOOTER_ITEM_${i}`}>{finalResult?.swatches_avg_stdev?.[0]?.Avg?.[item]?.front}</th>
+                                })}
+                            </tr>
+                            <tr>
+                                <th>SD</th>
+                                {Object.keys(finalResult?.swatches_avg_stdev?.[0]?.Stdev)?.map((item, i) => {
+                                    return <th key={`FRONT_FOOTER_ITEM_${i}`}>{finalResult?.swatches_avg_stdev?.[0]?.Stdev?.[item]?.front}</th>
+                                })}
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <p className='text-center fw-bold'>Color Difference (DelE_CMC)</p>
+                    <table className={cx("table text-center")}>
+                        <thead>
+                            <tr>
+                                <th>Tress No</th>
+                                <th>DE after coloring</th>
+                                {headerList?.map((item, i) => {
+                                    if (item?.steps == 3)
+                                        return <>
+                                            <th key={`front_DYNAMIC_HEADER_ITEM_${i}_wash`}>DE Wash {item?.wash_count}</th>
+                                            <th key={`front_DYNAMIC_HEADER_ITEM_${i}_percent`}>% Change</th>
+                                        </>
+                                })}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {Object.keys(finalResult?.swatches?.[0])?.map((item, i) => {
+                                return <tr>
+                                    <td>{finalResult?.swatches?.[0]?.[item]?.[0]?.swatch_name}</td>
+                                    <td>{finalResult?.swatches?.[0]?.[item]?.[1]?.front?.DE_after_coloring}</td>
+                                    {headerList?.map((headItem, ind) => {
+                                        if (headItem?.steps == 3) {
+                                            let data = finalResult?.swatches?.[0]?.[item]?.find(item => item?.wash_count == headItem?.wash_count)
+
+                                            return <>
+                                                <td key={`front_DYNAMIC_HEADER_ITEM_${i}_wash_value_${ind}`}>{data?.front?.[`wash_${headItem?.wash_count}`]}</td>
+                                                <td key={`front_DYNAMIC_HEADER_ITEM_${i}_percent_value_${ind}`}>{data?.front?.[`wash_${headItem?.wash_count}_percentage`]}</td>
+                                            </>
+                                        }
+                                    })}
+                                </tr>
+                            })}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>AVG</th>
+                                {Object.keys(finalResult?.swatches_avg_stdev?.[0]?.Avg)?.map((item, i) => {
+                                    return <th key={`FRONT_FOOTER_ITEM_${i}`}>{finalResult?.swatches_avg_stdev?.[0]?.Avg?.[item]?.front}</th>
+                                })}
+                            </tr>
+                            <tr>
+                                <th>SD</th>
+                                {Object.keys(finalResult?.swatches_avg_stdev?.[0]?.Stdev)?.map((item, i) => {
+                                    return <th key={`FRONT_FOOTER_ITEM_${i}`}>{finalResult?.swatches_avg_stdev?.[0]?.Stdev?.[item]?.front}</th>
+                                })}
+                            </tr>
+                        </tfoot>
+                    </table>
 
                 </>
                     : ""
@@ -177,3 +321,5 @@ export default function FinalResult() {
         </Loader>
     )
 }
+
+
