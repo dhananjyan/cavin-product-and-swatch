@@ -38,6 +38,8 @@ export default function ImageUpload() {
     const backStd = currentData?.back?.std;
     const frontStd = currentData?.front?.std;
 
+    const averageData = currentData?.average;
+
     const onImageChange = async (f, from) => {
         const file = Object.assign(f[0], {
             preview: URL.createObjectURL(f[0])
@@ -121,8 +123,8 @@ export default function ImageUpload() {
                                     <thead>
                                         <tr>
                                             <th></th>
-                                            <th colSpan={3}>Front</th>
-                                            <th colSpan={3}>Back</th>
+                                            <th colSpan={6}>Front</th>
+                                            <th colSpan={6}>Back</th>
                                         </tr>
                                         <tr>
                                             <th></th>
@@ -148,21 +150,30 @@ export default function ImageUpload() {
                                                     </tr>
                                                     <tr key={`TABLE_wash_${i}_row`}>
                                                         <td className={cx("text-capitalize fw-bold")}><div role="button" className={cx({ [s.activeWash]: (currentSwatchStatus?.wash_count === item?.wash_count) })}>Mean</div></td>
-                                                        <td>{item?.L_front?.toFixed(2)}</td>
-                                                        <td>{item?.A_front?.toFixed(2)}</td>
-                                                        <td>{item?.B_front?.toFixed(2)}</td>
-                                                        <td>{item?.L_back?.toFixed(2)}</td>
-                                                        <td>{item?.A_back?.toFixed(2)}</td>
-                                                        <td>{item?.B_back?.toFixed(2)}</td>
+                                                        <td>{item?.front?.mean?.L?.toFixed(2)}</td>
+                                                        <td>{item?.front?.mean?.A?.toFixed(2)}</td>
+                                                        <td>{item?.front?.mean?.B?.toFixed(2)}</td>
+                                                        <td>{item?.front?.mean?.Chroma_c ? item?.front?.mean?.Chroma_c?.toFixed(2): "-"}</td>
+                                                        <td>{item?.front?.mean?.Hue_angle? item?.front?.mean?.Hue_angle?.toFixed(2) : "-"}</td>
+                                                        <td>{item?.back?.mean?.L?.toFixed(2)}</td>
+                                                        <td>{item?.back?.mean?.A?.toFixed(2)}</td>
+                                                        <td>{item?.back?.mean?.B?.toFixed(2)}</td>
+                                                        <td>{item?.back?.mean?.Chroma_c?.toFixed(2)}</td>
+                                                        <td>{item?.back?.mean?.Hue_angle?.toFixed(2)}</td>
+                                                        
                                                     </tr>
                                                     <tr key={`TABLE_wash_${i}_row`}>
                                                         <td className={cx("text-capitalize fw-bold")}><div role="button" className={cx({ [s.activeWash]: (currentSwatchStatus?.wash_count === item?.wash_count) })}>SD</div></td>
-                                                        <td>{item?.L_front?.toFixed(2)}</td>
-                                                        <td>{item?.A_front?.toFixed(2)}</td>
-                                                        <td>{item?.B_front?.toFixed(2)}</td>
-                                                        <td>{item?.L_back?.toFixed(2)}</td>
-                                                        <td>{item?.A_back?.toFixed(2)}</td>
-                                                        <td>{item?.B_back?.toFixed(2)}</td>
+                                                        <td>{item?.front?.std?.L?.toFixed(2)}</td>
+                                                        <td>{item?.front?.std?.A?.toFixed(2)}</td>
+                                                        <td>{item?.front?.std?.B?.toFixed(2)}</td>
+                                                        <td>{item?.front?.std?.Chroma_c ? item?.front?.std?.Chroma_c?.toFixed(2) : "-"}</td>
+                                                        <td>{item?.front?.std?.Hue_angle ? item?.front?.std?.Hue_angle?.toFixed(2): "-"}</td>
+                                                        <td>{item?.back?.std?.L?.toFixed(2)}</td>
+                                                        <td>{item?.back?.std?.A?.toFixed(2)}</td>
+                                                        <td>{item?.back?.std?.B?.toFixed(2)}</td>
+                                                        <td>{item?.back?.std?.Chroma_c ? item?.back?.std?.Chroma_c?.toFixed(2) : "-"}</td>
+                                                        <td>{item?.back?.std?.Hue_angle? item?.back?.std?.Hue_angle?.toFixed(2) : "-"}</td>
                                                     </tr>
                                                 </>
                                         })}
@@ -171,16 +182,18 @@ export default function ImageUpload() {
                                 <table className={cx("table table-responsive text-center", s.table)}>
                                     <thead>
                                         <tr>
-                                            <th colSpan={8}>Average</th>
+                                            <th colSpan={12}>Average</th>
                                         </tr>
                                         <tr>
+                                            <th></th>
                                             <th></th>
                                             <th>L*</th>
                                             <th>A*</th>
                                             <th>B*</th>
-                                            <th>L*</th>
-                                            <th>A*</th>
-                                            <th>B*</th>
+                                            <th>C*</th>
+                                            <th>Hue</th>
+                                            <th></th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -188,12 +201,14 @@ export default function ImageUpload() {
                                             if (item?.steps == 3)
                                                 return <tr key={`TABLE_wash_${i}_row`}>
                                                     <td className={cx("text-capitalize fw-bold")}><div role="button" className={cx({ [s.activeWash]: (currentSwatchStatus?.wash_count === item?.wash_count) })} onClick={() => updateCurrentWash(item)}>Wash - {item?.wash_count}</div></td>
-                                                    <td>{item?.L_front?.toFixed(2)}</td>
-                                                    <td>{item?.A_front?.toFixed(2)}</td>
-                                                    <td>{item?.B_front?.toFixed(2)}</td>
-                                                    <td>{item?.L_back?.toFixed(2)}</td>
-                                                    <td>{item?.A_back?.toFixed(2)}</td>
-                                                    <td>{item?.B_back?.toFixed(2)}</td>
+                                                    <td></td>
+                                                    <td>{item?.average?.L?.toFixed(2)}</td>
+                                                    <td>{item?.average?.A?.toFixed(2)}</td>
+                                                    <td>{item?.average?.B?.toFixed(2)}</td>
+                                                    <td>{item?.average?.Chroma_c?.toFixed(2)}</td>
+                                                    <td>{item?.average?.Hue_angle?.toFixed(2)}</td>  
+                                                    <td></td>
+                                                    <td></td>
                                                 </tr>
                                         })}
                                     </tbody>
@@ -282,14 +297,13 @@ export default function ImageUpload() {
                                                 <td rowSpan={2} className="text-center align-middle fw-bold  ">{activeSwatch?.swatch_name}</td>
                                             </tr>
                                             <tr>
-                                                <td>{currentData?.L_front?.toFixed(2)}</td>
-                                                <td>{currentData?.A_front?.toFixed(2)}</td>
-                                                <td>{currentData?.B_front?.toFixed(2)}</td>
-                                                <td>{currentData?.L_back?.toFixed(2)}</td>
-                                                <td>{currentData?.A_back?.toFixed(2)}</td>
-                                                <td>{currentData?.B_back?.toFixed(2)}</td>
-                                                <td>{currentData?.B_back?.toFixed(2)}</td>
-                                                <td>{currentData?.B_back?.toFixed(2)}</td>
+                                                <td></td>
+                                                <td>{averageData?.L?.toFixed(2)}</td>
+                                                <td>{averageData?.A?.toFixed(2)}</td>
+                                                <td>{averageData?.B?.toFixed(2)}</td>
+                                                <td>{averageData?.Chroma_c?.toFixed(2)}</td>
+                                                <td>{averageData?.Hue_angle?.toFixed(2)}</td>
+                                                <td></td>
                                             </tr>
                                         </tbody>
                                     </table>
