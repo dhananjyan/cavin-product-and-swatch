@@ -9,7 +9,7 @@ import { getContributorsList } from "../../store/features/products";
 import UserAvatar from "../common/UserAvatar/UserAvatar";
 
 export default function AddContributors(props) {
-    const { onChange, contributors } = props;
+    const { onChange, contributors, scroller } = props;
     const [addContributors, setAddContributors] = useState(false);
     const [search, setSearch] = useState("");
     const [selectedContributors, setSelectedContributors] = useState([]);
@@ -77,7 +77,13 @@ export default function AddContributors(props) {
             {/* <p className={cx(s.text, "pt-2")}>Placeholder text comes here....</p> */}
             <div className={cx("d-flex gap-2 align-items-center", s.popupText)}>
                 <ReactSVG src={addUserIcon} />
-                <span className={s.linkTextPrimary} onClick={() => setAddContributors(true)}>
+                <span className={s.linkTextPrimary} onClick={() => {
+                    if (!addContributors && scroller)
+                        scroller?.current(0, scroller?.current?.scrollHeight)
+                    $0.scrollTo(0, $0.scrollHeight)
+
+                    setAddContributors(true)
+                }}>
                     Add contributors
                 </span>
 

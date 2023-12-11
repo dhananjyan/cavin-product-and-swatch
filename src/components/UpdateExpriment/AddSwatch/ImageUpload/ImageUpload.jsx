@@ -32,7 +32,6 @@ export default function ImageUpload() {
 
     const step = currentStep;
 
-
     const backMean = currentData?.back?.mean;
     const frontMean = currentData?.front?.mean
 
@@ -126,45 +125,45 @@ export default function ImageUpload() {
                                             <th colSpan={3}>Back</th>
                                         </tr>
                                         <tr>
-                                        <th></th>
-                                                <th></th>
-                                                <th>L*</th>
-                                                <th>A*</th>
-                                                <th>B*</th>
-                                                <th>C*</th>
-                                                <th>Hue</th>
-                                                <th>L*</th>
-                                                <th>A*</th>
-                                                <th>B*</th>
-                                                <th>C*</th>
-                                                <th>Hue</th>
+                                            <th></th>
+                                            <th></th>
+                                            <th>L*</th>
+                                            <th>A*</th>
+                                            <th>B*</th>
+                                            <th>C*</th>
+                                            <th>Hue</th>
+                                            <th>L*</th>
+                                            <th>A*</th>
+                                            <th>B*</th>
+                                            <th>C*</th>
+                                            <th>Hue</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {swatchList?.map((item, i) => {
                                             if (item?.steps == 3)
                                                 return <>
-                                                <tr>
-                                                <td className={cx("text-capitalize fw-bold text-center align-middle") } rowSpan={3}><div role="button" className={cx({ [s.activeWash]: (currentSwatchStatus?.wash_count === item?.wash_count) })} onClick={() => updateCurrentWash(item)}>Wash - {item?.wash_count}</div></td>
-                                            </tr>
-                                            <tr key={`TABLE_wash_${i}_row`}>
-                                                    <td className={cx("text-capitalize fw-bold")}><div role="button" className={cx({ [s.activeWash]: (currentSwatchStatus?.wash_count === item?.wash_count) })}>Mean</div></td>
-                                                    <td>{item?.L_front?.toFixed(2)}</td>
-                                                    <td>{item?.A_front?.toFixed(2)}</td>
-                                                    <td>{item?.B_front?.toFixed(2)}</td>
-                                                    <td>{item?.L_back?.toFixed(2)}</td>
-                                                    <td>{item?.A_back?.toFixed(2)}</td>
-                                                    <td>{item?.B_back?.toFixed(2)}</td>
-                                                </tr>
-                                                <tr key={`TABLE_wash_${i}_row`}>
-                                                    <td className={cx("text-capitalize fw-bold")}><div role="button" className={cx({ [s.activeWash]: (currentSwatchStatus?.wash_count === item?.wash_count) })}>SD</div></td>
-                                                    <td>{item?.L_front?.toFixed(2)}</td>
-                                                    <td>{item?.A_front?.toFixed(2)}</td>
-                                                    <td>{item?.B_front?.toFixed(2)}</td>
-                                                    <td>{item?.L_back?.toFixed(2)}</td>
-                                                    <td>{item?.A_back?.toFixed(2)}</td>
-                                                    <td>{item?.B_back?.toFixed(2)}</td>
-                                                </tr>
+                                                    <tr>
+                                                        <td className={cx("text-capitalize fw-bold text-center align-middle")} rowSpan={3}><div role="button" className={cx({ [s.activeWash]: (currentSwatchStatus?.wash_count === item?.wash_count) })} onClick={() => updateCurrentWash(item)}>Wash - {item?.wash_count}</div></td>
+                                                    </tr>
+                                                    <tr key={`TABLE_wash_${i}_row`}>
+                                                        <td className={cx("text-capitalize fw-bold")}><div role="button" className={cx({ [s.activeWash]: (currentSwatchStatus?.wash_count === item?.wash_count) })}>Mean</div></td>
+                                                        <td>{item?.L_front?.toFixed(2)}</td>
+                                                        <td>{item?.A_front?.toFixed(2)}</td>
+                                                        <td>{item?.B_front?.toFixed(2)}</td>
+                                                        <td>{item?.L_back?.toFixed(2)}</td>
+                                                        <td>{item?.A_back?.toFixed(2)}</td>
+                                                        <td>{item?.B_back?.toFixed(2)}</td>
+                                                    </tr>
+                                                    <tr key={`TABLE_wash_${i}_row`}>
+                                                        <td className={cx("text-capitalize fw-bold")}><div role="button" className={cx({ [s.activeWash]: (currentSwatchStatus?.wash_count === item?.wash_count) })}>SD</div></td>
+                                                        <td>{item?.L_front?.toFixed(2)}</td>
+                                                        <td>{item?.A_front?.toFixed(2)}</td>
+                                                        <td>{item?.B_front?.toFixed(2)}</td>
+                                                        <td>{item?.L_back?.toFixed(2)}</td>
+                                                        <td>{item?.A_back?.toFixed(2)}</td>
+                                                        <td>{item?.B_back?.toFixed(2)}</td>
+                                                    </tr>
                                                 </>
                                         })}
                                     </tbody>
