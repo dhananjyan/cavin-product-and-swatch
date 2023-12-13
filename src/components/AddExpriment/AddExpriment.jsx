@@ -13,7 +13,6 @@ import Inputs from "../common/Inputs/Inputs";
 import SelectBox from "../common/SelectBox/SelectBox";
 import { closeAddModal, createExperiment } from "../../store/features/expriment";
 import AddContributors from "../AddContributors/AddContributors";
-import { useRef } from "react";
 
 export default function AddExpriment() {
 
@@ -64,11 +63,9 @@ export default function AddExpriment() {
         clearErrors("contributors")
     }
 
-    const formDivRef = useRef();
-
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={s.addProductSection} >
-            <div ref={formDivRef} className={cx(s.container, s.formSection)}>
+            <div className={cx(s.container, s.formSection)}>
                 <div className={"pt-5 d-flex justify-content-between"}>
                     <div className={cx(s.title1)}>
                         <ReactSVG src={leftArrowIcon} onClick={closeModal} role="button" />
@@ -146,7 +143,7 @@ export default function AddExpriment() {
                         /> */}
                     </div>
                     <input {...register("contributors", { required: true })} hidden />
-                    <AddContributors onChange={handleContributorsChange} contributors={contributors} scroller={formDivRef} />
+                    <AddContributors onChange={handleContributorsChange} contributors={contributors} />
                     {errors?.contributors ? <div className={s.errorText}>Required </div> : ""}
                 </div>
             </div>
