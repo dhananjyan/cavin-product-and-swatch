@@ -422,13 +422,14 @@ export const addSwatchImage = ({ isSameStep }) => async (dispatch, getState) => 
     dispatch(updateIsAddSwatchLoading(false))
 };
 
-export const getFinalResult = () => async (dispatch, getState) => {
+
+export const getExpSummary = () => async (dispatch, getState) => {
     const currentData = getState()?.updateExperiment?.currentExperiment;
     dispatch(updateFinalResultLoading(true));
-    const { status, data } = await client.post("/final_results_by_exp_id", {
-        eid: currentData?.id
+    const {status, data} = await client.post("/experiment_summary", {
+        experiment_id:currentData?.id
     });
     dispatch(updateFinalResultLoading(false));
-    if (status)
-        dispatch(updateFinalResult((data?.result)))
+    if(status)
+    dispatch(updateFinalResult((data?.mean_table)))
 }

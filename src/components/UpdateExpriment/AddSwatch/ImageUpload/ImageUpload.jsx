@@ -147,7 +147,7 @@ export default function ImageUpload() {
                                             if (item?.steps == 3)
                                                 return <>
                                                     <tr>
-                                                        <td className={cx("text-capitalize fw-bold text-center align-middle")} rowSpan={3}><div role="button" className={cx({ [s.activeWash]: (currentSwatchStatus?.wash_count === item?.wash_count) })} onClick={() => updateCurrentWash(item)}>Wash - {item?.wash_count}</div></td>
+                                                        <td className={cx("text-capitalize fw-bold text-center align-middle border-end")} rowSpan={3}><div role="button" className={cx({ [s.activeWash]: (currentSwatchStatus?.wash_count === item?.wash_count) })} onClick={() => updateCurrentWash(item)}>Wash - {item?.wash_count}</div></td>
                                                     </tr>
                                                     <tr key={`TABLE_wash_${i}_row`}>
                                                         <td className={cx("text-capitalize fw-bold")}><div role="button" className={cx({ [s.activeWash]: (currentSwatchStatus?.wash_count === item?.wash_count) })}>Mean</div></td>
@@ -164,7 +164,7 @@ export default function ImageUpload() {
                                                         
                                                     </tr>
                                                     <tr key={`TABLE_wash_${i}_row`}>
-                                                        <td className={cx("text-capitalize fw-bold")}><div role="button" className={cx({ [s.activeWash]: (currentSwatchStatus?.wash_count === item?.wash_count) })}>SD</div></td>
+                                                        <td className={cx("text-capitalize fw-bold")}><div role="button" className={cx({ [s.activeWash]: (currentSwatchStatus?.wash_count === item?.wash_count) })}>STD</div></td>
                                                         <td>{item?.front?.std?.L?.toFixed(2)}</td>
                                                         <td>{item?.front?.std?.A?.toFixed(2)}</td>
                                                         <td>{item?.front?.std?.B?.toFixed(2)}</td>
@@ -259,7 +259,7 @@ export default function ImageUpload() {
                                             </tr>
                                             <tr>
 
-                                                <td className="fw-semibold">SD</td>
+                                                <td className="fw-semibold">STD</td>
                                                 <td>{frontStd?.L?.toFixed(2)}</td>
                                                 <td>{frontStd?.A?.toFixed(2)}</td>
                                                 <td>{frontStd?.B?.toFixed(2)}</td>
@@ -304,6 +304,7 @@ export default function ImageUpload() {
                                                 <td>{averageData?.B?.toFixed(2)}</td>
                                                 <td>{averageData?.Chroma_c?.toFixed(2)}</td>
                                                 <td>{averageData?.Hue_angle?.toFixed(2)}</td>
+                                                <td></td>
                                                 <td></td>
                                             </tr>
                                         </tbody>
