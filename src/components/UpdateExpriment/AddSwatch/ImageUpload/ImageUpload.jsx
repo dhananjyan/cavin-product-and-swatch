@@ -32,7 +32,6 @@ export default function ImageUpload() {
 
     const step = currentStep;
 
-
     const backMean = currentData?.back?.mean;
     const frontMean = currentData?.front?.mean
 
