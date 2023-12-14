@@ -63,7 +63,7 @@ export default function AddContributors(props) {
     };
 
     const selectedContributorNames = contributorsData
-        .filter(item => contributors.includes(item.contributor_id))
+        .filter(item => contributors.includes(item?.contributor_id))
         .map(selected => getInitials(selected.contributor_name));
 
     const handleApplyClick = () => {

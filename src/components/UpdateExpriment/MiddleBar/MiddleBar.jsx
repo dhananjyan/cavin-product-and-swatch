@@ -14,7 +14,9 @@ const MiddleBar = () => {
         dispatch(updateWashCount(count));
         let item = swatchList?.find(item => item?.wash_count == count);
         console.log("swatchList", swatchList, item, count)
-        dispatch(updateCurrentSwatchStatus(item))
+        dispatch(updateCurrentSwatchStatus(item || {
+            steps: 3,
+        }))
     }
     return (
         <div className={s.middlebar}>
