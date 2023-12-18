@@ -15,6 +15,7 @@ import { bitesToMb } from "../../../../helpers";
 import config from "../../../../config";
 import Loader from "../../../common/Loader/Loader";
 import FinalResult from "../FinalResult/FinalResult";
+import React from "react";
 
 const { apiBaseUrl } = config || {};
 
@@ -144,38 +145,38 @@ export default function ImageUpload() {
                                     <tbody>
                                         {swatchList?.map((item, i) => {
                                             if (item?.steps == 3)
-                                                return <>
+                                                return <React.Fragment key={`TABLE_wash_${i}_row`}>
                                                     <tr>
                                                         <td className={cx("text-capitalize fw-bold text-center align-middle border-end")} rowSpan={3}><div role="button" className={cx({ [s.activeWash]: (currentSwatchStatus?.wash_count === item?.wash_count) })} onClick={() => updateCurrentWash(item)}>Wash - {item?.wash_count}</div></td>
                                                     </tr>
-                                                    <tr key={`TABLE_wash_${i}_row`}>
+                                                    <tr >
                                                         <td className={cx("text-capitalize fw-bold")}><div role="button" className={cx({ [s.activeWash]: (currentSwatchStatus?.wash_count === item?.wash_count) })}>Mean</div></td>
                                                         <td>{item?.front?.mean?.L?.toFixed(2)}</td>
                                                         <td>{item?.front?.mean?.A?.toFixed(2)}</td>
                                                         <td>{item?.front?.mean?.B?.toFixed(2)}</td>
-                                                        <td>{item?.front?.mean?.Chroma_c ? item?.front?.mean?.Chroma_c?.toFixed(2): "-"}</td>
-                                                        <td>{item?.front?.mean?.Hue_angle? item?.front?.mean?.Hue_angle?.toFixed(2) : "-"}</td>
+                                                        <td>{item?.front?.mean?.Chroma_c ? item?.front?.mean?.Chroma_c?.toFixed(2) : "-"}</td>
+                                                        <td>{item?.front?.mean?.Hue_angle ? item?.front?.mean?.Hue_angle?.toFixed(2) : "-"}</td>
                                                         <td>{item?.back?.mean?.L?.toFixed(2)}</td>
                                                         <td>{item?.back?.mean?.A?.toFixed(2)}</td>
                                                         <td>{item?.back?.mean?.B?.toFixed(2)}</td>
                                                         <td>{item?.back?.mean?.Chroma_c?.toFixed(2)}</td>
                                                         <td>{item?.back?.mean?.Hue_angle?.toFixed(2)}</td>
-                                                        
+
                                                     </tr>
-                                                    <tr key={`TABLE_wash_${i}_row`}>
+                                                    <tr>
                                                         <td className={cx("text-capitalize fw-bold")}><div role="button" className={cx({ [s.activeWash]: (currentSwatchStatus?.wash_count === item?.wash_count) })}>STD</div></td>
                                                         <td>{item?.front?.std?.L?.toFixed(2)}</td>
                                                         <td>{item?.front?.std?.A?.toFixed(2)}</td>
                                                         <td>{item?.front?.std?.B?.toFixed(2)}</td>
                                                         <td>{item?.front?.std?.Chroma_c ? item?.front?.std?.Chroma_c?.toFixed(2) : "-"}</td>
-                                                        <td>{item?.front?.std?.Hue_angle ? item?.front?.std?.Hue_angle?.toFixed(2): "-"}</td>
+                                                        <td>{item?.front?.std?.Hue_angle ? item?.front?.std?.Hue_angle?.toFixed(2) : "-"}</td>
                                                         <td>{item?.back?.std?.L?.toFixed(2)}</td>
                                                         <td>{item?.back?.std?.A?.toFixed(2)}</td>
                                                         <td>{item?.back?.std?.B?.toFixed(2)}</td>
                                                         <td>{item?.back?.std?.Chroma_c ? item?.back?.std?.Chroma_c?.toFixed(2) : "-"}</td>
-                                                        <td>{item?.back?.std?.Hue_angle? item?.back?.std?.Hue_angle?.toFixed(2) : "-"}</td>
+                                                        <td>{item?.back?.std?.Hue_angle ? item?.back?.std?.Hue_angle?.toFixed(2) : "-"}</td>
                                                     </tr>
-                                                </>
+                                                </React.Fragment>
                                         })}
                                     </tbody>
                                 </table>
@@ -206,7 +207,7 @@ export default function ImageUpload() {
                                                     <td>{item?.average?.A?.toFixed(2)}</td>
                                                     <td>{item?.average?.B?.toFixed(2)}</td>
                                                     <td>{item?.average?.Chroma_c?.toFixed(2)}</td>
-                                                    <td>{item?.average?.Hue_angle?.toFixed(2)}</td>  
+                                                    <td>{item?.average?.Hue_angle?.toFixed(2)}</td>
                                                     <td></td>
                                                     <td></td>
                                                 </tr>
