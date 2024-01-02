@@ -30,6 +30,8 @@ export default function ImageUpload() {
     const isAddSwatchLoading = useSelector(state => state?.updateExperiment?.isAddSwatchLoading)
     const currentStep = useSelector(state => state?.updateExperiment?.currentStep)
     const swatchList = useSelector(state => state?.updateExperiment?.swatchList)
+    const noOfWashes = useSelector((state) => state?.updateExperiment?.washCount);
+
 
     const step = currentStep;
 

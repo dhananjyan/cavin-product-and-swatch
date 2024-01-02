@@ -288,6 +288,7 @@ export const deleteSwatchImage = (image_type) => async (dispatch, getState) => {
   );
   const list = await dispatch(getSwatchList());
   const updatedSwatch = list?.find((item) => item?.id == currentSwatch?.id);
+  dispatch(updateWashCount(updatedSwatch?.wash_count))
   dispatch(updateCurrentSwatchStatus(updatedSwatch));
   if (image_type === "front") {
     dispatch(updateFrontImage(null));
