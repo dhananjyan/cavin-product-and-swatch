@@ -133,13 +133,13 @@ export default function ImageUpload() {
                                             <th></th>
                                             <th></th>
                                             <th>L*</th>
-                                            <th>A*</th>
-                                            <th>B*</th>
+                                            <th>a*</th>
+                                            <th>b*</th>
                                             <th>C*</th>
                                             <th>Hue</th>
                                             <th>L*</th>
-                                            <th>A*</th>
-                                            <th>B*</th>
+                                            <th>a*</th>
+                                            <th>b*</th>
                                             <th>C*</th>
                                             <th>Hue</th>
                                         </tr>
@@ -191,8 +191,8 @@ export default function ImageUpload() {
                                             <th></th>
                                             <th></th>
                                             <th>L*</th>
-                                            <th>A*</th>
-                                            <th>B*</th>
+                                            <th>a*</th>
+                                            <th>b*</th>
                                             <th>C*</th>
                                             <th>Hue</th>
                                             <th></th>
@@ -229,13 +229,13 @@ export default function ImageUpload() {
                                                 <th></th>
                                                 <th></th>
                                                 <th>L*</th>
-                                                <th>A*</th>
-                                                <th>B*</th>
+                                                <th>a*</th>
+                                                <th>b*</th>
                                                 <th>C*</th>
                                                 <th>Hue</th>
                                                 <th>L*</th>
-                                                <th>A*</th>
-                                                <th>B*</th>
+                                                <th>a*</th>
+                                                <th>b*</th>
                                                 <th>C*</th>
                                                 <th>Hue</th>
                                             </tr>
@@ -287,8 +287,8 @@ export default function ImageUpload() {
                                                 <th></th>
                                                 <th></th>
                                                 <th>L*</th>
-                                                <th>A*</th>
-                                                <th>B*</th>
+                                                <th>a*</th>
+                                                <th>b*</th>
                                                 <th>C*</th>
                                                 <th>Hue</th>
                                                 <th></th>
