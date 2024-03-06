@@ -146,7 +146,7 @@ export default function ImageUpload() {
                                     </thead>
                                     <tbody>
                                         {swatchList?.map((item, i) => {
-                                            if (item?.steps == 3 && item.wash_count == noOfWashes)
+                                            if (item?.steps == 3 )
                                                 return <React.Fragment key={`TABLE_wash_${i}_row`}>
                                                     <tr>
                                                         <td className={cx("text-capitalize fw-bold text-center align-middle border-end")} rowSpan={3}><div role="button" className={cx({ [s.activeWash]: (currentSwatchStatus?.wash_count === item?.wash_count) })} onClick={() => updateCurrentWash(item)}>Wash - {item?.wash_count}</div></td>
@@ -201,7 +201,7 @@ export default function ImageUpload() {
                                     </thead>
                                     <tbody>
                                         {swatchList?.map((item, i) => {
-                                            if (item?.steps == 3 && item.wash_count == noOfWashes)
+                                            if (item?.steps == 3 )
                                                 return <tr key={`TABLE_wash_${i}_row`}>
                                                     <td className={cx("text-capitalize fw-bold")}><div role="button" className={cx({ [s.activeWash]: (currentSwatchStatus?.wash_count === item?.wash_count) })} onClick={() => updateCurrentWash(item)}>Wash - {item?.wash_count}</div></td>
                                                     <td></td>

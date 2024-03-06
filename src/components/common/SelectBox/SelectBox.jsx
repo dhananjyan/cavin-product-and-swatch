@@ -71,25 +71,21 @@ export default function SelectBox(props) {
     // };
 
     const handleCheckboxChange = (item) => {
-    let newValue = [...selectedList];
-    const isChecked = newValue.includes(item.value);
-
-    if (!isMultiSelect) {
-        newValue = [item.value];
-    } else if (!isChecked) {
-        newValue.push(item.value);
-    } else {
-        newValue = newValue.filter(data => data !== item.value);
-    }
-
-    onChange({ value: newValue, item });
-
-    if (!isMultiSelect) {
-        setIsOpen(false);
-        setFilteredOptions(options);
-    }
-};
-
+        let newValue = [...selectedList];
+        if (!isMultiSelect)
+            newValue = [item?.value];
+        else if (!selectedList?.includes(item?.value))
+            newValue.push(item?.value);
+        else
+            newValue = newValue.filter(data => data !== item?.value);
+        if (typeof onChange === "function") {
+            onChange({ value: newValue, item }); 
+        }
+        if (!isMultiSelect) {
+            setIsOpen(false);
+            setFilteredOptions(options);
+        }
+    };
     
 
     useEffect(() => {
