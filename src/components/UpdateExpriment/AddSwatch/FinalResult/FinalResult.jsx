@@ -14,10 +14,10 @@ export default function FinalResult() {
 
     const finalResult = useSelector((state) => state?.updateExperiment?.finalResult);
     const noOfWashes = useSelector((state) => state?.updateExperiment?.washCount);
-    // const noOfWashes = 2;
 
-    const colorDifferenceColSpan = noOfWashes + 2;
-    const percentChangeColSpan = noOfWashes + 2;
+    // const colorDifferenceColSpan = noOfWashes * 2;
+    // const percentChangeColSpan = noOfWashes *2;
+
 
 
 
@@ -34,14 +34,22 @@ export default function FinalResult() {
                     const meanValues = finalResult[key]?.mean;
                     const stdValues = finalResult[key]?.std_dev;
 
-                    const washHeaders = Array.from({ length: noOfWashes }, (_, index) => `Wash ${index + 1}`);
+                    const availableWashNumbers = Object.keys(finalResult)
+                        .flatMap(key => Object.keys(finalResult[key]?.entries).map(entry => finalResult[key]?.entries[entry]))
+                        .flatMap(entry => Object.keys(entry))
+                        .filter(key => key.startsWith('wash'))
+                        .map(key => key.match(/\d+/)[0])
+                        .reduce((uniqueWashes, wash) => uniqueWashes.includes(wash) ? uniqueWashes : [...uniqueWashes, wash], [])
+                        .sort((a, b) => parseInt(a) - parseInt(b));
+
+                    const washHeaders = availableWashNumbers.map(washNumber => `Wash ${washNumber}`);
 
                     return (
                         <table className={cx('table', 'text-center')} key={key}>
                             <thead>
                                 <tr >
-                                    <th colSpan={colorDifferenceColSpan}>Color Difference {key}</th>
-                                    <th colSpan={percentChangeColSpan}>% Change</th>
+                                    <th colSpan={washHeaders?.length + 2}>Color Difference {key}</th>
+                                    <th colSpan={(washHeaders?.length + 2 ) * 2}>% Change</th>
                                 </tr>
                                 <tr>
                                     <th></th>
@@ -59,12 +67,17 @@ export default function FinalResult() {
                                     <tr key={id}>
                                         <td className='fw-semibold'>{finalResult[key]?.entries[id]?.swatch_name}</td>
                                         <td>{finalResult[key]?.entries[id]?.after_coloring?.toFixed(2)}</td>
-                                        {washHeaders.map((_, index) => (
-                                            <td key={index}>{finalResult[key]?.entries[id][`wash${index + 1}`]?.toFixed(2)}</td>
+                                        {washHeaders.map((washHeader, index) => (
+                                            <td key={index}>
+                                                {finalResult[key]?.entries[id][`wash${availableWashNumbers[index]}`] !== undefined ?
+                                                    finalResult[key]?.entries[id][`wash${availableWashNumbers[index]}`].toFixed(2) : "-"}
+                                            </td>
                                         ))}
-                                        {washHeaders.map((_, index) => (
-
-                                            <td key={index}>{finalResult[key]?.entries[id][`wash${index + 1}percentage`]?.toFixed(2)}</td>
+                                        {washHeaders.map((washHeader, index) => (
+                                            <td key={index}>
+                                                {finalResult[key]?.entries[id][`wash${availableWashNumbers[index]}percentage`] !== undefined ?
+                                                    finalResult[key]?.entries[id][`wash${availableWashNumbers[index]}percentage`].toFixed(2) : "-"}
+                                            </td>
                                         ))}
                                     </tr>
                                 ))}
@@ -72,10 +85,10 @@ export default function FinalResult() {
                                     <td className='fw-semibold'>Mean</td>
                                     <td>{meanValues?.after_coloring?.toFixed(2)}</td>
                                     {washHeaders.map((_, index) => (
-                                        <td key={index}>{meanValues[`wash${index + 1}`]?.toFixed(2)}</td>
+                                        <td key={index}>{meanValues[`wash${availableWashNumbers[index]}`]?.toFixed(2)}</td>
                                     ))}
                                     {washHeaders.map((_, index) => (
-                                        <td key={index}>{meanValues[`wash${index + 1}percentage`]?.toFixed(2)}</td>
+                                        <td key={index}>{meanValues[`wash${availableWashNumbers[index]}percentage`]?.toFixed(2)}</td>
                                     ))}
 
                                 </tr>
@@ -83,10 +96,10 @@ export default function FinalResult() {
                                     <td className='fw-semibold'>STD</td>
                                     <td>{stdValues?.after_coloring?.toFixed(2)}</td>
                                     {washHeaders.map((_, index) => (
-                                        <td key={index}>{stdValues[`wash${index + 1}`]?.toFixed(2)}</td>
+                                        <td key={index}>{stdValues[`wash${availableWashNumbers[index]}`]?.toFixed(2)}</td>
                                     ))}
                                     {washHeaders.map((_, index) => (
-                                        <td key={index}>{stdValues[`wash${index + 1}percentage`]?.toFixed(2)}</td>
+                                        <td key={index}>{stdValues[`wash${availableWashNumbers[index]}percentage`]?.toFixed(2)}</td>
                                     ))}
                                 </tr>
                             </tbody>
